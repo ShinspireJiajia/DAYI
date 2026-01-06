@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>課程詳情 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .course-image { width:100%; height:200px; object-fit:cover; border-radius:16px; margin-bottom:16px; }
+    .course-header { padding:0 0px 16px 0px; }
+    .course-title { font-size:18px; font-weight:600; color:#000; margin-bottom:8px; line-height: 1.3; }
+    .course-badges { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+    .badge { font-size:14px; padding:6px 10px; border-radius:999px; font-weight:700; }
+    .badge-type { background:#e8f5e8; color:#2e7d32; }
+    .status-available {background: rgb(25, 79, 91, 0.08);color: rgb(25, 79, 91, 0.8);}
+    .status-waitlist { background:#fff7ed; color:#c2410c; }
+    .status-full { background:#f3f4f6; color:#9ca3af; }
+    
+    .info-section { background:#fff; border-radius:12px; padding:12px; margin:8px 0px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .section-title-s { font-size:16px; font-weight:600; color:#000; margin:8px 0 12px 0; display:flex; align-items:center; gap:8px; }
+    .info-row { display:grid; grid-template-columns:80px 1fr; gap:12px; padding:8px 0; border-bottom:1px solid #f3f4f6; align-items: flex-start; }
+    .info-row:last-child { border-bottom:none; }
+    .info-label { font-size:16px; color:#666; font-weight:400; line-height: 1.5; }
+    .info-value { font-size:16px; color:#000; font-weight:600; line-height: 1.5; }
+    .info-value.highlight { color: #194f5b; font-weight: 800; font-size: 16px; }
+    
+    .description { color:#000; line-height:1.8; font-size: 16px; }
+    .description li { margin-left: 15px; }
+    .materials-checkbox { margin:8px 0; }
+    .materials-checkbox input { margin-right:8px; }
+    .materials-checkbox label { font-size:14px; color:#374151; }
+    .course-detail-list{margin-left:8px;}
+    .course-detail-list li::marker {
+    color: #00b4b4; /* 這裡換成你想要的主色 */
+    font-size: 1.2em; /* 也可以調整大小 */
+}
+    .booking-section { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:414px; background:#fff; padding:16px; border-radius:24px 24px 0 0;box-shadow:0 -4px 12px rgba(0,0,0,0.1); z-index:100; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
+    .booking-info { display:flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; }
+    .price-info { font-size:20px; font-weight:800; color:#194f5b; }
+    .points-info { font-size:16px; color:#6b7280; word-wrap: break-word; }
+    .btn-book-detail {width: 100%;
+    padding: 16px;
+    background: #00b4b4;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 180, 180, 0.3);}
+    .btn-waitlist-detail { width:100%; background:#ff9800; color:#fff; border:none; padding:14px; border-radius:12px; font-size:18px; font-weight:700; cursor:pointer; }
+    
+    .main-content { padding-bottom:200px; }
+
+   
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="course-booking.html" id="backLink" aria-label="返回" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">課程詳情</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="pages-content">
+    <img id="courseImage" class="course-image" src="./images/course-detail-img.png" alt="課程圖片" />
+    
+    <div class="course-header">
+      <h1 id="courseTitle" class="course-title">課程名稱</h1>
+      <div class="course-badges" id="courseBadges"></div>
+      <p id="courseDescription" class="description">課程簡介...</p>
+    </div>
+
+    <div class="info-section">
+      <div class="section-title-s">
+        課程資訊
+      </div>
+      <div class="info-row">
+        <div class="info-label">課程代碼</div>
+        <div class="info-value" id="courseCode">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">活動日期</div>
+        <div class="info-value highlight" id="courseDateTime">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">師資名稱</div>
+        <div class="info-value" id="courseInstructor">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">活動名額</div>
+        <div class="info-value" id="courseCapacity">—</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">費用</div>
+        <div class="info-value" id="courseFee">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">活動地點</div>
+        <div class="info-value" id="courseLocation">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">報名期限</div>
+        <div class="info-value" id="registrationDeadline">—</div>
+      </div>
+    </div>
+
+    <div class="info-section" id="materialsSection">
+      <div class="section-title-s">
+        <i class="fas fa-shopping-cart"></i>
+        材料購買需求
+      </div>
+      <div id="materialsInfo"></div>
+      <div id="materialsPurchase" style="display:none;">
+        <!-- <div class="materials-checkbox">
+          <input type="checkbox" id="buyMaterials" />
+          <label for="buyMaterials">我需要購買課程材料</label>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="section-title-s">
+        <i class="fas fa-info-circle"></i>
+        注意事項
+      </div>
+      <div id="courseNotes" class="description">
+        <ul class="course-detail-list">
+          <li>請穿著舒適運動服裝</li>
+          <li>請自備毛巾與水瓶</li>
+          <li>課程期間請將手機調為靜音</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Booking Section -->
+  <div class="booking-section">
+    <div class="booking-info">
+      <div class="points-info">預約此課程需要</div>
+      <div class="price-info" id="priceDisplay">5 點</div>
+      <div class="charge-info" id="chargeInfo" style="display:none;">
+        <div style="font-size:14px; color:#ff6b35; font-weight:600; margin-top:4px;">
+          掛帳金額：NT$<span id="chargeAmount">0</span> 元
+        </div>
+      </div>
+    </div>
+    <button id="bookingBtn" class="btn-book-detail">立即預約</button>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item active" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+  <!-- Popup Modal -->
+  <div id="popupOverlay" class="popup-overlay">
+    <div class="popup-content">
+      <i id="popupIcon" class="popup-icon fas fa-info-circle"></i>
+      <div id="popupTitle" class="popup-title"></div>
+      <div id="popupMessage" class="popup-message"></div>
+      <div class="popup-actions">
+        <button id="popupCancelBtn" class="popup-btn cancel">取消</button>
+        <button id="popupConfirmBtn" class="popup-btn confirm">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Modal Sheet -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>課程活動預約確認</h2>
+            <button class="close-btn" id="closeSheet">&times;</button>
+        </div>
+        
+        <div class="course-summary">
+            <!-- <img src="" alt="Course Image" class="course-img" id="s-img"> -->
+            <div class="course-info">
+                <div class="course-title" id="s-name"></div>
+                <div class="course-meta"><i class="fas fa-barcode"></i> <span id="s-code"></span></div>
+                <div class="course-meta"><i class="far fa-clock"></i> <span id="s-time"></span></div>
+                <div class="course-meta"><i class="fas fa-map-marker-alt"></i> <span id="s-site"></span></div>
+                <div class="course-meta"><i class="far fa-user"></i> <span id="s-instructor"></span></div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
+                    <div class="course-points" id="s-points" style="margin-top: 0; font-size: 16px;"></div>
+                    <a href="course-detail.html" class="view-details-link" style="margin-top: 0; color: #b3a68b;">查看完整活動詳情 <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="payment-section">
+            <div class="section-title-s">選擇付費方式</div>
+            <div class="option-card selected" onclick="selectOption(this, 'payment')" data-value="points">
+                <div class="option-content">
+                    <div class="option-icon"><img src="./images/money-icon.png"></div>
+                    <div class="option-text">
+                        <span class="option-label">使用點數</span>
+                        <span class="option-sub" id="points-sub"></span>
+                    </div>
+                </div>
+                <div class="radio-circle"></div>
+            </div>
+
+            <div class="option-card" onclick="selectOption(this, 'payment')" data-value="bill">
+                <div class="option-content">
+                    <div class="option-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="option-text">
+                        <span class="option-label">列入客房帳單支付</span>
+                        <span class="option-sub" id="bill-sub"></span>
+                    </div>
+                </div>
+                <div class="radio-circle"></div>
+            </div>
+        </div>
+
+        <div id="material-fee-section" style="display:none; margin-bottom: 24px;">
+            <div class="section-title-s">課程材料費 (可選)</div>
+            <div id="material-description" style="margin-bottom: 12px; font-size: 16px; color: #4b5563; line-height: 1.5;"></div>
+            <div id="material-items-container">
+                <!-- Dynamic items will be injected here -->
+            </div>
+            <div style="font-size: 16px; color: #47727c; margin-top: 4px; padding-left: 4px;">
+                <i class="fas fa-info-circle"></i> 此費用將列入客房帳單收取，無法使用點數折抵。
+            </div>
+        </div>
+
+        <div class="agreement-box" style="justify-content: center; text-align: center;">
+            <div class="agreement-text" style="color: #47727c; font-size: 16px;">
+                為了讓您有更好的體驗，如果您點選確認預約，表示您已同意 <a href="course-notice.html" class="agreement-link" style="color: #00b4b4; text-decoration: underline;">課程活動須知說明</a>
+            </div>
+        </div>
+
+        <button class="confirm-btn" id="confirmBooking">確認預約</button>
+    </div>
+  </div>
+
+  <script>
+    // 課程資料 (與 course-booking.html 同步)
+    const COURSES = [
+      { 
+        id:'C101', 
+        name:'樂齡肌力訓練', 
+        category: '運動健康',
+        tags: ['戶外', '肌力'], 
+        day:'2026/5/15', 
+        time:'10:00-11:00', 
+        site:'A棟3F 多功能室', 
+        maxSeats: 12,
+        activityQuota: '12人',
+        availableSeats: 4, 
+        points: 500,
+        sessions: 8,
+        fee: '扣點',
+        note:'輕量啞鈴、彈力帶，提升肌耐力',
+        description: '<strong>🌟 樂齡肌力訓練：重拾活力與平衡</strong><br><br><strong>課程簡介：</strong> 隨著年齡增長，肌肉力量會逐漸流失，進而影響生活品質。本套「樂齡肌力訓練」課程由資深物理治療師/專業教練設計，採用溫和且有效的訓練方法，幫助 50 歲以上的學員安全地進行力量訓練。課程中將會利用輕量器材或自身重量，專注於提升大肌群力量、改善關節活動度及增進身體平衡感。<br><br><strong>誰適合參加？</strong><ul><li>希望改善走路姿勢、防止駝背者。</li><li>擔心跌倒、希望提升身體穩定性者。</li><li>希望保持活力、享受更高品質退休生活者。</li></ul><strong>課程內容核心：</strong><ul><li>安全暖身與關節活動度訓練。</li><li>下肢力量（大腿、臀部）強化，提升站立與行走能力。</li><li>核心肌群穩定性練習，保護脊椎。</li><li>課後舒緩伸展，放鬆緊繃肌肉。</li></ul>',
+        instructor: '陳美玲老師',
+        materials: '需自備毛巾，其他器材由課程提供',
+        registrationDeadline: '2025/09/25',
+        image: 'https://placehold.co/600x400?text=Muscle+Training'
+      },
+      { 
+        id:'C102', 
+        name:'腰背舒緩核心瑜珈', 
+        category: '運動健康',
+        tags: ['瑜珈', '舒展'], 
+        day:'週三', 
+        time:'14:00-15:00', 
+        site:'B棟2F 教室A', 
+        maxSeats: 15,
+        availableSeats: 2, 
+        points: 300,
+        sessions: 6,
+        fee: '扣點',
+        note:'伸展與呼吸，放鬆身心',
+        description: '溫和的瑜珈練習，著重呼吸調節與柔軟度提升，適合銀髮族群。',
+        instructor: '王靜怡老師',
+        materials: '需自備瑜珈墊',
+        registrationDeadline: '2025/09/23',
+        image: 'https://placehold.co/600x400?text=Yoga'
+      },
+      { 
+        id:'C103', 
+        name:'書法臨摹初級班', 
+        category: '藝文休閒',
+        tags: ['書法', '靜心'], 
+        day:'週五', 
+        time:'09:30-10:30', 
+        site:'A棟1F 交誼廳', 
+        maxSeats: 20,
+        availableSeats: 8, 
+        points: 400,
+        sessions: 10,
+        fee: '扣點',
+        note:'簡易節奏動作，強化心肺',
+        description: '結合音樂與簡易動作的有氧運動，提升心肺功能與協調性。',
+        instructor: '李志明老師',
+        materials: '穿著舒適運動服即可',
+        registrationDeadline: '2025/09/26',
+        image: 'https://placehold.co/600x400?text=Rhythm'
+      },
+      { 
+        id:'C104', 
+        name:'夏日編織提籃', 
+        category: '藝文休閒',
+        tags: ['手作', '編織'], 
+        day:'週二', 
+        time:'15:30-16:30', 
+        site:'C棟2F 共學室', 
+        maxSeats: 10,
+        availableSeats: 5, 
+        points: 600,
+        sessions: 4,
+        fee: '扣點',
+        note:'手作、協調操作，維持專注',
+        description: '透過益智遊戲與手作活動刺激大腦，維持認知功能與專注力。',
+        instructor: '張麗芳老師',
+        materials: '材料費另計 NT$150',
+        materialItems: [{name: '編織材料包', price: 150}],
+        registrationDeadline: '2025/09/24',
+        image: 'https://placehold.co/600x400?text=Brain+Training'
+      },
+      { 
+        id:'C105', 
+        name:'關節保健操', 
+        category: '運動健康',
+        tags: ['瑜珈', '復健'], 
+        day:'週四', 
+        time:'10:30-11:30', 
+        site:'A棟3F 多功能室', 
+        maxSeats: 12,
+        availableSeats: 0, 
+        points: 300,
+        sessions: 6,
+        fee: '扣點',
+        note:'低衝擊關節活動，減少僵硬',
+        description: '針對關節保養設計的溫和運動，改善關節靈活度與減少僵硬感。',
+        instructor: '劉惠敏老師',
+        materials: '需自備瑜珈墊與毛巾',
+        registrationDeadline: '2025/09/23',
+        image: 'https://placehold.co/600x400?text=Joint+Care'
+      },
+      { 
+        id:'C109', 
+        name:'冬季養生藥膳', 
+        category: '生活應用',
+        tags: ['烹飪', '養生'], 
+        day:'2025/12/10', 
+        time:'10:00-12:00', 
+        site:'B棧1F 廚藝教室', 
+        maxSeats: 20,
+        availableSeats: 10, 
+        points: 60000,
+        sessions: 1,
+        fee: '扣點',
+        note:'冬季進補，健康美味',
+        description: '<strong>🍲 冬季養生藥膳：暖心暖胃的健康美味</strong><br><br><strong>課程簡介：</strong> 寒冷的冬天是進補的最佳時節。本課程邀請專業中醫師與營養師，教您如何運用常見的中藥材結合當季食材，烹調出美味又健康的養生料理。課程中將介紹不同體質適合的藥膳，並親手製作一道經典藥膳湯品。<br><br><strong>誰適合參加？</strong><ul><li>容易手腳冰冷、畏寒者。</li><li>希望透過飲食調理改善體質者。</li><li>對中醫藥膳料理有興趣者。</li></ul><strong>課程內容核心：</strong><ul><li>認識常見藥膳食材及其功效。</li><li>學習如何挑選與處理中藥材。</li><li>實作示範：當歸生薑羊肉湯 / 素食養生湯。</li><li>現場品嚐與交流。</li></ul>',
+        instructor: '張國榮老師',
+        materials: '食材費另計 300 元',
+        materialItems: [{name: '藥膳食材包', price: 300}],
+        registrationDeadline: '2025/12/05',
+        image: 'https://placehold.co/600x400?text=Winter+Diet'
+      },
+      { 
+        id:'C112', 
+        name:'手工皮件製作', 
+        category: '藝文休閒',
+        tags: ['手作', '工藝'], 
+        day:'2025/12/25', 
+        time:'14:00-16:00', 
+        site:'C棧2F 共學室', 
+        maxSeats: 8,
+        availableSeats: 8, 
+        points: 1000,
+        sessions: 1,
+        fee: '扣點',
+        note:'製作專屬皮件，體驗工匠精神',
+        description: '<strong>👜 手工皮件製作：質感生活，親手打造</strong><br><br><strong>課程簡介：</strong> 體驗皮革工藝的魅力，從選皮、裁切、打孔到縫製，親手製作一個獨一無二的真皮零錢包或證件套。課程由專業皮件設計師指導，即使是初學者也能輕鬆上手。<br><br><strong>課程特色：</strong><ul class="course-detail-list"><li>使用高品質義大利植鞣革。</li><li>學習基礎皮革工具使用與手縫技巧。</li><li>可客製化刻字，打造專屬紀念。</li></ul>',
+        instructor: '陳浩然老師',
+        materials: '材料費另計 NT$800 (含皮革、五金、工具租借)',
+        materialItems: [{name: '義大利植鞣革', price: 500}, {name: '五金配件組', price: 300}],
+        registrationDeadline: '2025/12/20',
+        image: 'https://placehold.co/600x400?text=Leather+Craft'
+      }
+    ];
+
+    // Popup Helper
+    function showPopup({ title, message, icon = 'info', showCancel = false, confirmText = '確定', cancelText = '取消', confirmClass = '' }) {
+      return new Promise((resolve) => {
+        const overlay = document.getElementById('popupOverlay');
+        const iconEl = document.getElementById('popupIcon');
+        const titleEl = document.getElementById('popupTitle');
+        const messageEl = document.getElementById('popupMessage');
+        const cancelBtn = document.getElementById('popupCancelBtn');
+        const confirmBtn = document.getElementById('popupConfirmBtn');
+
+        // Set content
+        titleEl.textContent = title || '';
+        titleEl.style.display = title ? 'block' : 'none';
+        messageEl.textContent = message;
+        
+        // Set icon
+        iconEl.className = 'popup-icon fas';
+        if (icon === 'success') iconEl.classList.add('fa-check-circle');
+        else if (icon === 'warning') { iconEl.classList.add('fa-exclamation-triangle'); iconEl.classList.add('warning'); }
+        else if (icon === 'error') { iconEl.classList.add('fa-times-circle'); iconEl.classList.add('error'); }
+        else { iconEl.classList.add('fa-info-circle'); iconEl.classList.add('info'); }
+
+        // Set buttons
+        confirmBtn.textContent = confirmText;
+        confirmBtn.className = 'popup-btn confirm ' + confirmClass;
+        
+        if (showCancel) {
+          cancelBtn.style.display = 'block';
+          cancelBtn.textContent = cancelText;
+        } else {
+          cancelBtn.style.display = 'none';
+        }
+
+        // Show popup
+        overlay.style.display = 'flex';
+        // Trigger reflow
+        overlay.offsetHeight;
+        overlay.classList.add('show');
+
+        // Event listeners
+        const close = (result) => {
+          overlay.classList.remove('show');
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            resolve(result);
+          }, 300);
+        };
+
+        // Remove old listeners to avoid duplicates if called multiple times
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+        newConfirmBtn.onclick = () => close(true);
+        newCancelBtn.onclick = () => close(false);
+      });
+    }
+
+    let selectedPayment = 'points';
+
+    function selectOption(element, type) {
+        const siblings = element.parentElement.querySelectorAll('.option-card');
+        siblings.forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        
+        const value = element.getAttribute('data-value');
+        if (type === 'payment') {
+            selectedPayment = value;
+        }
+    }
+
+    function openSheet(course) {
+      document.getElementById('s-name').textContent = course.name;
+      document.getElementById('s-code').textContent = course.id;
+      document.getElementById('s-time').textContent = `${course.day} ${course.time}`;
+      document.getElementById('s-site').textContent = course.site;
+      document.getElementById('s-instructor').textContent = course.instructor;
+      document.getElementById('s-points').textContent = `${course.points} 點`;
+      
+      const userPoints = getUserPoints();
+      const pointsSub = document.getElementById('points-sub');
+      pointsSub.textContent = `現有點數: ${userPoints.toLocaleString()}點`;
+      
+      if (userPoints >= course.points) {
+          pointsSub.innerHTML += ' <span style="color:#b3a68b; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-check-circle"></i> 點數足夠</span>';
+      } else {
+          pointsSub.innerHTML += ' <span style="color:#d32f2f; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-times-circle"></i> 點數不足</span>';
+      }
+      
+      const chargeAmount = course.points * 10;
+      document.getElementById('bill-sub').textContent = `NT$ ${chargeAmount.toLocaleString()}`;
+
+      // Material Fee Logic
+      const materialSection = document.getElementById('material-fee-section');
+      const materialContainer = document.getElementById('material-items-container');
+      materialContainer.innerHTML = ''; // Clear previous items
+      
+      let hasMaterials = false;
+
+      if (course.materialItems && course.materialItems.length > 0) {
+          hasMaterials = true;
+          course.materialItems.forEach((item, index) => {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'option-card selected';
+              itemDiv.style.cursor = 'pointer';
+              itemDiv.dataset.price = item.price;
+              itemDiv.dataset.name = item.name;
+              itemDiv.onclick = function() {
+                  this.classList.toggle('selected');
+                  updateTotalCharge();
+              };
+
+              itemDiv.innerHTML = `
+                <div class="option-content">
+                    <div class="option-icon"><i class="fas fa-tools"></i></div>
+                    <div class="option-text">
+                        <span class="option-label">${item.name}</span>
+                        <span class="option-sub">NT$ ${item.price.toLocaleString()}</span>
+                    </div>
+                </div>
+                <div class="radio-circle"></div>
+              `;
+              materialContainer.appendChild(itemDiv);
+          });
+      } else if (course.materialFee && course.materialFee > 0) {
+          // Legacy support for single fee
+          hasMaterials = true;
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'option-card selected';
+          itemDiv.style.cursor = 'pointer'; // Allow deselection
+          itemDiv.dataset.price = course.materialFee;
+          itemDiv.dataset.name = '材料費';
+          itemDiv.onclick = function() {
+              this.classList.toggle('selected');
+              updateTotalCharge();
+          };
+
+          itemDiv.innerHTML = `
+            <div class="option-content">
+                <div class="option-icon"><i class="fas fa-tools"></i></div>
+                <div class="option-text">
+                    <span class="option-label">材料費用</span>
+                    <span class="option-sub">NT$ ${course.materialFee.toLocaleString()}</span>
+                </div>
+            </div>
+            <div class="radio-circle"></div>
+          `;
+          materialContainer.appendChild(itemDiv);
+      }
+
+      if (hasMaterials) {
+          materialSection.style.display = 'block';
+      } else {
+          materialSection.style.display = 'none';
+      }
+
+      const isFull = course.availableSeats === 0;
+      const paymentSection = document.getElementById('payment-section');
+      
+      if (isFull) {
+          paymentSection.style.display = 'none';
+          selectedPayment = null;
+      } else {
+          paymentSection.style.display = 'block';
+          selectedPayment = 'points';
+          const paymentOptions = paymentSection.querySelectorAll('.option-card');
+          paymentOptions.forEach(el => el.classList.remove('selected'));
+          paymentSection.querySelector('[data-value="points"]').classList.add('selected');
+      }
+
+      const btn = document.getElementById('confirmBooking');
+      
+      if (isFull) {
+        btn.textContent = '確認候補';
+      } else {
+        btn.textContent = '確認預約';
+      }
+      
+      // Store current course for booking
+      window.currentBookingCourse = course;
+      
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeSheet() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    async function loadCourseDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const courseId = urlParams.get('id');
+      
+      // Handle back link
+      const fromPage = urlParams.get('from');
+      if (fromPage === 'my-courses') {
+        const backLink = document.getElementById('backLink');
+        if (backLink) {
+          backLink.href = 'courses.html';
+          backLink.setAttribute('aria-label', '返回我的課程');
+        }
+      }
+
+      const course = COURSES.find(c => c.id === courseId);
+      
+      if (!course) {
+        await showPopup({ title: '錯誤', message: '找不到課程資訊', icon: 'error' });
+        window.location.href = 'course-booking.html';
+        return;
+      }
+
+      // 填充基本資訊
+      document.getElementById('courseImage').src = course.image;
+      document.getElementById('courseImage').alt = course.name;
+      document.getElementById('courseTitle').textContent = course.name;
+      document.getElementById('courseDescription').innerHTML = course.description;
+
+      // 顯示標籤
+      const badgesContainer = document.getElementById('courseBadges');
+      const isFull = course.availableSeats === 0;
+      const allowWaitlist = course.allowWaitlist !== false; // 預設允許候補，除非明確設定為 false
+
+      let statusText, statusClass;
+      if (isFull) {
+        if (allowWaitlist) {
+          statusText = '已額滿(可候補)';
+          statusClass = 'status-waitlist';
+        } else {
+          statusText = '已額滿';
+          statusClass = 'status-full';
+        }
+      } else {
+        statusText = '可報名';
+        statusClass = 'status-available';
+      }
+      
+      let badgesHtml = '';
+      
+      // 1. 類別 (藍色)
+      if (course.category) {
+        badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">${course.category}</span>`;
+      }
+
+      // 2. 標籤 (灰色)
+      if (course.tags && Array.isArray(course.tags)) {
+        course.tags.forEach(tag => {
+          badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">#${tag}</span>`;
+        });
+      } else if (course.type) {
+         // Fallback
+         badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">${course.type}</span>`;
+      }
+
+      // 3. 狀態
+      badgesHtml += `<span class="badge ${statusClass}">${statusText}</span>`;
+
+      badgesContainer.innerHTML = badgesHtml;
+
+      // 填充詳細資訊
+      document.getElementById('courseCode').textContent = course.id;
+      document.getElementById('courseDateTime').textContent = `${course.day} ${course.time}`;
+      document.getElementById('courseInstructor').textContent = course.instructor;
+      
+      // 優先顯示 activityQuota，若無則顯示 maxSeats
+      if (course.activityQuota) {
+          document.getElementById('courseCapacity').textContent = course.activityQuota;
+      } else {
+          document.getElementById('courseCapacity').textContent = `${course.maxSeats} 人`;
+      }
+      
+      document.getElementById('courseFee').textContent = `${course.points} 點 (${course.fee})`;
+      document.getElementById('courseLocation').textContent = course.site;
+      document.getElementById('registrationDeadline').textContent = course.registrationDeadline;
+
+      // 材料資訊
+      document.getElementById('materialsInfo').textContent = course.materials;
+      
+      // 如果有明確的 materialFee 屬性，或者文字描述中有費用資訊，顯示購買區塊
+      if ((course.materialFee && course.materialFee > 0) || course.materials.includes('另計') || course.materials.includes('NT$')) {
+        const purchaseDiv = document.getElementById('materialsPurchase');
+        purchaseDiv.style.display = 'block';
+        
+        // 如果有 materialFee，顯示更明確的費用提示
+        if (course.materialFee && course.materialFee > 0) {
+            purchaseDiv.innerHTML = `
+                <div style="background-color:#f0f9ff; border:1px solid #b3e5fc; border-radius:8px; padding:12px; margin-top:8px;">
+                    <div style="display:flex; align-items:center; gap:8px; color:#0277bd; font-weight:700; font-size:15px;">
+                        <i class="fas fa-info-circle"></i>
+                        本課程需另收材料費 NT$${course.materialFee}
+                    </div>
+                    <div style="font-size:13px; color:#546e7a; margin-top:4px; margin-left:24px;">
+                        費用將列入客房帳單收取，無法使用點數折抵。
+                    </div>
+                </div>
+            `;
+        }
+      }
+
+      // 預約按鈕
+      const bookingBtn = document.getElementById('bookingBtn');
+      const priceDisplay = document.getElementById('priceDisplay');
+      
+      priceDisplay.textContent = `${course.points} 點`;
+
+      // Check if already booked
+      const bookings = JSON.parse(localStorage.getItem('sl_course_bookings') || '[]');
+      const existingBooking = bookings.find(b => b.courseId === courseId && b.status !== '已取消');
+
+      if (existingBooking) {
+          if (existingBooking.status === '已報到') {
+              bookingBtn.textContent = '已報到';
+              bookingBtn.style.backgroundColor = '#e0e0e0';
+              bookingBtn.style.color = '#9e9e9e';
+              bookingBtn.style.cursor = 'default';
+              bookingBtn.disabled = true;
+              bookingBtn.onclick = null;
+          } else if (existingBooking.isWaitlist) {
+              bookingBtn.textContent = '候補中';
+              bookingBtn.className = 'btn-waitlist-detail';
+              bookingBtn.disabled = true;
+              bookingBtn.onclick = null;
+          } else {
+              bookingBtn.innerHTML = '<i class="fas fa-qrcode"></i> 我要報到';
+              bookingBtn.className = 'btn-book-detail';
+              bookingBtn.disabled = false;
+              bookingBtn.onclick = () => {
+                  window.location.href = `scan-checkin.html?id=${existingBooking.id}`;
+              };
+          }
+          document.getElementById('chargeInfo').style.display = 'none';
+          const pointsInfo = document.querySelector('.points-info');
+          if (pointsInfo) pointsInfo.textContent = '您已預約此課程';
+          return;
+      }
+      
+      if (isFull) {
+        if (allowWaitlist) {
+          bookingBtn.textContent = '加入候補';
+          bookingBtn.className = 'btn-waitlist-detail';
+          bookingBtn.disabled = false;
+        } else {
+          bookingBtn.textContent = '已額滿';
+          bookingBtn.style.backgroundColor = '#9ca3af';
+          bookingBtn.style.cursor = 'not-allowed';
+          bookingBtn.disabled = true;
+        }
+      } else {
+        bookingBtn.textContent = '立即預約';
+        bookingBtn.className = 'btn-book-detail';
+        bookingBtn.disabled = false;
+      }
+
+      // 檢查點數並顯示掛帳金額
+      const userPoints = getUserPoints();
+      const chargeInfoElement = document.getElementById('chargeInfo');
+      const chargeAmountElement = document.getElementById('chargeAmount');
+      
+      if (!isFull && userPoints < course.points) {
+        // 點數不足時顯示掛帳金額
+        const shortfall = course.points - userPoints;
+        const chargeAmountNT = shortfall * 10; // 假設 1 點 = 10 元
+        chargeAmountElement.textContent = chargeAmountNT;
+        chargeInfoElement.style.display = 'block';
+        
+        // 更新顯示文字
+        document.querySelector('.points-info').textContent = `您有 ${userPoints} 點，您可以選擇列入下期帳單支付`;
+      } else {
+        chargeInfoElement.style.display = 'none';
+        if (!isFull) {
+          document.querySelector('.points-info').textContent = '預約此課程需要點數';
+        }
+      }
+
+      // 綁定預約事件
+      bookingBtn.onclick = () => {
+        openSheet(course);
+      };
+    }
+
+    // Event Listeners for Modal
+    document.getElementById('closeSheet').addEventListener('click', closeSheet);
+    
+    document.getElementById('confirmBooking').addEventListener('click', async () => {
+        const course = window.currentBookingCourse;
+        if (!course) return;
+
+        const isWaitlist = course.availableSeats === 0;
+        const pointsNeeded = course.points;
+        
+        // New Logic: Get selected materials
+        const selectedMaterials = getSelectedMaterials();
+        const totalMaterialFee = selectedMaterials.reduce((sum, item) => sum + item.price, 0);
+
+        let paymentMethod = selectedPayment;
+        let chargeAmount = 0;
+
+        const executeBooking = async (finalPaymentMethod, finalChargeAmount) => {
+            // 儲存預約記錄，傳入 selectedMaterials
+            saveCourseBooking(course, isWaitlist, finalPaymentMethod, finalChargeAmount, selectedMaterials);
+
+            if (isWaitlist) {
+              await showPopup({ title: '已加入候補', message: '已成功加入候補名單，如有名額釋出將依據候補順序遞補。', icon: 'success' });
+              closeSheet();
+              window.location.href = 'courses.html'; 
+            } else {
+              let successMsg = '';
+              if (finalPaymentMethod === 'charge') {
+                successMsg = `掛帳金額：NT$${finalChargeAmount} 元\n將列入於客房帳單一起繳費。\n\n詳情請查看我的課程活動預約。`;
+              } else if (finalPaymentMethod === 'mixed') {
+                 successMsg = `已扣除現有點數，並掛帳 NT$${finalChargeAmount} 元。\n詳情請查看我的課程活動預約。`;
+              } else {
+                successMsg = `已扣除 ${pointsNeeded} 點數，詳情請查看我的課程活動預約。`;
+              }
+              
+              await showPopup({ title: '預約成功', message: successMsg, icon: 'success' });
+              closeSheet();
+              window.location.href = 'courses.html';
+            }
+        };
+
+        if (!isWaitlist) {
+            if (paymentMethod === 'points') {
+                 const userPoints = getUserPoints();
+                 if (userPoints < pointsNeeded) {
+                     const fullChargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+                     const msg = `點數不足！需要 ${pointsNeeded} 點，您目前有 ${userPoints} 點。\n依規定無法使用部分點數折抵，需全額以掛帳方式支付。${totalMaterialFee > 0 ? '\n(含課程材料費 NT$' + totalMaterialFee + ')' : ''}\n\n總掛帳金額：NT$${fullChargeAmount} 元\n是否確認預約？`;
+
+                     const confirmed = await showPopup({
+                        title: '點數不足', 
+                        message: msg, 
+                        icon: 'warning',
+                        showCancel: true,
+                        confirmText: '確認掛帳',
+                        confirmClass: 'danger'
+                     });
+                     
+                     if (confirmed) {
+                         // 不扣除點數，全額掛帳
+                         addChargeAmount(fullChargeAmount);
+                         executeBooking('charge', fullChargeAmount);
+                     }
+                     return;
+                 }
+                 deductPoints(pointsNeeded);
+                 
+                 if (totalMaterialFee > 0) {
+                     addChargeAmount(totalMaterialFee);
+                     executeBooking('mixed', totalMaterialFee);
+                 } else {
+                     executeBooking('points', 0);
+                 }
+            } else if (paymentMethod === 'bill') {
+                 chargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+                 addChargeAmount(chargeAmount);
+                 executeBooking('charge', chargeAmount);
+            }
+        } else {
+            // 候補也要檢查點數
+            const userPoints = getUserPoints();
+            if (userPoints < pointsNeeded) {
+                 await showPopup({
+                    title: '點數不足', 
+                    message: `您的點數 (${userPoints} 點) 不足支付此課程 (${pointsNeeded} 點)，無法加入候補。`, 
+                    icon: 'error'
+                 });
+                 return;
+            }
+            executeBooking(null, 0);
+        }
+    });
+
+    function getUserPoints() {
+      // 模擬從 localStorage 或 API 獲取用戶點數
+      // 預設給予 1000 點，確保點數足夠測試
+      return parseInt(localStorage.getItem('sl_user_points') || '1000');
+    }
+
+    function deductPoints(points) {
+      const currentPoints = getUserPoints();
+      const newPoints = Math.max(0, currentPoints - points);
+      localStorage.setItem('sl_user_points', newPoints.toString());
+    }
+
+    // 掛帳管理函數
+    function addChargeAmount(amount) {
+      const currentCharge = parseInt(localStorage.getItem('sl_charge_amount') || '0');
+      const newCharge = currentCharge + amount;
+      localStorage.setItem('sl_charge_amount', newCharge.toString());
+    }
+
+    function getChargeAmount() {
+      return parseInt(localStorage.getItem('sl_charge_amount') || '0');
+    }
+
+    function getSelectedMaterials() {
+        const container = document.getElementById('material-items-container');
+        const selected = [];
+        container.querySelectorAll('.option-card.selected').forEach(card => {
+            selected.push({
+                name: card.dataset.name,
+                price: parseInt(card.dataset.price)
+            });
+        });
+        return selected;
+    }
+
+    function updateTotalCharge() {
+        // Optional: Update UI if needed
+    }
+
+    function saveCourseBooking(course, isWaitlist, paymentMethod = 'points', chargeAmount = 0, selectedMaterials = []) {
+      const KEY = 'sl_course_bookings';
+      let bookings = [];
+      try {
+        bookings = JSON.parse(localStorage.getItem(KEY) || '[]');
+      } catch {
+        bookings = [];
+      }
+
+      const booking = {
+        id: `${course.id}-${Date.now()}`,
+        courseId: course.id,
+        name: course.name,
+        category: course.category,
+        tags: course.tags,
+        type: course.type,
+        instructor: course.instructor,
+        day: course.day,
+        time: course.time,
+        site: course.site,
+        points: course.points,
+        sessions: course.sessions,
+        status: isWaitlist ? '候補中' : '已預約',
+        bookingDate: new Date().toISOString(),
+        isWaitlist: isWaitlist,
+        paymentMethod: isWaitlist ? null : paymentMethod,
+        chargeAmount: isWaitlist ? 0 : chargeAmount,
+        selectedMaterials: selectedMaterials
+      };
+
+      bookings.push(booking);
+      localStorage.setItem(KEY, JSON.stringify(bookings));
+    }
+
+    // 頁面載入時執行
+    document.addEventListener('DOMContentLoaded', loadCourseDetail);
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>會員條碼 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    /* 精簡版 QR 頁面 */
+    body { background: #f3f4f6; color: #111827; }
+    .qr-page { min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
+    .qr-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+    .qr-title { font-size: 17px; font-weight: 600; }
+    .back-btn { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: #f3f4f6; color: #111827; border: 1px solid #e5e7eb; }
+    .qr-main { display: grid; place-items: center; padding: 24px 16px; }
+    .qr-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .qrcode-box { width: 200px; height: 200px; }
+    .qr-footer { padding: 16px; display: grid; place-items: center; }
+    .home-link { color: #111827; text-decoration: none; font-weight: 600; }
+    @media (max-width: 360px) { .qrcode-box { width: 160px; height: 160px; } }
+  </style>
+</head>
+<body>
+  <div class="qr-page" aria-label="會員 QR Code 頁">
+    <div class="qr-header">
+      <a class="back-btn" href="index.html" aria-label="返回首頁"><i class="fas fa-chevron-left"></i></a>
+      <div class="qr-title">會員 QR Code</div>
+    </div>
+    <div class="qr-main">
+      <div class="qr-card">
+        <div id="qrcode" class="qrcode-box" aria-label="會員 QR Code"></div>
+      </div>
+    </div>
+    <div class="qr-footer">
+      <a class="home-link" href="index.html">返回首頁</a>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const memberId = 'SL-8899-1234';
+      const qrContainer = document.getElementById('qrcode');
+      qrContainer.innerHTML = '';
+      if (window.QRCode) {
+        new QRCode(qrContainer, { text: memberId, width: 200, height: 200 });
+      } else {
+        qrContainer.textContent = memberId;
+      }
+    })();
+  </script>
+</body>
+</html>

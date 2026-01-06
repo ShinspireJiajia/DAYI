@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>掃描報到 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .camera-view {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+      background-size: cover;
+    }
+    .camera-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .scan-frame {
+      width: 280px;
+      height: 280px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      position: relative;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6);
+      z-index: 5;
+    }
+    .scan-frame::before, .scan-frame::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-color: #3b82f6;
+      border-style: solid;
+      transition: all 0.3s;
+    }
+    .scan-frame::before {
+      top: -2px;
+      left: -2px;
+      border-width: 4px 0 0 4px;
+      border-radius: 20px 0 0 0;
+    }
+    .scan-frame::after {
+      bottom: -2px;
+      right: -2px;
+      border-width: 0 4px 4px 0;
+      border-radius: 0 0 20px 0;
+    }
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #3b82f6;
+      box-shadow: 0 0 4px #3b82f6;
+      animation: scan 2s linear infinite;
+    }
+    @keyframes scan {
+      0% { top: 0; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .scan-text {
+      color: #fff;
+      margin-top: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      z-index: 10;
+    }
+    .manual-input-btn {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 15px;
+      cursor: pointer;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .manual-input-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .controls {
+      height: 120px;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      padding-bottom: 20px;
+      position: relative;
+      z-index: 20;
+    }
+    .control-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .close-btn {
+      position: absolute;
+      top: 40px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      z-index: 20;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .success-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: #10b981;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 40px;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .success-text {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    /* Manual Input Modal */
+    .manual-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      backdrop-filter: blur(5px);
+    }
+    .manual-content {
+      background: #fff;
+      width: 80%;
+      max-width: 320px;
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s ease;
+    }
+    .manual-content h3 {
+      margin: 0 0 16px 0;
+      color: #111827;
+      font-size: 18px;
+    }
+    .manual-input-field {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .manual-input-field:focus {
+      border-color: #3b82f6;
+    }
+    .manual-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .manual-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .manual-btn.cancel {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    .manual-btn.confirm {
+      background: #3b82f6;
+      color: #fff;
+    }
+    @keyframes popIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <a href="javascript:history.back()" class="close-btn"><i class="fas fa-times"></i></a>
+  
+  <div class="camera-view" id="cameraView">
+    <div class="camera-overlay">
+      <div class="scan-frame">
+        <div class="scan-line"></div>
+      </div>
+      <div class="scan-text">請掃描活動現場 QR Code</div>
+      <button class="manual-input-btn" onclick="openManualModal()">
+        <i class="fas fa-keyboard"></i> 輸入核銷碼
+      </button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="control-btn"><i class="fas fa-bolt"></i></button>
+    <button class="control-btn" style="width: 72px; height: 72px; background: #fff; color: #000;" onclick="simulateScan()"><i class="fas fa-camera"></i></button>
+    <button class="control-btn"><i class="fas fa-image"></i></button>
+  </div>
+
+  <div class="success-modal" id="successModal">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <div class="success-text">報到成功！</div>
+  </div>
+
+  <!-- Manual Input Modal -->
+  <div class="manual-modal" id="manualModal">
+    <div class="manual-content">
+      <h3>輸入核銷碼</h3>
+      <input type="text" id="manualCode" class="manual-input-field" placeholder="請輸入核銷碼" />
+      <div class="manual-actions">
+        <button class="manual-btn cancel" onclick="closeManualModal()">取消</button>
+        <button class="manual-btn confirm" onclick="submitManualCode()">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingId = urlParams.get('id');
+
+    function openManualModal() {
+      document.getElementById('manualModal').style.display = 'flex';
+      document.getElementById('manualCode').focus();
+    }
+
+    function closeManualModal() {
+      document.getElementById('manualModal').style.display = 'none';
+      document.getElementById('manualCode').value = '';
+    }
+
+    function submitManualCode() {
+      const code = document.getElementById('manualCode').value;
+      if (!code) {
+        alert('請輸入核銷碼');
+        return;
+      }
+      
+      // Simulate verification
+      closeManualModal();
+      simulateScan();
+    }
+
+    function simulateScan() {
+      if (!bookingId) {
+        alert('無效的預約編號');
+        return;
+      }
+
+      // Show success animation
+      const modal = document.getElementById('successModal');
+      modal.style.display = 'flex';
+
+      // Update status in localStorage
+      setTimeout(() => {
+        const KEY = 'sl_course_bookings';
+        try {
+          const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+          const index = list.findIndex(i => i.id === bookingId);
+          if (index > -1) {
+            list[index].status = '已報到';
+            list[index].checkInTime = new Date().toISOString();
+            localStorage.setItem(KEY, JSON.stringify(list));
+          }
+        } catch (e) {
+          console.error('Error updating booking status', e);
+        }
+
+        // Redirect back
+        setTimeout(() => {
+          window.location.href = 'courses.html';
+        }, 1500);
+      }, 1000);
+    }
+
+    // Auto-scan simulation after 3 seconds
+    setTimeout(() => {
+      // simulateScan(); 
+      // Let user click the button to simulate scan, or auto scan if preferred.
+      // For better UX in prototype, let's just wait for user click or click it automatically if they don't.
+    }, 3000);
+  </script>
+</body>
+</html>

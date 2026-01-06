@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>個人 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* Personal page light styling, consistent with existing theme */
+  .profile-card { background:#fff; border:1px solid #e5e7eb; border-radius:20px; padding:16px; display:flex; align-items:center; gap:14px; box-shadow:0 8px 28px rgba(0,0,0,0.06); }
+  .avatar { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; background:#f3f4f6; display:grid; place-items:center; font-weight:800; color:#374151; font-size:18px; }
+    .verify-badge { position:absolute; bottom:-2px; right:-2px; width:18px; height:18px; background:#10b981; color:#fff; border-radius:50%; display:grid; place-items:center; font-size:11px; border:2px solid #fff; }
+  .profile-main { flex:1; display:flex; align-items:center; gap:12px; }
+  .profile-name { font-size:18px; font-weight:800; color:#111827; }
+  .points { display:inline-grid; place-items:center; padding:8px 12px; border:1px solid #e5e7eb; border-radius:14px; gap:2px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    .points .value { font-weight:700; color:#111827; }
+    .points .label { font-size:12px; color:#6b7280; }
+    .profile-actions { display:flex; gap:8px; }
+    .icon-btn { width:40px; height:40px; display:grid; place-items:center; border-radius:10px; background:#111827; color:#fff; }
+
+    .list { margin-top:16px; display:grid; gap:10px; }
+    .list-item { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
+    .list-item .li-icon { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; color:#fff; }
+    .li-blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+    .li-orange { background: linear-gradient(135deg, #fb923c, #f97316); }
+    .li-green { background: linear-gradient(135deg, #34d399, #10b981); }
+    .li-red { background: linear-gradient(135deg, #f87171, #ef4444); }
+    .li-yellow { background: linear-gradient(135deg, #fcd34d, #f59e0b); color:#111827; }
+    .li-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+    .li-body { flex:1; }
+    .li-title { font-weight:700; color:#111827; }
+    .li-desc { font-size:12px; color:#6b7280; }
+    .li-arrow { color:#9ca3af; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+  <a href="index.html" aria-label="返回首頁" class="back-link"><i class="fas fa-chevron-left"></i></a>
+  <span class="app-name">個人</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a class="header-action" href="member-code.html" aria-label="會員 QR"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <a href="notifications.html" aria-label="通知"><i class="fas fa-bell"></i></a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Profile summary -->
+    <section class="profile-card">
+      <div class="avatar">陳<div class="verify-badge"><i class="fas fa-check"></i></div></div>
+      <div class="profile-main">
+        <div class="profile-name">陳家霖</div>
+        <a class="points" href="points-history.html" style="text-decoration:none;">
+          <span class="value">13,700</span>
+          <span class="label">可用點數</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- List items -->
+    <div class="list">
+      <a class="list-item" href="my-bookings.html" style="text-decoration:none;color:inherit;">
+        <div class="li-icon li-blue">
+          <i class="fas fa-dumbbell"></i>
+        </div>
+        <div class="li-body">
+          <div class="li-title">設備預約</div>
+          <div class="li-desc">查看設備預約紀錄</div>
+        </div>
+        <i class="fas fa-chevron-right li-arrow"></i>
+      </a>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+</body>
+</html>

@@ -1,0 +1,1073 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的票券 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="index.html" aria-label="返回首頁" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">附加服務</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="pages-content">
+    <!-- Main Category Tabs -->
+    <div class="main-category-tabs">
+      <button class="category-btn active" data-view="view-vip">
+        <i class="fas fa-utensils"></i>
+        <span>貴賓饗宴</span>
+      </button>
+      <!-- 第一階段還沒有要上線
+      <button class="category-btn" data-view="view-training">
+        <i class="fas fa-dumbbell"></i>
+        <span>專屬訓練</span>
+      </button>
+      -->
+      <button class="category-btn" data-view="view-electronic" style="display: none;">
+        <i class="fas fa-ticket-alt"></i>
+        <span>電子票券</span>
+      </button>
+    </div>
+
+    <!-- View: Electronic Tickets -->
+    <div id="view-electronic" class="main-view">
+
+    <!-- 優惠券清單 -->
+    <section id="coupon" class="ticket-section active">
+      <!-- 狀態分類 -->
+      <div class="status-tabs" role="tablist" aria-label="優惠券 狀態分類">
+        <button class="status-btn active" data-status="available">可使用</button>
+        <button class="status-btn" data-status="used">已使用</button>
+        <button class="status-btn" data-status="expired">已逾期</button>
+      </div>
+
+      <!-- 1. 超商咖啡券-美式咖啡 (QR Code) -->
+      <div class="ticket-card coupon" data-status="available" data-code="COFFEE-AMERICANO-001" data-name="超商咖啡券-美式咖啡" data-type="qr" data-instruction="請出示此 QR Code 給店員掃描以兌換美式咖啡。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill coupon"><i class="fas fa-coffee"></i></div>
+          <div class="ticket-info">
+            <h4>超商咖啡券-美式咖啡</h4>
+            <p>核銷 QR Code + 使用說明</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2025/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+
+      <!-- 2. 連鎖飲食-燒肉券 (Barcode) -->
+      <div class="ticket-card coupon" data-status="available" data-code="YAKINIKU-998877" data-name="連鎖飲食-燒肉券" data-type="barcode" data-instruction="請出示此條碼給店員掃描以兌換燒肉套餐。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill coupon"><i class="fas fa-fire"></i></div>
+          <div class="ticket-info">
+            <h4>連鎖飲食-燒肉券</h4>
+            <p>核銷 一維條碼 (128CODE)</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2025/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+
+      <!-- 3. 宜蘭礁溪-長榮鳳凰酒店 一泊四食券 (Text) -->
+      <div class="ticket-card coupon" data-status="available" data-code="A1B2C3" data-name="宜蘭礁溪-長榮鳳凰酒店 一泊四食券" data-type="text" data-instruction="請出示此核銷碼給櫃檯人員以辦理入住。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill coupon"><i class="fas fa-hotel"></i></div>
+          <div class="ticket-info">
+            <h4>宜蘭礁溪-長榮鳳凰酒店</h4>
+            <p>一泊四食券 (核銷碼 6碼)</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2025/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+
+      <!-- 已使用優惠券 -->
+      <div class="ticket-card coupon" data-status="used" data-code="USED-001" data-name="電影票兌換券" data-type="qr" data-instruction="此券已核銷">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill coupon"><i class="fas fa-film"></i></div>
+          <div class="ticket-info">
+            <h4>電影票兌換券</h4>
+            <p>已使用 - 2025/10/15</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2025/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+
+      <!-- 已逾期優惠券 -->
+      <div class="ticket-card coupon disabled" data-status="expired" data-code="EXPIRED-001" data-name="下午茶套餐券" data-type="qr" data-instruction="此券已逾期">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill coupon"><i class="fas fa-mug-hot"></i></div>
+          <div class="ticket-info">
+            <h4>下午茶套餐券</h4>
+            <p>已逾期</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2024/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已逾期</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 餐券清單（含早餐券/午餐券示意） -->
+    <section id="meal" class="ticket-section">
+      <!-- 狀態分類 -->
+      <div class="status-tabs" role="tablist" aria-label="餐券 狀態分類">
+        <button class="status-btn active" data-status="available">可使用</button>
+        <button class="status-btn" data-status="used">已使用</button>
+        <button class="status-btn" data-status="expired">已逾期</button>
+      </div>
+      <!-- 可使用餐券 -->
+      <!-- 早餐券 - 可使用 -->
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-BREAKFAST-001" data-name="早餐券" data-instruction="請於早餐時段出示此券用餐。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>2026/05/01 早餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-LUNCH-001" data-name="午餐券" data-instruction="請於午餐時段出示此券用餐。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>2026/05/01 午餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-DINNER-001" data-name="晚餐券" data-instruction="請於晚餐時段出示此券用餐。">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>2026/05/01 晚餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-BREAKFAST-002" data-name="早餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>2026/05/02 早餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-LUNCH-002" data-name="午餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>2026/05/02 午餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-DINNER-002" data-name="晚餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>2026/05/02 晚餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-BREAKFAST-003" data-name="早餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>2026/05/03 早餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-LUNCH-003" data-name="午餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>2026/05/03 午餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-DINNER-003" data-name="晚餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>2026/05/03 晚餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-BREAKFAST-004" data-name="早餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>2026/05/04 早餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-LUNCH-004" data-name="午餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>2026/05/04 午餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="available" data-code="MEAL-DINNER-004" data-name="晚餐券">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>2026/05/04 晚餐時段</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" data-use>立即使用</button>
+        </div>
+      </div>
+
+      <!-- 已使用餐券 -->
+      <!-- 早餐券 - 已使用 -->
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已使用 - 2026/04/15 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已使用 - 2026/04/15 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已使用 - 2026/04/15 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已使用 - 2026/04/16 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已使用 - 2026/04/16 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已使用 - 2026/04/16 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已使用 - 2026/04/17 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已使用 - 2026/04/17 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已使用 - 2026/04/17 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已使用 - 2026/04/18 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已使用 - 2026/04/18 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已使用 - 2026/04/18 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已使用 - 2026/04/19 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已使用 - 2026/04/19 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已使用 - 2026/04/19 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/08/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+
+      <!-- 已過期餐券 -->
+      <!-- 早餐券 - 已過期 -->
+      <div class="ticket-card meal disabled" data-status="expired">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已過期 - 2026/03/10 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/03/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已過期</button>
+        </div>
+      </div>
+      <div class="ticket-card meal disabled" data-status="expired">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal"></div>
+          <div class="ticket-info">
+            <h4>午餐券</h4>
+            <p>已過期 - 2026/03/10 午餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/03/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已過期</button>
+        </div>
+      </div>
+      <div class="ticket-card meal disabled" data-status="expired">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>晚餐券</h4>
+            <p>已過期 - 2026/03/10 晚餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/03/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已過期</button>
+        </div>
+      </div>
+      <div class="ticket-card meal disabled" data-status="expired">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🥐</div>
+          <div class="ticket-info">
+            <h4>早餐券</h4>
+            <p>已過期 - 2026/03/11 早餐</p>
+            <div class="ticket-meta"><span class="expire">使用期限：2026/03/31</span></div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已過期</button>
+        </div>
+      </div>
+
+      <div class="ticket-card meal" data-status="used">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍱</div>
+          <div class="ticket-info">
+            <h4>午餐套餐券</h4>
+            <p>已使用</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2025/09/30</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>已使用</button>
+        </div>
+      </div>
+
+      <div class="ticket-card meal disabled" data-status="expired">
+        <div class="ticket-left">
+          <div class="ticket-icon-pill meal">🍜</div>
+          <div class="ticket-info">
+            <h4>拉麵套餐券</h4>
+            <p>已過期</p>
+            <div class="ticket-meta">
+              <span class="expire">使用期限：2024/12/31</span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket-actions">
+          <button class="use-btn" disabled>不可使用</button>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- View: VIP Feast -->
+    <div id="view-vip" class="main-view active">
+      <div class="vip-card">
+        <div class="vip-header">
+          <h3>貴賓饗宴</h3>
+          <span class="vip-badge">尊榮服務</span>
+        </div>
+        
+        <!-- Meal Selection -->
+        <div class="vip-list">
+            <div class="vip-item">
+                <div class="vip-item-info">
+                    <h4>早餐</h4>
+                    <p>每日 07:00 - 10:00</p>
+                </div>
+                <button id="btn-vip-breakfast" class="vip-action-btn" onclick="openTicketModal('VIP-BREAKFAST-001', '貴賓饗宴 - 早餐', 'qr')">
+                    <i class="fas fa-qrcode"></i> 立即兌換
+                </button>
+            </div>
+            <div class="vip-item">
+                <div class="vip-item-info">
+                    <h4>午餐</h4>
+                    <p>每日 11:30 - 14:00</p>
+                </div>
+                <button id="btn-vip-lunch" class="vip-action-btn" onclick="openTicketModal('VIP-LUNCH-001', '貴賓饗宴 - 午餐', 'qr')">
+                    <i class="fas fa-qrcode"></i> 立即兌換
+                </button>
+            </div>
+            <div class="vip-item">
+                <div class="vip-item-info">
+                    <h4>晚餐</h4>
+                    <p>每日 17:30 - 21:00</p>
+                </div>
+                <button id="btn-vip-dinner" class="vip-action-btn" onclick="openTicketModal('VIP-DINNER-001', '貴賓饗宴 - 晚餐', 'qr')">
+                    <i class="fas fa-qrcode"></i> 立即兌換
+                </button>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="vip-info">
+          <h4>使用須知</h4>
+          <p>本券適用於頂級貴賓廳，提供專屬主廚料理。</p>
+          <p>用餐位置：A棟 3F 貴賓廳</p>
+          <p>請著正式服裝入場。</p>
+        </div>
+
+        <!-- Usage History -->
+        <div class="usage-history">
+          <h4>當月使用明細</h4>
+          <div class="usage-list">
+            <div class="usage-item">
+              <span class="usage-date">2025/11/05 08:30</span>
+              <span class="usage-type">早餐 </span>
+            </div>
+            <div class="usage-item">
+              <span class="usage-date">2025/11/20 18:30</span>
+              <span class="usage-type">晚餐 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Exclusive Training -->
+    <!-- 第一階段還沒有要上線
+    <div id="view-training" class="main-view">
+      <div class="vip-card">
+        <div class="vip-header">
+          <h3>專屬訓練</h3>
+          <span class="vip-badge">私人教練</span>
+        </div>
+        
+        <div class="vip-list">
+            <div class="vip-item">
+                <div class="vip-item-info">
+                    <h4>肌力訓練 (一對一)</h4>
+                    <p>剩餘 3 堂 | 每週二 10:00~11:00</p>
+                </div>
+                <button class="vip-action-btn" onclick="openTicketModal('TRAINING-STRENGTH-001', '肌力訓練 (一對一)', 'qr')">
+                    <i class="fas fa-qrcode"></i> 使用
+                </button>
+            </div>
+            <div class="vip-item">
+                <div class="vip-item-info">
+                    <h4>心肺有氧 (團體課程)</h4>
+                    <p>剩餘 6 堂 | 每週四 14:00~15:00</p>
+                </div>
+                <button class="vip-action-btn" onclick="openTicketModal('TRAINING-CARDIO-001', '心肺有氧 (團體課程)', 'qr')">
+                    <i class="fas fa-qrcode"></i> 使用
+                </button>
+            </div>
+        </div>
+
+        <div class="vip-info">
+          <h4>使用須知</h4>
+          <p>請提前 10 分鐘抵達教室。</p>
+          <p>訓練位置：B棟 2F 健身中心</p>
+          <p>請著運動服裝與運動鞋。</p>
+        </div>
+
+        <div class="usage-history">
+          <h4>當月使用明細</h4>
+          <div class="usage-list">
+            <div class="usage-item">
+              <span class="usage-date">2025/11/05 10:00</span>
+              <span class="usage-type">肌力訓練(正卡)</span>
+            </div>
+            <div class="usage-item">
+              <span class="usage-date">2025/11/12 10:00</span>
+              <span class="usage-type">肌力訓練(正卡)</span>
+            </div>
+            <div class="usage-item">
+              <span class="usage-date">2025/11/14 14:00</span>
+              <span class="usage-type">心肺有氧(正卡)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+  <a class="nav-item" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+  <!-- Ticket Usage Modal -->
+  <div id="ticket-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="關閉"><i class="fas fa-times"></i></button>
+      <h3 id="modal-ticket-name" class="modal-title"></h3>
+      <div style="position: relative;">
+          <div id="modal-code-container" class="modal-code-area"></div>
+          <div id="modal-qr-overlay" class="qr-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); border-radius: 12px; flex-direction: column; justify-content: center; align-items: center; z-index: 10;">
+              <button id="modal-refresh-btn" class="refresh-btn"><i class="fas fa-redo"></i> 重新產生</button>
+          </div>
+      </div>
+      <div id="modal-timer-display" class="timer-display" style="display: none;">有效時間 <span id="modal-countdown" class="countdown">05:00</span></div>
+      <p id="modal-hint" class="modal-hint"></p>
+    </div>
+  </div>
+
+  <style>
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background: #1f2937; border-radius: 16px; padding: 24px;
+      width: 90%; max-width: 360px; position: relative;
+      text-align: center; color: #fff;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .modal-close {
+      position: absolute; top: 12px; right: 12px;
+      background: transparent; border: none; color: #9ca3af;
+      font-size: 20px; cursor: pointer; padding: 4px;
+    }
+    .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #e7eefa; }
+    .modal-code-area { 
+      background: #fff; padding: 16px; border-radius: 12px; 
+      margin: 0 auto 16px; display: flex; justify-content: center; align-items: center;
+      min-height: 200px;
+    }
+    .modal-code-area canvas, .modal-code-area img { max-width: 100%; }
+    .modal-hint { font-size: 14px; color: #d1d5db; }
+    .text-code-display { font-size: 24px; font-weight: bold; color: #000; letter-spacing: 2px; }
+
+    /* VIP List Styles */
+    .vip-list {
+        margin-bottom: 20px;
+    }
+    .vip-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(25, 79, 91, 0.04);
+        padding: 12px;
+        border-radius:8px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .vip-item-info h4 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        color: #194f5b;
+    }
+    .vip-item-info p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+    }
+    .vip-action-btn {
+        background: #00b4b4;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+    }
+    .vip-action-btn:hover {
+        background: #2563eb;
+    }
+  </style>
+
+  <script>
+
+
+    // 狀態分類切換（可使用 / 已使用 / 已逾期）
+    function applyStatusFilter(section) {
+      const activeBtn = section.querySelector('.status-btn.active');
+      const status = activeBtn ? activeBtn.dataset.status : 'available';
+      section.querySelectorAll('.ticket-card').forEach(card => {
+        const s = card.dataset.status || 'available';
+        card.style.display = (s === status) ? '' : 'none';
+      });
+    }
+
+    document.querySelectorAll('.ticket-section').forEach(section => {
+      const tabs = section.querySelectorAll('.status-btn');
+      if (tabs.length) {
+        tabs.forEach(btn => btn.addEventListener('click', () => {
+          tabs.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyStatusFilter(section);
+        }));
+        // 初始化狀態過濾
+        applyStatusFilter(section);
+      }
+    });
+
+    // Modal elements
+    const modal = document.getElementById('ticket-modal');
+    const modalName = document.getElementById('modal-ticket-name');
+    const modalContainer = document.getElementById('modal-code-container');
+    const modalHint = document.getElementById('modal-hint');
+    const modalClose = document.querySelector('.modal-close');
+    const modalOverlay = document.getElementById('modal-qr-overlay');
+    const modalRefreshBtn = document.getElementById('modal-refresh-btn');
+    const modalTimerDisplay = document.getElementById('modal-timer-display');
+    const modalCountdown = document.getElementById('modal-countdown');
+
+    let modalTimerInterval;
+
+    function openTicketModal(code, name, type) {
+        modalName.textContent = name;
+        modalContainer.innerHTML = ''; // Clear previous content
+        
+        // Reset Timer UI
+        if (modalOverlay) modalOverlay.style.display = 'none';
+        if (modalTimerDisplay) modalTimerDisplay.style.display = 'block';
+        
+        if (type === 'barcode') {
+            const canvas = document.createElement('canvas');
+            modalContainer.appendChild(canvas);
+            try {
+                JsBarcode(canvas, code, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2,
+                    height: 60,
+                    displayValue: true
+                });
+            } catch(e) {
+                modalContainer.textContent = code;
+            }
+            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
+            startModalTimer();
+        } else if (type === 'text') {
+            const div = document.createElement('div');
+            div.className = 'text-code-display';
+            div.textContent = code;
+            modalContainer.appendChild(div);
+            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
+            if (modalTimerDisplay) modalTimerDisplay.style.display = 'none';
+        } else {
+            // QR Code
+            const div = document.createElement('div');
+            modalContainer.appendChild(div);
+            new QRCode(div, { text: code, width: 180, height: 180 });
+            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
+            startModalTimer();
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    function startModalTimer() {
+        if (modalTimerInterval) clearInterval(modalTimerInterval);
+        
+        let timeLeft = 300; // 5 minutes
+
+        function updateDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            if (modalCountdown) modalCountdown.textContent = `${m}:${s}`;
+        }
+
+        updateDisplay();
+        if (modalOverlay) modalOverlay.style.display = 'none';
+
+        modalTimerInterval = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(modalTimerInterval);
+                if (modalOverlay) {
+                    modalOverlay.style.display = 'flex';
+                }
+            }
+        }, 1000);
+    }
+
+    if (modalRefreshBtn) {
+        modalRefreshBtn.addEventListener('click', () => {
+            startModalTimer();
+        });
+    }
+
+    modalClose.addEventListener('click', () => {
+        modal.style.display = 'none';
+        if (modalTimerInterval) clearInterval(modalTimerInterval);
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            if (modalTimerInterval) clearInterval(modalTimerInterval);
+        }
+    });
+
+    // 點擊「立即使用」→ 跳轉至 ticket-code.html
+    document.querySelectorAll('[data-use]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.currentTarget.closest('.ticket-card');
+        const code = card?.dataset.code || '';
+        const name = card?.dataset.name || '';
+        const type = card?.dataset.type || 'qr';
+        const instruction = card?.dataset.instruction || '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
+        
+        // Encode parameters
+        const params = new URLSearchParams({
+            code: code,
+            name: name,
+            type: type,
+            instruction: instruction
+        });
+        
+        window.location.href = `ticket-code.html?${params.toString()}`;
+      });
+    });
+
+    // Main Category Switching
+    function switchTab(targetId) {
+        // Update buttons
+        document.querySelectorAll('.category-btn').forEach(b => {
+            if (b.dataset.view === targetId) {
+                b.classList.add('active');
+            } else {
+                b.classList.remove('active');
+            }
+        });
+        
+        // Update views
+        document.querySelectorAll('.main-view').forEach(view => {
+          view.classList.remove('active');
+          if (view.id === targetId) {
+            view.classList.add('active');
+          }
+        });
+
+        // Update URL
+        const tabName = targetId.replace('view-', '');
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('tab', tabName);
+        window.history.pushState({}, '', newUrl);
+    }
+
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.view;
+        switchTab(targetId);
+      });
+    });
+
+    // Initialize from URL
+    (function initFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const tab = params.get('tab');
+        if (tab) {
+            const targetId = `view-${tab}`;
+            const targetBtn = document.querySelector(`.category-btn[data-view="${targetId}"]`);
+            if (targetBtn) {
+                switchTab(targetId);
+            }
+        }
+    })();
+
+    // Update VIP button counts
+    function updateVipCounts() {
+        const mealSection = document.getElementById('meal');
+        if (!mealSection) return;
+
+        const availableMeals = Array.from(mealSection.querySelectorAll('.ticket-card.meal[data-status="available"]'));
+        
+        const counts = {
+            breakfast: 0,
+            lunch: 0,
+            dinner: 0
+        };
+
+        availableMeals.forEach(card => {
+            const name = card.dataset.name || '';
+            if (name.includes('早餐')) counts.breakfast++;
+            else if (name.includes('午餐')) counts.lunch++;
+            else if (name.includes('晚餐')) counts.dinner++;
+        });
+
+        const updateButton = (id, count) => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                btn.innerHTML = `<i class="fas fa-qrcode"></i> 使用 (${count})`;
+            }
+        };
+
+        updateButton('btn-vip-breakfast', counts.breakfast);
+        updateButton('btn-vip-lunch', counts.lunch);
+        updateButton('btn-vip-dinner', counts.dinner);
+    }
+
+    // Call updateVipCounts on load
+    updateVipCounts();
+  </script>
+</body>
+</html>

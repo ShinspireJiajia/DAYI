@@ -1,0 +1,1936 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>課程 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .action-button { 
+      background: linear-gradient(135deg, #00b4b4, #00b4b4);
+      border: none;
+      border-radius:8px; 
+      padding:12px 28px; /* Increased padding */
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 16px; /* Increased font size */
+      font-weight:600;
+      box-shadow: 0 6px 20px rgba(0, 180, 180, 0.24);
+      transition: all 0.2s ease;
+      margin-bottom:0px;
+      text-decoration: none;
+    }
+    .action-button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+    }
+    .action-button.secondary {
+      background: #fff;
+      color: #666;
+      border:1px solid #ccc;
+      box-shadow: none;
+    }
+    .action-button.secondary:hover {
+      background: #eff6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+    .action-button i { font-size: 22px; } /* Increased icon size */
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom:0px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title i { color: #6b7280; font-size: 16px; }
+    
+    .tabs { 
+      display: flex; background-color:#fff;padding-top:20px;
+      gap:0px; border-bottom:1px solid #f1f1f1;      
+    }
+    .tab { 
+      flex: 1; 
+      text-align: center; 
+      padding:12px 16px; 
+      color: #999;background-color:#fff;
+      border-bottom:4px solid #fff;font-size:16px;
+      transition: all 0.18s ease;border:none;
+      cursor: pointer;
+    }
+    .tab.active { 
+      color: #00b4b4; font-weight:600; 
+      border-bottom:4px solid #00b4b4;
+    }
+    
+    .course-list { display: grid; gap: 0; padding-bottom: 80px; } /* Gap 0 for zebra striping */
+    .course-card { 
+      background: #fff; 
+      border-radius: 12px; 
+      padding:16px; /* Increased padding */
+      display: flex; 
+      flex-direction: column;box-shadow: 0 1px 4px rgba(0, 180, 180, 0.08);
+      gap: 12px; 
+      margin-bottom: 12px; /* Add margin for gap */
+    }
+    /* Zebra Striping */
+    .course-card:nth-child(odd) { background-color: #FFFFFF; }
+    .course-card:nth-child(even) { background-color: #fff; }
+
+    
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .course-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .course-title { 
+        font-weight:600; 
+        color: #000; 
+        font-size:18px; 
+        line-height: 1.2; 
+        letter-spacing: 0.5px;
+    }
+    
+    .course-name { cursor:pointer; text-decoration:none; color:#111827; }
+    .course-name:hover { color:#0d47a1; text-decoration:underline; }
+
+    .course-tag {
+      display: inline-block;
+      font-size: 13px;
+      color: #92400e;
+      background-color: #fef3c7;
+      padding: 2px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+      font-weight: 500;
+    }
+
+    .course-points {
+      font-size: 14px;
+      color: #FF8C00;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f9fafb;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .view-details-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #eb2571;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 8px;
+    }
+    .view-details-link:hover {
+        text-decoration: underline;
+    }
+
+    .course-sub { font-size: 16px; color: #6b7280; margin: 4px 0; letter-spacing: 0.3px; }
+
+    .course-action {
+      align-self: center;
+      margin-left: auto; /* Push to right */
+    }
+    
+    .card-btn {
+      padding: 8px 16px;
+      border-radius:8px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+      text-align: center;
+      min-width: 80px;
+    }
+    
+    .btn-checkin {
+      background: #00b4b4;font-weight: 600;
+    color: #fff;
+    }
+    .btn-checkin:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-cancel {
+      background: #fff;
+      color: #ef4444;
+      border: 1px solid #ef4444;
+    }
+    .btn-cancel:hover {
+      background: #fef2f2;
+    }
+    .course-actions { display: flex; gap: 10px; margin-top: 12px; }
+    .badge { 
+      font-size: 14px;
+    padding: 6px 10px;font-weight:500;
+    border-radius:99px;background:rgb(0,180,180,0.08); color:rgb(25,79,91,0.8);
+    }
+    .badge.booked {background:rgb(0,180,180,0.08); color:rgb(25,79,91,0.8);}
+    .badge.waitlist { background: #fff3e0; color: #f57c00; }
+    .badge.checked-in { background: #e0f2fe; color: #0369a1; }
+    .badge.cancelled { background: #f3f4f6; color: #6b7280; }
+    .badge.no-show { background: #fee2e2; color: #991b1b; }
+    
+    .empty { 
+      text-align: center; 
+      color: #78909c; 
+      padding: 40px 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px dashed #e5e7eb;
+    }
+    .empty i { font-size: 40px; margin-bottom: 8px; color: #b0bec5; }
+    
+    /* Modal styles */
+    .modal { 
+      display: none; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0,0,0,0.5); 
+      z-index: 9999;
+      animation: fadeIn 0.2s ease;
+      padding: 100px 0 80px 0;
+    }
+    .modal.show { display: flex; align-items: flex-end; justify-content: center; }
+    .modal-content { 
+      background: #fff; 
+      width: calc(100% - 32px);
+      max-width: 382px;
+      border-radius: 20px; 
+      padding:0 20px 20px 20px; 
+      max-height: 100%; 
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    
+    .modal-title { font-size: 20px; font-weight: 700; color: #111827; }
+    .modal-close { 
+      background: #f3f4f6; 
+      border: none; 
+      width: 32px; 
+      height: 32px; 
+      border-radius: 50%; 
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #6b7280;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: #e5e7eb; }
+    
+    .detail-row { 
+      display: grid; 
+      grid-template-columns: 100px 1fr; 
+      padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { 
+      font-weight:400; 
+      color: #666; 
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .detail-value { 
+      color: #000; font-weight:500; 
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight:500;
+    }
+    .status-badge.booked {background: rgb(0, 180, 180, 0.08);
+    color: rgb(25, 79, 91, 0.8);}
+    .status-badge.waitlist { background: #fff3e0; color: #f57c00; }
+    .status-badge.checked-in { background: #e0f2fe; color: #0369a1; }
+    .status-badge.cancelled { background: #f3f4f6; color: #6b7280; }
+    .status-badge.no-show { background: #fee2e2; color: #991b1b; }
+
+    /* Filter Chips */
+    .filter-container {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 4px 12px 4px;
+      margin-bottom: 12px;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      scrollbar-width: none; /* Firefox */
+    }
+    .filter-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+    
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="index.html" aria-label="返回首頁" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">課程活動</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"></a>
+      <i class="fas fa-comment-dots"></i>
+      <a href="notifications.html" aria-label="通知"><i class="fas fa-bell"></i></a>
+    </div>
+  </header>
+
+  <div class="white-pages-content">
+    <!-- 課程預約按鈕 -->
+    <a href="course-booking.html" class="action-button">
+      <i class="fas fa-calendar-plus"></i>
+      <span>課程活動預約</span>
+    </a>
+
+    <!-- 我的課程區塊 
+    <div class="section-title">
+      我的課程與活動
+    </div>-->
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="upcoming">即將到來</button>
+      <button class="tab" data-tab="history">歷史紀錄</button>
+    </div>
+   
+   <div class="pages-content">
+    <!-- Date Filter -->
+    <div class="filter-container">
+      <button class="filter-chip active" data-day="all">全部</button>
+      <button class="filter-chip" data-day="週一">週一</button>
+      <button class="filter-chip" data-day="週二">週二</button>
+      <button class="filter-chip" data-day="週三">週三</button>
+      <button class="filter-chip" data-day="週四">週四</button>
+      <button class="filter-chip" data-day="週五">週五</button>
+      <button class="filter-chip" data-day="週六">週六</button>
+      <button class="filter-chip" data-day="週日">週日</button>
+    </div>
+
+    <div id="list-upcoming" class="course-list"></div>
+    <div id="list-history" class="course-list" style="display:none;"></div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+  <!-- Course Detail Modal -->
+  <div id="courseModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">課程詳情</div>
+        <button class="modal-close" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal" style="z-index: 10000; align-items: center; padding: 0;">
+    <div class="modal-content" style="max-width: 320px; text-align: center; width: 85%; border-radius: 16px;">
+      <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">
+        <div class="modal-title">提示</div>
+      </div>
+      <div id="confirmMessage" style="margin-bottom: 24px; color: #4b5563; font-size: 16px; line-height: 1.5;"></div>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="closeConfirmModal()" class="action-button" style="flex: 1; background: #f3f4f6; color: #4b5563; box-shadow: none; padding: 12px; margin-bottom: 0; font-size: 16px;">取消</button>
+        <button onclick="executeConfirm()" class="action-button" style="flex: 1; padding: 12px; margin-bottom: 0; font-size: 16px;">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div id="messageModal" class="modal" style="z-index: 10001; align-items: center; padding: 0;">
+    <div class="modal-content" style="max-width: 320px; text-align: center; width: 85%; border-radius: 16px;">
+      <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">
+        <div class="modal-title">提示</div>
+      </div>
+      <div id="messageContent" style="margin-bottom: 24px; color: #4b5563; font-size: 16px; line-height: 1.5;"></div>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="closeMessageModal()" class="action-button" style="width: 100%; padding: 12px; margin-bottom: 0; font-size: 16px;">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Survey Modal -->
+  <div id="surveyModal" class="modal" style="z-index: 10001; align-items: center; padding: 0;">
+    <div class="modal-content" style="max-width: 320px; text-align: center; width: 85%; border-radius: 16px;">
+      <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">
+        <div class="modal-title">課程評分</div>
+      </div>
+      <div style="margin-bottom: 24px; display: flex; justify-content: center; gap: 8px;" id="starContainer">
+         <i class="far fa-star" data-value="1" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+         <i class="far fa-star" data-value="2" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+         <i class="far fa-star" data-value="3" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+         <i class="far fa-star" data-value="4" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+         <i class="far fa-star" data-value="5" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="closeSurveyModal()" class="action-button" style="flex: 1; background: #f3f4f6; color: #4b5563; box-shadow: none; padding: 12px; margin-bottom: 0; font-size: 16px;">取消</button>
+        <button onclick="submitSurvey()" class="action-button" style="flex: 1; padding: 12px; margin-bottom: 0; font-size: 16px;">確定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const KEY = 'sl_course_bookings';
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
+    }
+    
+    function save(list) { 
+      localStorage.setItem(KEY, JSON.stringify(list)); 
+    }
+
+    // 點數管理函數
+    function refundPoints(points) {
+      const currentPoints = parseInt(localStorage.getItem('sl_user_points') || '20');
+      const newPoints = currentPoints + points;
+      localStorage.setItem('sl_user_points', newPoints.toString());
+    }
+
+    function calculateRefund(courseDateStr, points) {
+      const courseDate = new Date(courseDateStr);
+      const now = new Date();
+      const diffTime = courseDate - now;
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      
+      let rate = 0;
+      if (diffDays >= 7) rate = 0.8;
+      else if (diffDays >= 3) rate = 0.3;
+      else if (diffDays >= 1) rate = 0.1;
+      
+      return {
+        rate: rate,
+        amount: Math.floor(points * rate),
+        days: diffDays
+      };
+    }
+
+    // Seed demo data
+    function seedIfEmpty() {
+      const current = load();
+      // 暫時強制更新資料以顯示新活動
+      // if (current && current.length) return;
+      const demo = [
+        { 
+          id:'CB-HISTORY-CANCEL-MAT-NO-REFUND', 
+          courseId: 'C301',
+          name:'[測試] 手作皮件 (已取消)', 
+          category: '藝文休閒',
+          tags: ['手作', '皮件'], 
+          instructor: '陳師傅',
+          day:'週六', 
+          time:'14:00-17:00', 
+          site:'C棟2F 共學室', 
+          points: 100,
+          materialFee: 500,
+          sessions: 1,
+          status: '已取消',
+          canceled: true,
+          refundAmount: 100, // Only points refunded
+          refundMemo: '材料費不予退還',
+          cancelDate: new Date('2025-11-25T09:00:00+08:00').toISOString(),
+          datetime: new Date('2025-11-25T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-HISTORY-CANCEL-MAT-REFUNDED', 
+          courseId: 'C303',
+          name:'[測試] 羊毛氈手作 (已取消)', 
+          category: '藝文休閒',
+          tags: ['手作', '羊毛氈'], 
+          instructor: '王老師',
+          day:'週日', 
+          time:'10:00-12:00', 
+          site:'C棟2F 共學室', 
+          points: 100,
+          materialFee: 300,
+          sessions: 1,
+          status: '已取消',
+          paymentType: '會員點數 + 房帳材料費',
+          canceled: true,
+          refundAmount: 100, 
+          refundMemo: '含材料費退還',
+          cancelDate: new Date('2025-11-26T10:00:00+08:00').toISOString(),
+          datetime: new Date('2025-11-27T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-05T10:00:00+08:00').toISOString(),
+          isWaitlist: false,
+          materialRefundable: true
+        },
+        { 
+          id:'CB-HISTORY-WL-CANCEL-MAT-NO-REFUND', 
+          courseId: 'C304',
+          name:'[測試] 候補取消-材料費不退', 
+          category: '藝文休閒',
+          tags: ['手作', '測試'], 
+          instructor: '張老師',
+          day:'週一', 
+          time:'14:00-16:00', 
+          site:'C棟2F 共學室', 
+          points: 80,
+          materialFee: 250,
+          sessions: 1,
+          status: '取消候補',
+          paymentType: '會員點數 + 房帳材料費',
+          canceled: true,
+          refundAmount: 80, 
+          refundMemo: '材料費不予退還',
+          cancelDate: new Date('2025-11-28T09:00:00+08:00').toISOString(),
+          datetime: new Date('2025-11-29T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-10T10:00:00+08:00').toISOString(),
+          isWaitlist: true,
+          materialRefundable: false
+        },
+        { 
+          id:'CB-HISTORY-WL-CANCEL-POINTS', 
+          courseId: 'C305',
+          name:'[測試] 候補取消-全額退點', 
+          category: '運動健康', 
+          tags: ['瑜珈', '測試'], 
+          instructor: '李老師', 
+          day:'週二', 
+          time:'10:00-11:00', 
+          site:'A棟3F 多功能室', 
+          points: 50, 
+          sessions: 1, 
+          status: '取消候補', 
+          paymentType: '點數折抵', 
+          canceled: true, 
+          refundAmount: 50, 
+          cancelDate: new Date('2025-11-29T10:00:00+08:00').toISOString(), 
+          datetime: new Date('2025-11-30T10:00:00+08:00').toISOString(), 
+          bookingDate: new Date('2025-11-15T10:00:00+08:00').toISOString(), 
+          isWaitlist: true 
+        },
+        { 
+          id:'CB-HISTORY-ATTENDED-MAT-PAY', 
+          courseId: 'C302',
+          name:'[測試] 陶藝創作', 
+          category: '藝文休閒',
+          tags: ['手作', '陶藝'], 
+          instructor: '林老師',
+          day:'週日', 
+          time:'09:00-12:00', 
+          site:'C棟3F 藝術教室', 
+          points: 50,
+          materialFee: 300,
+          sessions: 1,
+          status: '已報到',
+          paymentType: '會員點數 + 房帳材料費',
+          datetime: new Date('2025-11-26T09:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-02T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-CASE1-FULL-REFUND', 
+          courseId: 'C201',
+          name:'[測試] 預約-全額退費', 
+          category: '測試類別',
+          tags: ['測試'], 
+          instructor: '測試員',
+          day:'週五', 
+          time:'10:00-12:00', 
+          site:'測試區', 
+          points: 100,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-05T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-20T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-12-01T23:59:59+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-CASE2-NO-REFUND', 
+          courseId: 'C202',
+          name:'[測試] 預約-不予退還', 
+          category: '測試類別',
+          tags: ['測試'], 
+          instructor: '測試員',
+          day:'週五', 
+          time:'14:00-16:00', 
+          site:'測試區', 
+          points: 100,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-05T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-11-20T23:59:59+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-CASE3-WL-FULL', 
+          courseId: 'C203',
+          name:'[測試] 候補-全額退費', 
+          category: '測試類別',
+          tags: ['測試'], 
+          instructor: '測試員',
+          day:'週六', 
+          time:'10:00-12:00', 
+          site:'測試區', 
+          points: 50,
+          sessions: 1,
+          status: '候補中',
+          datetime: new Date('2025-12-06T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-25T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-12-01T23:59:59+08:00').toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-CASE4-WL-NO', 
+          courseId: 'C204',
+          name:'[測試] 候補-不予退還', 
+          category: '測試類別',
+          tags: ['測試'], 
+          instructor: '測試員',
+          day:'週六', 
+          time:'14:00-16:00', 
+          site:'測試區', 
+          points: 50,
+          sessions: 1,
+          status: '候補中',
+          datetime: new Date('2025-12-06T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-11-20T23:59:59+08:00').toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-CASE5-MATERIAL', 
+          courseId: 'C205',
+          name:'[測試] 預約-含材料費', 
+          category: '測試類別',
+          tags: ['測試', '手作'], 
+          instructor: '測試員',
+          day:'週日', 
+          time:'14:00-16:00', 
+          site:'測試區', 
+          points: 100,
+          materialFee: 200,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-07T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-12-01T23:59:59+08:00').toISOString(),
+          isWaitlist: false,
+          materialRefundable: false // Default non-refundable
+        },
+        { 
+          id:'CB-CASE6-MATERIAL-REFUND', 
+          courseId: 'C206',
+          name:'[測試] 預約-材料費可退', 
+          category: '測試類別',
+          tags: ['測試', '手作'], 
+          instructor: '測試員',
+          day:'週日', 
+          time:'16:00-18:00', 
+          site:'測試區', 
+          points: 100,
+          materialFee: 200,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-07T16:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          deadline: new Date('2025-12-01T23:59:59+08:00').toISOString(),
+          isWaitlist: false,
+          materialRefundable: true
+        },
+        { 
+          id:'CB-TEST-TODAY', 
+          courseId: 'C888',
+          name:'[測試] 今日課程-報到測試', 
+          category: '測試類別',
+          tags: ['測試', '今日'], 
+          instructor: '測試員',
+          day:'週四', 
+          time:'10:00-12:00', 
+          site:'測試區', 
+          points: 100,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date().toISOString(), // Today
+          bookingDate: new Date('2025-12-01T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-CHECKIN', 
+          courseId: 'C999',
+          name:'[測試] 現場報到測試', 
+          category: '測試類別',
+          tags: ['測試', '報到'], 
+          instructor: '測試員',
+          day:'週六', 
+          time:'10:00-12:00', 
+          site:'測試區', 
+          points: 100,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-20T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-01T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20250925-1000', 
+          courseId: 'C101',
+          name:'樂齡肌力訓練', 
+          category: '運動健康',
+          tags: ['戶外', '健康'], 
+          instructor: '陳美玲老師',
+          day:'週一', 
+          time:'10:00-11:00', 
+          site:'A棟3F 多功能室', 
+          points: 5,
+          sessions: 8,
+          status: '已報到',
+          paymentType: '點數折抵',
+          datetime: new Date('2025-09-25T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-09-22T15:30:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20250926-1400', 
+          courseId: 'C102',
+          name:'銀髮瑜珈', 
+          category: '運動健康',
+          tags: ['瑜珈', '舒展'], 
+          instructor: '王靜怡老師',
+          day:'週三', 
+          time:'14:00-15:00', 
+          site:'B棟2F 教室A', 
+          points: 3,
+          sessions: 6,
+          status: '候補中',
+          paymentType: '免費體驗',
+          datetime: new Date('2025-09-26T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-09-22T16:00:00+08:00').toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-20251105-1400', 
+          courseId: 'C102',
+          name:'腰背舒緩核心瑜珈', 
+          category: '運動健康',
+          tags: ['瑜珈', '核心'], 
+          instructor: '王靜怡老師',
+          day:'週三', 
+          time:'14:00-15:00', 
+          site:'B棟2F 教室A', 
+          points: 3,
+          sessions: 6,
+          status: '已報到',
+          datetime: new Date('2025-11-05T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-10-28T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251107-0930', 
+          courseId: 'C103',
+          name:'書法臨摹初級班', 
+          category: '藝文休閒',
+          tags: ['藝文', '靜心'], 
+          instructor: '李志明老師',
+          day:'週五', 
+          time:'09:30-10:30', 
+          site:'A棟1F 交誼廳', 
+          points: 4,
+          sessions: 10,
+          status: '已報到',
+          surveyCompleted: true,
+          datetime: new Date('2025-11-07T09:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-10-29T14:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251104-1530', 
+          courseId: 'C104',
+          name:'夏日編織提籃', 
+          category: '藝文休閒',
+          tags: ['手作', '編織'], 
+          instructor: '張麗芳老師',
+          day:'週二', 
+          time:'15:30-16:30', 
+          site:'C棟2F 共學室', 
+          points: 6,
+          sessions: 4,
+          status: '已報名',
+          datetime: new Date('2025-11-04T15:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-10-30T11:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251106-1030', 
+          courseId: 'C105',
+          name:'關節保健操', 
+          category: '運動健康',
+          tags: ['瑜珈', '復健'], 
+          instructor: '劉惠敏老師',
+          day:'週四', 
+          time:'10:30-11:30', 
+          site:'A棟3F 多功能室', 
+          points: 3,
+          sessions: 6,
+          status: '已報名',
+          datetime: new Date('2025-11-06T10:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-10-31T09:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251108-1000', 
+          courseId: 'C101',
+          name:'樂齡肌力訓練', 
+          category: '運動健康',
+          tags: ['戶外', '肌力'], 
+          instructor: '陳美玲老師',
+          day:'週一', 
+          time:'10:00-11:00', 
+          site:'A棟3F 多功能室', 
+          points: 5,
+          sessions: 8,
+          status: '候補中',
+          datetime: new Date('2025-11-08T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T16:00:00+08:00').toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-20251112-1500', 
+          courseId: 'C106',
+          name:'太極養生班', 
+          category: '運動健康',
+          tags: ['太極', '養生'], 
+          instructor: '林國華老師',
+          day:'週二', 
+          time:'15:00-16:00', 
+          site:'B棟1F 活動中心', 
+          points: 4,
+          sessions: 8,
+          status: '已報名',
+          datetime: new Date('2025-11-12T15:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-05T13:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251113-1030', 
+          courseId: 'C107',
+          name:'水彩風景寫生', 
+          category: '藝文休閒',
+          tags: ['藝文', '繪畫'], 
+          instructor: '周雅婷老師',
+          day:'週三', 
+          time:'10:30-12:00', 
+          site:'C棟3F 藝術教室', 
+          points: 5,
+          sessions: 6,
+          status: '已報名',
+          datetime: new Date('2025-11-13T10:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-06T09:30:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251205-1400', 
+          courseId: 'C108',
+          name:'聖誕花藝設計', 
+          category: '藝文休閒',
+          tags: ['手作', '花藝'], 
+          instructor: '林雅雯老師',
+          day:'週五', 
+          time:'14:00-16:00', 
+          site:'C棟2F 共學室', 
+          points: 8,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-05T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-20T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251210-1000', 
+          courseId: 'C109',
+          name:'冬季養生藥膳', 
+          category: '生活應用',
+          tags: ['烹飪', '養生'], 
+          instructor: '張國榮老師',
+          day:'週三', 
+          time:'10:00-12:00', 
+          site:'B棟1F 廚藝教室', 
+          points: 60000,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-10T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-25T09:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-20251215-1500', 
+          courseId: 'C110',
+          name:'新年開運書法', 
+          category: '藝文休閒',
+          tags: ['藝文', '書法'], 
+          instructor: '李志明老師',
+          day:'週一', 
+          time:'15:00-16:30', 
+          site:'A棟1F 交誼廳', 
+          points: 5,
+          sessions: 2,
+          status: '候補中',
+          datetime: new Date('2025-12-15T15:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-28T14:00:00+08:00').toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-HANGING-CHECKED-IN', 
+          courseId: 'C111',
+          name:'高級品酒鑑賞', 
+          category: '生活應用',
+          tags: ['品味', '社交'], 
+          instructor: 'David Lin',
+          day:'週五', 
+          time:'19:00-21:00', 
+          site:'A棟1F 交誼廳', 
+          points: 2000,
+          sessions: 1,
+          status: '已報到',
+          paymentType: '房帳',
+          datetime: new Date('2025-11-14T19:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-HANGING-CANCELLED', 
+          courseId: 'C112',
+          name:'法式甜點製作 (已取消)', 
+          category: '生活應用',
+          tags: ['烹飪', '甜點'], 
+          instructor: 'Sophie Chen',
+          day:'週六', 
+          time:'14:00-17:00', 
+          site:'B棟1F 廚藝教室', 
+          points: 1500,
+          sessions: 1,
+          status: '已取消',
+          paymentType: '房帳',
+          canceled: true,
+          refundAmount: 1500,
+          cancelDate: new Date('2025-11-10T09:00:00+08:00').toISOString(),
+          datetime: new Date('2025-11-15T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-11-05T11:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-CANCELLED-EXAMPLE', 
+          courseId: 'C105',
+          name:'關節保健操 (已取消)', 
+          category: '運動健康',
+          tags: ['瑜珈'], 
+          instructor: '劉惠敏老師',
+          day:'週四', 
+          time:'10:30-11:30', 
+          site:'A棟3F 多功能室', 
+          points: 3,
+          sessions: 6,
+          status: '已取消',
+          canceled: true,
+          refundAmount: 2,
+          cancelDate: new Date('2025-11-01T10:00:00+08:00').toISOString(),
+          datetime: new Date('2025-11-06T10:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-10-31T09:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-ADD-CANCEL-REG', 
+          courseId: 'C901',
+          name:'[新增] 瑜珈伸展 ', 
+          category: '運動健康',
+          tags: ['瑜珈', '測試'], 
+          instructor: '王老師',
+          day:'週五', 
+          time:'10:00-11:00', 
+          site:'A棟3F 多功能室', 
+          points: 10,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date(Date.now() + 86400000 * 3).toISOString(), // 3 days later
+          bookingDate: new Date(Date.now() - 86400000).toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-ADD-CANCEL-WL', 
+          courseId: 'C902',
+          name:'[新增] 烘焙課程 ', 
+          category: '生活應用',
+          tags: ['烹飪', '測試'], 
+          instructor: '李老師',
+          day:'週六', 
+          time:'14:00-16:00', 
+          site:'B棟1F 廚藝教室', 
+          points: 20,
+          materialFee: 100,
+          sessions: 1,
+          status: '候補中',
+          datetime: new Date(Date.now() + 86400000 * 4).toISOString(), // 4 days later
+          bookingDate: new Date(Date.now() - 86400000).toISOString(),
+          isWaitlist: true
+        },
+        { 
+          id:'CB-ADD-CHECKIN', 
+          courseId: 'C903',
+          name:'[新增] 核心肌群 ', 
+          category: '運動健康',
+          tags: ['健身', '測試'], 
+          instructor: '張教練',
+          day: new Date().toLocaleDateString('zh-TW', { weekday: 'short' }), 
+          time:'15:00-16:00', 
+          site:'A棟3F 多功能室', 
+          points: 15,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date().toISOString(), // Today
+          bookingDate: new Date(Date.now() - 86400000 * 2).toISOString(),
+          isWaitlist: false,
+          purchasedMaterials: ['瑜珈墊', '毛巾']
+        },
+        { 
+          id:'CB-ADD-CHECKIN-EVENING', 
+          courseId: 'C904',
+          name:'[新增] 舒眠冥想  ', 
+          category: '心靈成長',
+          tags: ['冥想', '放鬆'], 
+          instructor: 'Lee',
+          day: new Date().toLocaleDateString('zh-TW', { weekday: 'short' }), 
+          time:'20:00-21:30', 
+          site:'C棟3F 靜心室', 
+          points: 20,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date(new Date().setHours(20,0,0,0)).toISOString(), // Today 20:00
+          bookingDate: new Date(Date.now() - 86400000 * 5).toISOString(),
+          isWaitlist: false,
+          purchasedMaterials: ['香氛蠟燭']
+        },
+        { 
+          id:'CB-TEST-1229', 
+          courseId: 'C911',
+          name:'[測試] 12/29 瑜珈', 
+          category: '運動健康',
+          tags: ['瑜珈', '測試'], 
+          instructor: '王老師',
+          day:'週一', 
+          time:'10:00-11:00', 
+          site:'A棟3F 多功能室', 
+          points: 10,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-29T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-20T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-1230', 
+          courseId: 'C912',
+          name:'[測試] 12/30 烘焙', 
+          category: '生活應用',
+          tags: ['烹飪', '測試'], 
+          instructor: '李老師',
+          day:'週二', 
+          time:'14:00-16:00', 
+          site:'B棟1F 廚藝教室', 
+          points: 20,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-30T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-20T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-1231', 
+          courseId: 'C913',
+          name:'[測試] 12/31 花藝', 
+          category: '藝文休閒',
+          tags: ['花藝', '測試'], 
+          instructor: '林老師',
+          day:'週三', 
+          time:'10:00-12:00', 
+          site:'C棟2F 共學室', 
+          points: 15,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2025-12-31T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-20T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0102', 
+          courseId: 'C914',
+          name:'[測試] 1/2 書法', 
+          category: '藝文休閒',
+          tags: ['書法', '測試'], 
+          instructor: '張老師',
+          day:'週五', 
+          time:'15:00-16:30', 
+          site:'A棟1F 交誼廳', 
+          points: 10,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-02T15:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0105', 
+          courseId: 'C915',
+          name:'[測試] 1/5 有氧', 
+          category: '運動健康',
+          tags: ['有氧', '測試'], 
+          instructor: '陳教練',
+          day:'週一', 
+          time:'19:00-20:00', 
+          site:'A棟3F 健身房', 
+          points: 12,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-05T19:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0106', 
+          courseId: 'C916',
+          name:'[測試] 1/6 茶道', 
+          category: '生活應用',
+          tags: ['茶道', '測試'], 
+          instructor: '吳老師',
+          day:'週二', 
+          time:'14:00-16:00', 
+          site:'B棟3F 茶室', 
+          points: 25,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-06T14:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0107', 
+          courseId: 'C917',
+          name:'[測試] 1/7 攝影', 
+          category: '藝文休閒',
+          tags: ['攝影', '測試'], 
+          instructor: '劉老師',
+          day:'週三', 
+          time:'09:00-12:00', 
+          site:'戶外', 
+          points: 30,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-07T09:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0108', 
+          courseId: 'C918',
+          name:'[測試] 1/8 園藝', 
+          category: '生活應用',
+          tags: ['園藝', '測試'], 
+          instructor: '綠手指',
+          day:'週四', 
+          time:'10:00-12:00', 
+          site:'C棟1F 園藝區', 
+          points: 15,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-08T10:00:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        },
+        { 
+          id:'CB-TEST-0109', 
+          courseId: 'C919',
+          name:'[測試] 1/9 皮拉提斯', 
+          category: '運動健康',
+          tags: ['皮拉提斯', '測試'], 
+          instructor: 'Amy',
+          day:'週五', 
+          time:'18:30-19:30', 
+          site:'A棟3F 多功能室', 
+          points: 18,
+          sessions: 1,
+          status: '已報名',
+          datetime: new Date('2026-01-09T18:30:00+08:00').toISOString(),
+          bookingDate: new Date('2025-12-25T10:00:00+08:00').toISOString(),
+          isWaitlist: false
+        }
+      ];
+      save(demo);
+    }
+
+    let currentFilter = 'all';
+    let currentTab = 'upcoming';
+
+    function render() {
+      const data = load();
+      const now = Date.now();
+      let upcoming = [];
+      let history = [];
+      
+      data.forEach(item => {
+        const t = new Date(item.datetime).getTime();
+        if (!isNaN(t) && t >= now) {
+          if (item.status === '已取消' || item.status === '取消候補') {
+            history.push(item);
+          } else {
+            upcoming.push(item);
+          }
+        } else {
+          if (item.status === '已預約' || item.status === '已報名' || !item.status) {
+            item.status = '未報到';
+          }
+          history.push(item);
+        }
+      });
+      
+      upcoming.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+      if (currentTab === 'upcoming' && currentFilter !== 'all') {
+        upcoming = upcoming.filter(item => item.day === currentFilter);
+      }
+      
+      const allowedStatuses = ['已報到', '已取消', '未報到', '取消候補'];
+      let filteredHistory = history.filter(item => allowedStatuses.includes(item.status));
+      
+      if (currentTab === 'history' && currentFilter !== 'all') {
+        filteredHistory = filteredHistory.filter(item => item.status === currentFilter);
+      }
+
+      filteredHistory.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+      
+      drawList('upcoming', upcoming);
+      drawList('history', filteredHistory);
+    }
+
+    function drawList(type, list) {
+      const container = document.getElementById(`list-${type}`);
+      container.innerHTML = '';
+      
+      if (list.length === 0) {
+        container.innerHTML = '<div class="empty"><i class="fas fa-calendar"></i><div>沒有紀錄</div></div>';
+        return;
+      }
+      
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'course-card';
+        
+        let badgeClass = '';
+        let badgeText = '';
+        
+        if (item.status === '已報到') {
+          badgeClass = 'checked-in';
+          badgeText = '已報到';
+        } else if (item.status === '已取消') {
+          badgeClass = 'cancelled';
+          badgeText = '已取消';
+        } else if (item.status === '取消候補') {
+          badgeClass = 'cancelled';
+          badgeText = '取消候補';
+        } else if (item.status === '未報到') {
+          badgeClass = 'no-show';
+          badgeText = '未報到';
+        } else if (item.isWaitlist || item.status === '候補中') {
+          badgeClass = 'waitlist';
+          badgeText = '候補中(順位:1)';
+        } else {
+          badgeClass = 'booked';
+          badgeText = '已報名';
+        }
+        
+        const datetime = new Date(item.datetime);
+        const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        
+        let tagsHtml = '';
+        if (item.category) {
+            tagsHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8); margin-right:4px;">${item.category}</span>`;
+        }
+        if (item.tags && Array.isArray(item.tags)) {
+          tagsHtml += item.tags.map(tag => `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8); margin-right:4px;">#${tag}</span>`).join('');
+        } else if (item.type) {
+           tagsHtml += `<span class="badge">${item.type}</span>`;
+        }
+
+        let timeDisplay = `${dateStr} ${item.day} ${item.time}`;
+        if (type === 'history') {
+             timeDisplay = `${dateStr} ${item.time}`;
+        }
+
+        let actionBtnHtml = '';
+        if (type === 'upcoming') {
+            const courseDate = new Date(item.datetime);
+            const now = new Date();
+            const isToday = courseDate.toDateString() === now.toDateString();
+            
+            if (isToday) {
+                actionBtnHtml = `<a href="scan-checkin.html?id=${item.id}" class="card-btn btn-checkin" onclick="event.stopPropagation();" style="flex: 1; text-align: center;">我要報到</a>`;
+            } else {
+                // Future
+                if (item.isWaitlist || item.status === '候補中') {
+                     actionBtnHtml = `<button class="card-btn btn-cancel" onclick="event.stopPropagation(); cancelBooking('${item.id}')" style="flex: 1;">取消候補</button>`;
+                } else {
+                     actionBtnHtml = `<button class="card-btn btn-cancel" onclick="event.stopPropagation(); cancelBooking('${item.id}')" style="flex: 1;">取消報名</button>`;
+                }
+            }
+        } else {
+            // History actions? Maybe survey if attended
+             if (item.status === '已報到' && !item.surveyCompleted) {
+                actionBtnHtml = `<button class="card-btn" onclick="event.stopPropagation(); openSurvey('${item.id}')" style="flex: 1; background: linear-gradient(135deg, #0288d1, #03a9f4); color: white;">問卷填寫</button>`;
+             } else if (item.status === '已報到' && item.surveyCompleted) {
+                actionBtnHtml = `<button class="card-btn" style="flex: 1; background: #f5f5f5; color: #9e9e9e; cursor: default;" disabled>已填問卷</button>`;
+             }
+        }
+
+        // If no action button (e.g. cancelled history), we might want to show something or just empty
+        // But we want to align with course-booking style which has 2 buttons.
+        // If no action, maybe just "課程活動資訊" takes full width?
+        
+        let buttonsHtml = '';
+        if (actionBtnHtml) {
+            buttonsHtml = `
+                <button class="card-btn" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')" style="flex: 1; border: 1px solid #ccc; background: #fff; color: #666;">課程活動資訊</button>
+                ${actionBtnHtml}
+            `;
+        } else {
+             buttonsHtml = `
+                <button class="card-btn" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')" style="width: 100%; border: 1px solid #e5e7eb; background: #fff; color: #374151;">課程活動資訊</button>
+            `;
+        }
+
+        // We need to pass the item object to showCourseDetail, but onclick stringification is messy.
+        // Let's use a global map or lookup by ID.
+        // I'll add a helper function showCourseDetailById.
+
+        card.innerHTML = `
+        
+          <div class="course-header">
+            
+            <div class="course-title-group">
+              
+              <div class="course-title">
+                <span class="course-name" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')">${item.name}</span>
+                <div style="font-size: 16px; color: #666; font-weight: normal; margin-top: 4px;">課程代碼：${item.courseId || item.id}</div>
+              </div>
+            </div>
+            <div class="badge ${badgeClass}">${badgeText}</div>
+          </div>
+          
+          <div>
+            <div class="course-time">
+                <img src="./images/fa-calendar-day.svg">${timeDisplay}
+            </div>
+            <div style="display: flex; gap:8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+                <div class="course-location" style="margin-bottom: 0;">
+                     ${item.site}
+                </div>
+                <div style="color: #999;">|</div>
+                <div class="course-instructor" style="font-size: 16px; color: #666; display: flex; align-items: center; gap: 8px;">
+                     ${item.instructor}
+                </div>
+            </div>
+            ${item.purchasedMaterials && item.purchasedMaterials.length > 0 ? `
+            <div class="course-materials" style="font-size: 16px; color:#666; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                 已購材料: ${item.purchasedMaterials.join(', ')}
+            </div>` : ''}
+          </div>
+          
+          <div style="display:flex; flex-wrap:wrap; gap:4px;">
+            ${tagsHtml}
+          </div>
+
+          <div class="course-actions">
+            ${buttonsHtml}
+          </div>
+        `;
+        
+        // Card click also opens detail
+        card.addEventListener('click', () => {
+          showCourseDetail(item);
+        });
+        
+        container.appendChild(card);
+      });
+    }
+    
+    function showCourseDetailById(id) {
+        const list = load();
+        const item = list.find(i => i.id === id);
+        if (item) {
+            showCourseDetail(item);
+        }
+    }
+
+    let onConfirmAction = null;
+    let currentSurveyId = null;
+    let currentRating = 5;
+
+    function showMessage(msg) {
+      document.getElementById('messageContent').innerHTML = msg;
+      document.getElementById('messageModal').classList.add('show');
+    }
+
+    function closeMessageModal() {
+      document.getElementById('messageModal').classList.remove('show');
+    }
+
+    function showSurveyModal(id) {
+      currentSurveyId = id;
+      currentRating = 5;
+      updateStars();
+      document.getElementById('surveyModal').classList.add('show');
+    }
+
+    function closeSurveyModal() {
+      document.getElementById('surveyModal').classList.remove('show');
+      currentSurveyId = null;
+    }
+
+    function updateStars() {
+      const stars = document.querySelectorAll('#starContainer i');
+      stars.forEach(star => {
+        const val = parseInt(star.dataset.value);
+        if (val <= currentRating) {
+          star.classList.remove('far');
+          star.classList.add('fas');
+        } else {
+          star.classList.remove('fas');
+          star.classList.add('far');
+        }
+      });
+    }
+
+    function submitSurvey() {
+      if (!currentSurveyId) return;
+      
+      showMessage('感謝您的回饋！我們會持續改進。');
+      
+      const list = load();
+      const idx = list.findIndex(x=>x.id===currentSurveyId);
+      if(idx>-1){
+        list[idx].surveyCompleted = true;
+        save(list);
+        render();
+      }
+      
+      closeSurveyModal();
+      closeModal(); // Close the detail modal too
+    }
+
+    function showConfirmModal(msg, action) {
+      document.getElementById('confirmMessage').innerHTML = msg;
+      onConfirmAction = action;
+      document.getElementById('confirmModal').classList.add('show');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.remove('show');
+      onConfirmAction = null;
+    }
+
+    function executeConfirm() {
+      if (onConfirmAction) onConfirmAction();
+      closeConfirmModal();
+    }
+
+    function cancelBooking(id) {
+      const list = load();
+      const index = list.findIndex(i => i.id === id);
+      if (index === -1) return;
+      
+      const item = list[index];
+      
+      let msg = '';
+      let refundInfo = { amount: 0, rate: 0, days: 0 };
+      let isPastDeadline = false;
+
+      // Check for explicit deadline
+      if (item.deadline) {
+        const deadlineDate = new Date(item.deadline);
+        const now = new Date();
+        if (now > deadlineDate) {
+           isPastDeadline = true;
+           refundInfo = { amount: 0, rate: 0, days: 0 };
+        } else {
+           refundInfo = { amount: item.points, rate: 1, days: 0 };
+        }
+      } else {
+         // Fallback to old logic
+         refundInfo = calculateRefund(item.datetime, item.points || 0);
+      }
+
+      // Construct Message
+      if (isPastDeadline) {
+         msg = `確定要取消${item.isWaitlist ? '候補' : '預約'}嗎？<br><br>` +
+               `<span style="color: #ef4444; font-weight: bold;">已超過報名截止日，進行取消者，依約定將不予退還。</span>`;
+      } else {
+         if (item.deadline) {
+            // Full refund case
+            if (item.materialFee) {
+                if (item.materialRefundable) {
+                    msg = `確定要取消${item.isWaitlist ? '候補' : '預約'}嗎？<br><br>` +
+                          `將全額退還課程費用 ${item.points} 點數<br>` +
+                          `及材料費 ${item.materialFee} 元`;
+                } else {
+                    msg = `確定要取消${item.isWaitlist ? '候補' : '預約'}嗎？<br><br>` +
+                          `將全額退還課程費用 ${item.points} 點數<br>` +
+                          `<span style="color: #ef4444; font-size: 14px;">(材料費 ${item.materialFee} 元不予退還)</span>`;
+                }
+            } else {
+                msg = `確定要取消${item.isWaitlist ? '候補' : '預約'}嗎？<br><br>` +
+                      `將全額退還 ${item.points} 點數`;
+            }
+         } else {
+            // Old logic
+            if (item.isWaitlist) {
+                msg = '確定要取消候補嗎？';
+            } else {
+                const ratePct = Math.round(refundInfo.rate * 100);
+                const daysText = refundInfo.days < 1 ? '不到 1' : Math.floor(refundInfo.days);
+                msg = `確定要取消「${item.name}」的預約嗎？<br><br>` +
+                      `距離課程還有 ${daysText} 天<br>` +
+                      `預計退還 ${ratePct}% (${refundInfo.amount} 點)`;
+            }
+         }
+      }
+
+      showConfirmModal(msg, () => {
+        // Refund points if applicable
+        if (refundInfo.amount > 0) {
+          refundPoints(refundInfo.amount);
+        }
+
+        // Update status
+        item.status = item.isWaitlist ? '取消候補' : '已取消';
+        item.isWaitlist = false;
+        item.canceled = true;
+        item.refundAmount = refundInfo.amount;
+        item.cancelDate = new Date().toISOString();
+
+        // Set refund memo if material fee was not refunded
+        if (item.materialFee && item.deadline) {
+             if (!item.materialRefundable) {
+                 item.refundMemo = '材料費不予退還';
+             } else {
+                 item.refundMemo = '含材料費退還';
+             }
+        }
+        
+        save(list);
+        
+        let successText = '';
+        if (refundInfo.amount > 0) {
+            successText = `已取消，退還 ${refundInfo.amount} 點數`;
+        } else {
+            successText = `已取消`;
+        }
+        showMessage(successText);
+
+        closeModal();
+        render();
+      });
+    }
+
+    function showCourseDetail(item) {
+      const modal = document.getElementById('courseModal');
+      const modalBody = document.getElementById('modalBody');
+      
+      const datetime = new Date(item.datetime);
+      const bookingDate = new Date(item.bookingDate);
+      const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const bookingDateStr = bookingDate.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      
+      let statusClass = '';
+      let statusText = '';
+      
+      if (item.status === '已報到') {
+        statusClass = 'checked-in';
+        statusText = '已報到';
+      } else if (item.status === '已取消') {
+        statusClass = 'cancelled';
+        statusText = '已取消';
+      } else if (item.status === '取消候補') {
+        statusClass = 'cancelled';
+        statusText = '取消候補';
+      } else if (item.status === '未報到') {
+        statusClass = 'no-show';
+        statusText = '未報到';
+      } else if (item.isWaitlist) {
+        statusClass = 'waitlist';
+        statusText = '候補中';
+      } else {
+        statusClass = 'booked';
+        statusText = '已預約';
+      }
+      
+      // Check if cancellable (future event)
+      const isUpcoming = datetime.getTime() > Date.now();
+      let cancelButtonHtml = '';
+      
+      if (item.status === '已取消' || item.status === '取消候補') {
+        // Cancelled items have no actions
+      } else if (isUpcoming) {
+        if (item.status === '已報到') {
+           cancelButtonHtml = `
+            <div style="margin-top: 24px;">
+              <button class="action-button" style="width: 100%; background: #e0e0e0; color: #9e9e9e; box-shadow: none; cursor: default;" disabled>
+                <i class="fas fa-check-circle"></i> 已報到
+              </button>
+            </div>
+          `;
+        } else {
+          const btnText = item.isWaitlist ? '取消候補' : '取消預約';
+          
+          // Add Check-in button for booked courses (not waitlist)
+          let checkInHtml = '';
+          if (!item.isWaitlist) {
+             checkInHtml = `
+              <a href="scan-checkin.html?id=${item.id}" class="action-button" style="width: 100%; margin-bottom: 12px; text-decoration: none; box-sizing: border-box;">
+                 我要報到
+              </a>
+             `;
+          }
+
+          cancelButtonHtml = `
+            <div style="margin-top:12px;">
+              ${checkInHtml}
+              <button onclick="cancelBooking('${item.id}')" class="action-button" style="width: 100%; background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);">
+                 ${btnText}
+              </button>
+            </div>
+          `;
+        }
+      } else if (item.status === '已報到') {
+        // History item - show survey button only if checked in
+        if (item.surveyCompleted) {
+          cancelButtonHtml = `
+            <div style="margin-top: 24px;">
+              <button class="action-button" style="width: 100%; background: #f5f5f5; color: #9e9e9e; box-shadow: none; border: 1px solid #e0e0e0; cursor: default;" disabled>
+                <i class="fas fa-check-double"></i> 已填問卷
+              </button>
+            </div>
+          `;
+        } else {
+          cancelButtonHtml = `
+            <div style="margin-top: 24px;">
+              <button onclick="openSurvey('${item.id}')" class="action-button" style="width: 100%; background: linear-gradient(135deg, #0288d1, #03a9f4); box-shadow: 0 6px 20px rgba(3, 169, 244, 0.3);">
+                <i class="fas fa-clipboard-list"></i> 問卷填寫
+              </button>
+            </div>
+          `;
+        }
+      }
+      
+      // Payment Type for history
+      let paymentInfo = '';
+      if (!isUpcoming || item.status === '已取消' || item.status === '取消候補') {
+        paymentInfo = `
+        <div class="detail-row">
+          <div class="detail-label"> 原支付方式</div>
+          <div class="detail-value">${item.paymentType || '點數折抵'}</div>
+        </div>`;
+      }
+
+      // Refund Info
+      let refundHtml = '';
+      if ((item.status === '已取消' || item.status === '取消候補') && item.refundAmount !== undefined) {
+        let refundLabel = '退還點數';
+        let refundValueHtml = '';
+        
+        const isMoney = item.paymentType === '房帳';
+        const isMixed = item.paymentType && item.paymentType.includes('點數') && item.paymentType.includes('房帳');
+        
+        if (isMoney) {
+            refundLabel = '退還金額';
+            refundValueHtml = `<span style="color: #c62828;">${item.refundAmount} 元</span>`;
+        } else if (isMixed) {
+            refundLabel = '退還內容';
+            let parts = [];
+            if (item.refundAmount > 0) {
+                parts.push(`${item.refundAmount} 點`);
+            }
+            if (item.refundMemo === '含材料費退還' && item.materialFee) {
+                parts.push(`${item.materialFee} 元`);
+            }
+            
+            if (parts.length > 0) {
+                refundValueHtml = `<span style="color: #c62828;">${parts.join(' + ')}</span>`;
+            } else {
+                refundValueHtml = `<span style="color: #c62828;">0 點</span>`;
+            }
+
+            if (item.refundMemo && item.refundMemo !== '含材料費退還') {
+                 refundValueHtml += `<div style="font-size: 13px; color: #ef4444; margin-top: 4px;">(${item.refundMemo})</div>`;
+            }
+        } else {
+            refundLabel = '退還點數';
+            refundValueHtml = `<span style="color: #c62828;">${item.refundAmount} 點</span>`;
+            if (item.refundMemo) {
+                 refundValueHtml += `<div style="font-size: 13px; color: #ef4444; margin-top: 4px;">(${item.refundMemo})</div>`;
+            }
+        }
+
+        refundHtml = `
+        <div class="detail-row">
+          <div class="detail-label"><i class="fas fa-undo-alt"></i> ${refundLabel}</div>
+          <div class="detail-value" style="flex-direction: column; align-items: flex-start;">
+            ${refundValueHtml}
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"><i class="fas fa-calendar-times"></i> 取消時間</div>
+          <div class="detail-value">${new Date(item.cancelDate || Date.now()).toLocaleString()}</div>
+        </div>`;
+      }
+      
+      const isMoney = item.paymentType === '房帳';
+      const costLabel = isMoney ? '課程金額' : '所需點數';
+      const costUnit = isMoney ? '元' : '點';
+      const costIcon = isMoney ? 'fa-file-invoice-dollar' : 'fa-coins';
+
+      // Determine if we should show the day of week (hide for history/cancelled items)
+      const isHistory = !isUpcoming || item.status === '已取消' || item.status === '取消候補' || item.status === '已報到' || item.status === '未報到';
+      const timeDisplay = isHistory ? item.time : `${item.day} ${item.time}`;
+
+      modalBody.innerHTML = `
+        <div class="detail-row">
+          <div class="detail-label"> 課程名稱</div>
+          <div class="detail-value">${item.name}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 課程代碼</div>
+          <div class="detail-value">${item.courseId || ''}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 課程類型</div>
+          <div class="detail-value">
+            ${item.category ? `<span style="background: rgb(25, 79, 91, 0.08);
+    color: rgb(25, 79, 91, 0.8);padding:4px 6px; border-radius:99px; font-size:16px; margin-right:4px;">${item.category}</span>` : ''}
+            ${(item.tags || [item.type]).map(t => `<span style="background: rgb(25, 79, 91, 0.08);
+    color: rgb(25, 79, 91, 0.8);padding:4px 6px; border-radius:99px; font-size:16px; margin-right:4px;">#${t}</span>`).join('')}
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 授課老師</div>
+          <div class="detail-value">${item.instructor}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 上課日期</div>
+          <div class="detail-value">${dateStr}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">上課時間</div>
+          <div class="detail-value">${timeDisplay}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 上課地點</div>
+          <div class="detail-value">${item.site}</div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-label"> ${costLabel}</div>
+          <div class="detail-value">${item.points} ${costUnit}</div>
+        </div>
+        ${item.materialFee ? `
+        <div class="detail-row">
+          <div class="detail-label"> 材料費</div>
+          <div class="detail-value">${item.materialFee} 元</div>
+        </div>` : ''}
+        ${paymentInfo}
+        ${refundHtml}
+        <div class="detail-row">
+          <div class="detail-label"> 預約狀態</div>
+          <div class="detail-value">
+            <span class="status-badge ${statusClass}">${statusText}</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label"> 預約時間</div>
+          <div class="detail-value">${bookingDateStr}</div>
+        </div>
+
+        ${item.courseId ? `
+        <div style="margin-top: 24px;">
+          <a href="course-detail.html?id=${item.courseId}&from=my-courses" class="action-button secondary" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+             查看完整活動詳情
+          </a>
+        </div>` : ''}
+        ${cancelButtonHtml}
+      `;
+      
+      modal.classList.add('show');
+    }
+
+    function openSurvey(id) {
+      showSurveyModal(id);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('courseModal');
+      modal.classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('courseModal').addEventListener('click', (e) => {
+      if (e.target.id === 'courseModal') {
+        closeModal();
+      }
+    });
+
+    function updateFilters(tab) {
+      const container = document.querySelector('.filter-container');
+      container.innerHTML = '';
+      
+      let filters = [];
+      if (tab === 'upcoming') {
+        filters = [
+          { label: '全部', value: 'all' },
+          { label: '週一', value: '週一' },
+          { label: '週二', value: '週二' },
+          { label: '週三', value: '週三' },
+          { label: '週四', value: '週四' },
+          { label: '週五', value: '週五' },
+          { label: '週六', value: '週六' },
+          { label: '週日', value: '週日' }
+        ];
+      } else {
+        filters = [
+          { label: '全部', value: 'all' },
+          { label: '未報到', value: '未報到' },
+          { label: '已報到', value: '已報到' },
+          { label: '已取消', value: '已取消' },
+          { label: '取消候補', value: '取消候補' }
+        ];
+      }
+      
+      filters.forEach(f => {
+        const btn = document.createElement('button');
+        btn.className = `filter-chip ${f.value === currentFilter ? 'active' : ''}`;
+        btn.textContent = f.label;
+        btn.dataset.value = f.value;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = f.value;
+          render();
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        // Update active tab
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        currentTab = targetTab;
+        currentFilter = 'all';
+        updateFilters(targetTab);
+        
+        // Show/hide lists
+        document.getElementById('list-upcoming').style.display = targetTab === 'upcoming' ? 'grid' : 'none';
+        document.getElementById('list-history').style.display = targetTab === 'history' ? 'grid' : 'none';
+        
+        render();
+      });
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Star rating listeners
+      document.querySelectorAll('#starContainer i').forEach(star => {
+        star.addEventListener('click', () => {
+          currentRating = parseInt(star.dataset.value);
+          updateStars();
+        });
+      });
+
+      // Initial filters
+      updateFilters('upcoming');
+
+      seedIfEmpty();
+      render();
+    });
+  </script>
+</body>
+</html>

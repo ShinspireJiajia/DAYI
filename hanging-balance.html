@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>掛帳明細查詢 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* 表格樣式 */
+    .detail-table { background:#fff; border:1px solid #e5e7eb; border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .table-header { background:#f8fafc; padding:12px 16px; border-bottom:1px solid #e5e7eb; font-weight:700; color:#374151; font-size:14px; }
+    .table-row { padding:12px 16px; border-bottom:1px solid #f1f5f9; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .table-row:last-child { border-bottom:none; }
+    .row-label { color:#6b7280; font-size:13px; font-weight:600; }
+    .row-value { color:#111827; font-weight:600; font-size:15px; }
+    
+    /* 狀態標示 */
+    .status-paid { color:#059669; background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .status-unpaid { color:#dc2626; background:#fee2e2; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    
+    /* 金額強調 */
+    .amount { font-size:16px; font-weight:800; }
+    .amount-paid { color:#059669; }
+    .amount-unpaid { color:#dc2626; }
+    
+
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="expenses.html" aria-label="返回帳款" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">掛帳明細查詢</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 總覽卡片 -->
+    <div class="summary-card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">
+      <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">本期累計掛帳</div>
+      <div style="font-size: 32px; font-weight: 700; margin-bottom: 16px;">NT$ 3,670</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
+        <span style="font-size: 14px;">交易筆數</span>
+        <span style="font-size: 16px; font-weight: 600;">5 筆</span>
+      </div>
+    </div>
+
+    <!-- 掛帳記錄 1 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-utensils"></i> 2024/01/15 餐飲消費
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費日期</div>
+        <div class="row-value">2024年01月15日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費項目</div>
+        <div class="row-value">精緻下午茶</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費金額</div>
+        <div class="row-value amount amount-paid">NT$ 320</div>
+      </div>
+
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">無特殊需求</div>
+      </div>
+    </div>
+
+    <!-- 掛帳記錄 1-2 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-glass-cheers"></i> 2024/01/15 餐飲消費
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費日期</div>
+        <div class="row-value">2024年01月15日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費項目</div>
+        <div class="row-value">加購紅酒</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費金額</div>
+        <div class="row-value amount amount-paid">NT$ 1,200</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">晚餐加購</div>
+      </div>
+    </div>
+
+    <!-- 掛帳記錄 2 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-broom"></i> 2024/01/10 餐飲消費
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費日期</div>
+        <div class="row-value">2024年01月10日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費項目</div>
+        <div class="row-value">簡餐</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費金額</div>
+        <div class="row-value amount amount-unpaid">NT$ 800</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">-</div>
+      </div>
+    </div>
+
+    <!-- 掛帳記錄 3 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-calendar-check"></i> 2024/01/08 活動費用
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費日期</div>
+        <div class="row-value">2024年01月08日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">課程名稱</div>
+        <div class="row-value">陶藝手作課程</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">課程代碼</div>
+        <div class="row-value">C2024010801</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">上課時間</div>
+        <div class="row-value">14:00 - 16:00</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">項目費用</div>
+        <div class="row-value">材料費用</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費金額</div>
+        <div class="row-value amount amount-paid">NT$ 150</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">陶藝手作材料與燒製費用</div>
+      </div>
+    </div>
+
+    <!-- 掛帳記錄 4 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-dumbbell"></i> 2024/01/05 健身教練課
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費日期</div>
+        <div class="row-value">2024年01月05日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">課程名稱</div>
+        <div class="row-value">私人教練一對一課程</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">課程代碼</div>
+        <div class="row-value">F2024010502</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">上課時間</div>
+        <div class="row-value">10:00 - 11:00</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">項目費用</div>
+        <div class="row-value">課程費用</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">消費金額</div>
+        <div class="row-value amount amount-unpaid">NT$ 1,200</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">核心肌群訓練課程</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+</body>
+</html>

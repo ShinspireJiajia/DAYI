@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>會員狀態 - 智生活</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* Profile page aligned with site */
+        .profile-card { background:#fff; border:1px solid #e5e7eb; border-radius:20px; padding:16px; display:flex; align-items:center; gap:14px; box-shadow:0 8px 28px rgba(0,0,0,0.06); }
+        .avatar { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; background:#f3f4f6; display:grid; place-items:center; font-weight:800; color:#374151; font-size:18px; }
+        .verify-badge { position:absolute; bottom:-2px; right:-2px; width:18px; height:18px; background:#10b981; color:#fff; border-radius:50%; display:grid; place-items:center; font-size:11px; border:2px solid #fff; }
+        .profile-main { flex:1; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .profile-name { font-size:18px; font-weight:800; color:#111827; }
+        .badge-level { padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; color:#0d47a1; background:#e8f2ff; border:1px solid #cfe1ff; }
+
+        .section-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+        .section-title { display:flex; align-items:center; justify-content:space-between; gap:8px; font-weight:900; color:#111827; margin:2px 2px 10px; }
+
+    /* 移除基本資料後，表單相關樣式刪除 */
+
+        .plan-card { display:grid; gap:10px; }
+        .plan-row { display:grid; grid-template-columns: 100px 1fr; gap:8px; }
+        .plan-label { color:#6b7280; font-size:13px; }
+        .plan-value { color:#111827; font-weight:800; }
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:linear-gradient(135deg,#4f8ef7,#63d1ff); color:#fff; font-weight:800; font-size:12px; }
+    .note { color:#90a4ae; font-size:12px; }
+    .section-title .note { font-weight:400; }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <span class="time">15:10</span>
+        <div class="signal-battery">
+            <span class="signal">
+                <i class="fas fa-signal"></i>
+                <span class="network">5G</span>
+            </span>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="app-logo">
+                <a href="my-services.html" aria-label="返回我的服務" class="back-link"><i class="fas fa-chevron-left"></i></a>
+                <span class="app-name">會員狀態</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <a class="header-action" href="member-code.html" aria-label="會員 QR"><i class="fas fa-qrcode"></i></a>
+            <i class="fas fa-comment-dots"></i>
+            <i class="fas fa-bell"></i>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Summary -->
+        <section class="profile-card" style="margin-bottom:12px;">
+            <div class="avatar" id="avatarInitial">用<div class="verify-badge"><i class="fas fa-check"></i></div></div>
+            <div class="profile-main">
+                <div>
+                    <div class="profile-name" id="displayName">用戶名稱</div>
+                    <div class="pill" id="displayPlan">—</div>
+                </div>
+                <span class="badge-level" id="displayLevel">一般會員</span>
+            </div>
+        </section>
+
+        <!-- 基本資料已依需求移除 -->
+
+        <!-- 方案與會籍 -->
+        <section class="section-card">
+            <div class="section-title"><span><i class="fas fa-box"></i> 方案與會籍</span><span class="note">僅供查看，如需異動請聯繫客服</span></div>
+            <div class="plan-card">
+                <div class="plan-row"><div class="plan-label">方案</div><div class="plan-value" id="planName">—</div></div>
+                <div class="plan-row"><div class="plan-label">會員年期</div><div class="plan-value" id="planTerm">—</div></div>
+                <div class="plan-row"><div class="plan-label">會籍時效</div><div class="plan-value" id="planExpiry">—</div></div>
+                <div class="plan-row"><div class="plan-label">付費方式</div><div class="plan-value" id="planPay">—</div></div>
+                <div class="plan-row"><div class="plan-label">餐費方案</div><div class="plan-value" id="planBinding">—</div></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a class="nav-item" href="index.html">
+            <i class="fas fa-home"></i>
+            <span>首頁</span>
+        </a>
+        <a class="nav-item" href="space-booking.html">
+            <i class="fas fa-concierge-bell"></i>
+            <span>我要預約</span>
+        </a>
+        <div class="nav-item">
+            <i class="fas fa-wallet"></i>
+            <span>錢包</span>
+        </div>
+        <a class="nav-item active" href="personal.html">
+            <i class="fas fa-user"></i>
+            <span>個人</span>
+        </a>
+    </nav>
+    <div class="home-indicator"></div>
+
+    <script>
+        // Defaults
+        const DEFAULT_PROFILE = { name: '陳家霖', phone: '0912-345-678', email: 'user@example.com', address: '台中市大里區公園街425巷9號' };
+        // 新增需求：會員年期、計費方案、請假、綁定服務方案、效期、付費方式
+        const DEFAULT_PLAN = {
+            name: '標準方案 A',
+            level: '正卡',
+            term: '5 年',
+            expiry: '2031/04/30',
+            billing: '年繳方案',
+            pay: '信用卡 **-1234（自動續約）',
+            binding: '一日三餐方案',
+            leave: '2026/05/10 - 2026/05/25<br/>2026/10/31 - 2026/11/10<br/>2027/01/10 - 2027/01/18'
+        };
+
+        function loadState() {
+            try {
+                const p = JSON.parse(localStorage.getItem('sl_profile') || 'null') || DEFAULT_PROFILE;
+                const plan = JSON.parse(localStorage.getItem('sl_plan') || 'null') || DEFAULT_PLAN;
+                return { p, plan };
+            } catch { return { p: DEFAULT_PROFILE, plan: DEFAULT_PLAN }; }
+        }
+        // 已移除編輯表單，僅顯示預設 / 已有資料
+        function updateSummary(p, plan) {
+            document.getElementById('displayName').textContent = p.name || '—';
+            document.getElementById('displayPlan').style.display = 'none'; // 隱藏方案名稱顯示
+            document.getElementById('displayLevel').textContent = plan.level || '一般會員';
+            const initial = (p.name || '用戶').charAt(0);
+            document.getElementById('avatarInitial').firstChild.nodeValue = initial;
+
+            document.getElementById('planName').textContent = '方案名稱'; // 不顯示方案名稱
+            document.getElementById('planTerm').textContent = plan.term || '—';
+            document.getElementById('planExpiry').textContent = plan.expiry || '—';
+            document.getElementById('planPay').textContent = plan.pay || '—';
+            document.getElementById('planBinding').textContent = plan.binding || '—';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const { p, plan } = loadState();
+            updateSummary(p, plan);
+            // 方案資訊為唯讀，無管理操作；基本資料已移除
+        });
+    </script>
+</body>
+</html>

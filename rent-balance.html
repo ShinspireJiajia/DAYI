@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>躉繳租金餘額 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* 餘額概覽 */
+    .balance-summary { background:linear-gradient(135deg,#4f8ef7,#63d1ff); border-radius:20px; padding:20px; margin-bottom:20px; color:#fff; text-align:center; }
+    .balance-title { font-size:14px; font-weight:600; margin-bottom:8px; opacity:0.9; }
+    .balance-amount { font-size:28px; font-weight:800; margin-bottom:4px; }
+    .balance-period { font-size:12px; opacity:0.8; }
+    
+    /* 表格樣式 */
+    .detail-table { background:#fff; border:1px solid #e5e7eb; border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .table-header { background:#f8fafc; padding:12px 16px; border-bottom:1px solid #e5e7eb; font-weight:700; color:#374151; font-size:14px; }
+    .table-row { padding:12px 16px; border-bottom:1px solid #f1f5f9; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .table-row:last-child { border-bottom:none; }
+    .row-label { color:#6b7280; font-size:13px; font-weight:600; }
+    .row-value { color:#111827; font-weight:600; font-size:15px; }
+    
+    /* 繳費狀態標示 */
+    .status-paid { color:#059669; background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .status-unpaid { color:#dc2626; background:#fee2e2; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .status-partial { color:#d97706; background:#fef3c7; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    
+    /* 金額強調 */
+    .amount { font-size:16px; font-weight:800; }
+    .amount-paid { color:#059669; }
+    .amount-unpaid { color:#dc2626; }
+    .amount-partial { color:#d97706; }
+    
+    /* 年度選擇 */
+    .year-selector { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; gap:10px; align-items:center; }
+    .year-btn { background:#f3f4f6; border:1px solid #d1d5db; border-radius:8px; padding:8px 16px; font-size:14px; font-weight:600; cursor:pointer; }
+    .year-btn.active { background:#111827; color:#fff; border-color:#111827; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="expenses.html" aria-label="返回帳款" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">躉繳租金餘額</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 餘額概覽 -->
+    <div class="balance-summary">
+      <div class="balance-title">目前可用租金餘額</div>
+      <div class="balance-amount">NT$ 135,000</div>
+      <div class="balance-period">可使用至 2024年08月31日</div>
+    </div>
+
+    <!-- 年度選擇 -->
+    <div class="year-selector">
+      <i class="fas fa-calendar-alt" style="color:#6b7280;"></i>
+      <span style="color:#6b7280; font-weight:600;">查看年度：</span>
+      <button class="year-btn">2023</button>
+      <button class="year-btn active">2024</button>
+      <button class="year-btn">2025</button>
+    </div>
+
+    <!-- 2024年03月租金 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-house"></i> 2024年03月租金
+      </div>
+      <div class="table-row">
+        <div class="row-label">租金期間</div>
+        <div class="row-value">2024/03/01 - 2024/03/31</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">月租金金額</div>
+        <div class="row-value amount amount-unpaid">NT$ 15,000</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費狀態</div>
+        <div class="row-value"><span class="status-unpaid">未繳</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費日期</div>
+        <div class="row-value">尚未繳費</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">到期日</div>
+        <div class="row-value">2024年03月05日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">收據號碼</div>
+        <div class="row-value">待繳費後開立</div>
+      </div>
+    </div>
+
+    <!-- 2024年02月租金 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-check-circle"></i> 2024年02月租金
+      </div>
+      <div class="table-row">
+        <div class="row-label">租金期間</div>
+        <div class="row-value">2024/02/01 - 2024/02/29</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">月租金金額</div>
+        <div class="row-value amount amount-paid">NT$ 15,000</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費狀態</div>
+        <div class="row-value"><span class="status-paid">已繳</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費日期</div>
+        <div class="row-value">2024年01月28日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費方式</div>
+        <div class="row-value">躉繳租金餘額扣除</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">收據號碼</div>
+        <div class="row-value">RE-2024-002345</div>
+      </div>
+    </div>
+
+    <!-- 2024年01月租金 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-check-circle"></i> 2024年01月租金
+      </div>
+      <div class="table-row">
+        <div class="row-label">租金期間</div>
+        <div class="row-value">2024/01/01 - 2024/01/31</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">月租金金額</div>
+        <div class="row-value amount amount-paid">NT$ 15,000</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費狀態</div>
+        <div class="row-value"><span class="status-paid">已繳</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費日期</div>
+        <div class="row-value">2023年12月28日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">繳費方式</div>
+        <div class="row-value">躉繳租金餘額扣除</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">收據號碼</div>
+        <div class="row-value">RE-2024-001567</div>
+      </div>
+    </div>
+
+    <!-- 躉繳記錄 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-piggy-bank"></i> 躉繳租金存入記錄
+      </div>
+      <div class="table-row">
+        <div class="row-label">存入日期</div>
+        <div class="row-value">2023年12月20日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">存入金額</div>
+        <div class="row-value amount" style="color:#7c3aed;">NT$ 180,000</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">可使用期間</div>
+        <div class="row-value">2024/01/01 - 2024/12/31</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">已使用金額</div>
+        <div class="row-value">NT$ 30,000（2個月）</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">剩餘金額</div>
+        <div class="row-value amount" style="color:#059669;">NT$ 150,000（10個月）</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">收據號碼</div>
+        <div class="row-value">RE-2023-009988</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+</body>
+</html>

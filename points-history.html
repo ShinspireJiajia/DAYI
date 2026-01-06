@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>點數記錄 - 智生活</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+        <style>
+            /* Points page styling aligned with site cards */
+            .points-summary-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:16px; }
+            .points-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+            .points-badge { width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#f97316); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; }
+            .points-title { display:flex; flex-direction:column; }
+            .points-title h2 { font-size:14px; color:#6b7280; font-weight:600; }
+            .points-value { font-size:22px; font-weight:800; color:#111827; }
+            .points-stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+            .points-stat { background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
+            .points-stat .label { font-size:12px; color:#6b7280; }
+            .points-stat .val { font-size:14px; font-weight:700; }
+            .points-stat .val.earned { color:#059669; }
+            .points-stat .val.used { color:#dc2626; }
+
+            .filter-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:16px; }
+            .filter-row { display:flex; align-items:center; justify-content:space-between; margin:8px 0; }
+            .filter-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; }
+            .filter-col { display: flex; flex-direction: column; gap: 6px; }
+            .filter-col label { font-size:14px; color:#374151; font-weight:600; }
+            .filter-col select { width: 100%; border:1px solid #e5e7eb; border-radius:10px; padding:8px 10px; font-size:14px; }
+            .filter-row label { font-size:14px; color:#374151; font-weight:600; }
+            .filter-row select, .filter-row input[type=date] { border:1px solid #e5e7eb; border-radius:10px; padding:8px 10px; font-size:14px; }
+            .date-inputs { display:flex; align-items:center; gap:8px; }
+            .filter-actions { display:flex; gap:10px; margin-top:8px; }
+            .filter-btn { border:none; border-radius:10px; padding:8px 12px; font-size:14px; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+            .filter-actions .filter-btn { flex: 1; }
+            .filter-btn.apply { background:#111827; color:#fff; }
+            .filter-btn.reset { background:#f3f4f6; color:#374151; }
+            .filter-btn.collapse { background:#fff; border:1px solid #e5e7eb; color:#6b7280; }
+
+            /* history-section wrapper keeps spacing consistent */
+            .history-section { margin-top: 4px; }
+            .history-title { font-size:14px; color:#6b7280; margin:6px 0 10px; padding-left:4px; }
+            .history-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+            .h-left { display:flex; align-items:center; gap:10px; }
+            .h-icon { width:36px; height:36px; border-radius:10px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; color:#6b7280; }
+            .h-text { display:flex; flex-direction:column; }
+            .h-title { font-weight:700; color:#111827; font-size:14px; }
+            .h-desc { font-size:12px; color:#6b7280; }
+            .h-right { text-align:right; }
+            .h-points { font-weight:800; font-size:16px; }
+            .h-points.earned { color:#059669; }
+            .h-points.used { color:#dc2626; }
+            .h-points.neutral { color:#6b7280; }
+            .h-date { font-size:12px; color:#6b7280; }
+
+            .load-more .load-more-btn { width:100%; background:#111827; color:#fff; border:none; padding:10px 12px; border-radius:12px; font-size:14px; cursor:pointer; }
+
+            /* Rules Button & Modal */
+            .rules-btn { margin-left: auto; background: none; border: none; color: #6b7280; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; }
+            .rules-btn:hover { background: #f3f4f6; color: #111827; }
+            
+            .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: none; }
+            .modal.show { display: flex; align-items: center; justify-content: center; }
+            .modal-content { background: #fff; width: 85%; max-width: 320px; border-radius: 16px; padding: 20px; animation: fadeIn 0.2s ease-out; }
+            @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+            .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+            .modal-title { font-size: 18px; font-weight: 700; color: #111827; }
+            .modal-close { background: none; border: none; font-size: 20px; color: #6b7280; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+            .modal-close:hover { background: #e5e7eb; }
+            .modal-body p { color: #374151; font-size: 15px; line-height: 1.6; margin: 0; }
+        </style>
+</head>
+<body>
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">15:10</span>
+            <div class="signal-battery">
+                <span class="signal">
+                    <i class="fas fa-signal"></i>
+                    <span class="network">5G</span>
+                </span>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="app-logo">
+                    <a href="my-services.html" aria-label="返回我的服務" class="back-link"><i class="fas fa-chevron-left"></i></a>
+                    <span class="app-name">點數記錄</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+                <i class="fas fa-comment-dots"></i>
+                <i class="fas fa-bell"></i>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+        <!-- 點數總覽（卡片） -->
+        <div class="points-summary-card">
+            <div class="points-header">
+                <div class="points-badge"><i class="fas fa-coins"></i></div>
+                <div class="points-title">
+                    <h2>目前可用點數</h2>
+                    <div class="points-value">13,700 點</div>
+                </div>
+                <button class="rules-btn" onclick="openRulesModal()">
+                    <i class="fas fa-info-circle"></i> 點數說明
+                </button>
+            </div>
+            <div class="points-stats-grid">
+                <div class="points-stat">
+                    <span class="label">本月獲得</span>
+                    <span class="val earned">+15,000 點</span>
+                </div>
+                <div class="points-stat">
+                    <span class="label">本月使用</span>
+                    <span class="val used">-1,300 點</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 篩選區域（卡片） -->
+        <div class="filter-card" id="filterSection" style="display:none;">
+            <div class="filter-grid-row">
+                <div class="filter-col">
+                    <label for="typeFilter">交易類型</label>
+                    <select id="typeFilter">
+                        <option value="all">全部類型</option>
+                        <option value="earned">獲得點數</option>
+                        <option value="used">使用點數</option>
+                    </select>
+                </div>
+                <!-- 卡片類型篩選已移除，僅顯示正卡 -->
+                <input type="hidden" id="cardTypeFilter" value="all">
+            </div>
+            <div class="filter-row">
+                <label>日期範圍</label>
+                <div class="date-inputs">
+                    <input type="date" id="startDate">
+                    <span>～</span>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="filter-btn apply" onclick="applyFilter()"><i class="fas fa-check"></i> 套用</button>
+                <button class="filter-btn reset" onclick="resetFilter()"><i class="fas fa-undo"></i> 重設</button>
+                <button class="filter-btn collapse" onclick="showPointsFilter()"><i class="fas fa-chevron-up"></i> 收合</button>
+            </div>
+        </div>
+
+            <!-- 點數歷程 -->
+            <div class="history-section">
+                    <div class="history-title" style="display:flex; align-items:center; justify-content:space-between;">
+                        <span>點數歷程</span>
+                        <button class="filter-btn reset" onclick="showPointsFilter()" aria-label="開啟篩選"><i class="fas fa-filter"></i> 篩選</button>
+                    </div>
+                <div class="history-list" id="historyList">
+                        <!-- 新增報名扣點紀錄 -->
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-clipboard-check"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">報名完成</div>
+                                    <div class="h-desc">課程報名扣點</div>
+                                    <div class="course-details" style="font-size: 12px; color: #6b7280; margin-top: 4px;">
+                                        <div>課程日期: 2024/03/05</div>
+                                        <div>課程名稱: 有氧舞蹈</div>
+                                        <div>課程代碼: AERO-003</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-100</div>
+                                <div class="h-date">2024/03/01 09:30</div>
+                            </div>
+                        </div>
+
+            <!-- 2024年1月 -->
+                        <div class="history-card earned">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-gift"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">入會贈送點數</div>
+                                    <div class="h-desc">新會員歡迎禮</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points earned">+1,000</div>
+                                <div class="h-date">2024/01/15 14:30</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-dumbbell"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">健身房使用</div>
+                                    <div class="h-desc">器械訓練區 - 2小時</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-100</div>
+                                <div class="h-date">2024/01/18 10:15</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-spa"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">SPA 服務</div>
+                                    <div class="h-desc">全身按摩 - 90分鐘</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-500</div>
+                                <div class="h-date">2024/01/20 16:45</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card earned">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">活動參與獎勵</div>
+                                    <div class="h-desc">瑜珈課程完成</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points earned">+50</div>
+                                <div class="h-date">2024/01/25 09:00</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-swimming-pool"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">游泳池使用</div>
+                                    <div class="h-desc">標準池 - 1小時</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-80</div>
+                                <div class="h-date">2024/02/02 11:30</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card earned">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-birthday-cake"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">生日禮物</div>
+                                    <div class="h-desc">生日月份專屬贈點</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points earned">+200</div>
+                                <div class="h-date">2024/02/05 13:20</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-utensils"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">餐廳消費</div>
+                                    <div class="h-desc">健康輕食套餐</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-150</div>
+                                <div class="h-date">2024/02/08 15:10</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-dumbbell"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">健身房使用</div>
+                                    <div class="h-desc">團體課程 - 有氧運動</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-100</div>
+                                <div class="h-date">2024/02/12 08:45</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card earned">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-heart"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">節日活動</div>
+                                    <div class="h-desc">情人節特別活動參與</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points earned">+100</div>
+                                <div class="h-date">2024/02/14 16:30</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-spa"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">SPA 服務</div>
+                                    <div class="h-desc">臉部護理 - 60分鐘</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-300</div>
+                                <div class="h-date">2024/02/18 14:00</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card earned">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-star"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">推薦獎勵</div>
+                                    <div class="h-desc">推薦朋友入會</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points earned">+500</div>
+                                <div class="h-date">2024/02/22 10:15</div>
+                            </div>
+                        </div>
+
+                        <div class="history-card used">
+                            <div class="h-left">
+                                <div class="h-icon"><i class="fas fa-leaf"></i></div>
+                                <div class="h-text">
+                                    <div class="h-title">桑拿浴室</div>
+                                    <div class="h-desc">芬蘭浴 - 45分鐘</div>
+                                </div>
+                            </div>
+                            <div class="h-right">
+                                <div class="h-points used">-120</div>
+                                <div class="h-date">2024/02/25 12:30</div>
+                            </div>
+                        </div>
+        </div>
+
+        <!-- 載入更多按鈕 -->
+                <div class="load-more" style="margin-top:12px;">
+                    <button class="load-more-btn" onclick="loadMoreHistory()"><i class="fas fa-plus"></i> 載入更多紀錄</button>
+                </div>
+        </div>
+
+        </main>
+
+        <!-- 底部導航（全站樣式） -->
+        <nav class="bottom-nav">
+            <a class="nav-item" href="index.html">
+                <i class="fas fa-home"></i>
+                <span>首頁</span>
+            </a>
+                    <a class="nav-item" href="space-booking.html">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>我要預約</span>
+                    </a>
+            <div class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>錢包</span>
+            </div>
+            <a class="nav-item active" href="personal.html">
+                <i class="fas fa-user"></i>
+                <span>個人</span>
+            </a>
+        </nav>
+        <div class="home-indicator"></div>
+
+    <!-- Rules Modal -->
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">點數說明</div>
+                <button class="modal-close" onclick="closeRulesModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>為維護您的權益，請務必於當月期限內使用完畢點數。當月未使用之點數將於月底結算後失效。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openRulesModal() {
+            document.getElementById('rulesModal').classList.add('show');
+        }
+        function closeRulesModal() {
+            document.getElementById('rulesModal').classList.remove('show');
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById('rulesModal');
+            if (event.target == modal) {
+                closeRulesModal();
+            }
+        }
+    </script>
+
+    <!-- JavaScript -->
+    <script src="js/points-history-script.js"></script>
+</body>
+</html>

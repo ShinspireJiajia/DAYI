@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>未出帳明細 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* 表格樣式 */
+    .detail-table { background:#fff; border:1px solid #e5e7eb; border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .table-header { background:#f8fafc; padding:12px 16px; border-bottom:1px solid #e5e7eb; font-weight:700; color:#374151; font-size:14px; }
+    .table-row { padding:12px 16px; border-bottom:1px solid #f1f5f9; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .table-row:last-child { border-bottom:none; }
+    .row-label { color:#6b7280; font-size:13px; font-weight:600; }
+    .row-value { color:#111827; font-weight:600; font-size:15px; }
+    
+    /* 金額強調 */
+    .amount { font-size:16px; font-weight:800; color:#059669; }
+    
+    /* 繳款方式標示 */
+    .payment-method { background:#e0f2fe; color:#0288d1; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .payment-card { background:#f3e5f5; color:#7b1fa2; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .payment-cash { background:#e8f5e8; color:#2e7d32; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .payment-transfer { background:#fff3e0; color:#f57c00; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    
+    /* Tab 樣式 */
+    .period-tabs { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:4px; margin-bottom:16px; display:flex; gap:4px; }
+    .period-tab { flex:1; text-align:center; padding:8px 12px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .period-tab.active { background:#111827; color:#fff; }
+    .period-tab:not(.active) { color:#6b7280; }
+    
+    /* 日期篩選 */
+    .date-filter { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .date-input { border:1px solid #d1d5db; border-radius:8px; padding:8px 10px; font-size:14px; }
+    .filter-btn { background:#111827; color:#fff; border:none; border-radius:8px; padding:8px 12px; font-size:13px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="expenses.html" aria-label="返回帳款" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">帳務明細</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 當月未出帳明細內容 -->
+    <div id="unbilled-content">
+      <!-- 本月月費 -->
+      <div class="detail-table">
+        <div class="table-header">
+          <i class="fas fa-calendar-check"></i> 本月月費（2025年09月）
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用項目</div>
+          <div class="row-value">月費</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用金額</div>
+          <div class="row-value amount">NT$ 8,500</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">計費期間</div>
+          <div class="row-value">2025/09/01 - 2025/09/30</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">出帳日期</div>
+          <div class="row-value">預計 2025/10/01</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">繳費期限</div>
+          <div class="row-value">2025/10/15</div>
+        </div>
+      </div>
+
+      <!-- 餐費 -->
+      <div class="detail-table">
+        <div class="table-header">
+          <i class="fas fa-utensils"></i> 本月餐費
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用項目</div>
+          <div class="row-value">餐費</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用金額</div>
+          <div class="row-value amount">NT$ 4,250</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">使用明細</div>
+          <div class="row-value">早餐 12次、午餐 8次、晚餐 5次</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">計費期間</div>
+          <div class="row-value">2025/09/01 - 2025/09/30</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">出帳日期</div>
+          <div class="row-value">預計 2025/10/01</div>
+        </div>
+      </div>
+
+      <!-- 清潔服務 -->
+      <div class="detail-table">
+        <div class="table-header">
+          <i class="fas fa-broom"></i> 清潔服務
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用項目</div>
+          <div class="row-value">居家清潔</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用金額</div>
+          <div class="row-value amount">NT$ 800</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">服務日期</div>
+          <div class="row-value">2025/09/10</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">出帳日期</div>
+          <div class="row-value">預計 2025/10/01</div>
+        </div>
+      </div>
+
+      <!-- 健身教練課 -->
+      <div class="detail-table">
+        <div class="table-header">
+          <i class="fas fa-dumbbell"></i> 健身教練課
+        </div>
+        <div class="table-row">
+          <div class="row-label">課程代號</div>
+          <div class="row-value">PT2025090501</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">課程名稱</div>
+          <div class="row-value">私人教練課程</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">課程日期</div>
+          <div class="row-value">2025/09/05</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">費用金額</div>
+          <div class="row-value amount">NT$ 1,200</div>
+        </div>
+        <div class="table-row">
+          <div class="row-label">出帳日期</div>
+          <div class="row-value">預計 2025/10/01</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+</body>
+</html>

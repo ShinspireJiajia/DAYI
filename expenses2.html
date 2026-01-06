@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>帳款 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* list style (aligned with personal page) */
+    .list { display:grid; gap:10px; }
+    .list-item { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .list-item .li-icon { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; color:#fff; }
+    .li-blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+    .li-orange { background: linear-gradient(135deg, #fb923c, #f97316); }
+    .li-green { background: linear-gradient(135deg, #34d399, #10b981); }
+    .li-red { background: linear-gradient(135deg, #f87171, #ef4444); }
+    .li-yellow { background: linear-gradient(135deg, #fcd34d, #f59e0b); color:#111827; }
+    .li-purple { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+    .li-body { flex:1; }
+    .li-title { font-weight:700; color:#111827; }
+    .li-desc { font-size:12px; color:#6b7280; }
+    .li-arrow { color:#9ca3af; margin-left:auto; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="personal.html" aria-label="返回個人" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">帳款</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="list">
+      <a class="list-item" href="#">
+        <div class="li-icon li-purple"><i class="fas fa-file-invoice-dollar"></i></div>
+        <div class="li-body">
+          <div class="li-title">掛帳明細查詢</div>
+          <div class="li-desc">查詢帳務掛帳與核銷明細</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+
+      <a class="list-item" href="#">
+        <div class="li-icon li-green"><i class="fas fa-house"></i></div>
+        <div class="li-body">
+          <div class="li-title">躉繳租金餘額</div>
+          <div class="li-desc">查看租金躉繳餘額與期間</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+
+      <a class="list-item" href="#">
+        <div class="li-icon li-yellow"><i class="fas fa-hand-holding-dollar"></i></div>
+        <div class="li-body">
+          <div class="li-title">服務費</div>
+          <div class="li-desc">各項服務費用與收費說明</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+
+      <a class="list-item" href="#">
+        <div class="li-icon li-orange"><i class="fas fa-utensils"></i></div>
+        <div class="li-body">
+          <div class="li-title">餐費</div>
+          <div class="li-desc">餐點消費與扣款紀錄</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+
+      <a class="list-item" href="#">
+        <div class="li-icon li-red"><i class="fas fa-bolt"></i></div>
+        <div class="li-body">
+          <div class="li-title">水電費</div>
+          <div class="li-desc">用水用電計費與繳費紀錄</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+
+      <a class="list-item" href="#">
+        <div class="li-icon li-blue"><i class="fas fa-plus-circle"></i></div>
+        <div class="li-body">
+          <div class="li-title">額外付費服務費用</div>
+          <div class="li-desc">額外服務與加購項目的費用</div>
+        </div>
+        <div class="li-arrow"><i class="fas fa-chevron-right"></i></div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+</body>
+</html>

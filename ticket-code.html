@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>票券核銷 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <style>
+    /* Light theme adaptation */
+    .code-page { 
+        padding: 20px; 
+        box-sizing: border-box; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+    }
+    
+    .code-main { width: 100%; max-width: 400px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    
+    /* Light theme card */
+    .code-card { 
+        background: #fff; 
+        border-radius: 16px; 
+        padding: 24px; 
+        width: 100%; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        box-sizing: border-box; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 20px; 
+    }
+
+    /* Product Name */
+    .ticket-name { font-size: 18px; font-weight: 600; color: #333; text-align: center; line-height: 1.4; }
+
+    /* Serial Number Style */
+    #codeContainer { width: 100%; display: flex; justify-content: center; align-items: center; min-height: 150px; background: #f9fafb; border-radius: 12px; padding: 10px; box-sizing: border-box; }
+    .qrcode-box { width: 100%; display: flex; justify-content: center; }
+    .barcode-box { width: 100%; }
+    .text-code-box { font-size: 28px; font-weight: bold; letter-spacing: 2px; color: #000; text-align: center; word-break: break-all; }
+
+    /* Usage Instructions */
+    .instruction-section { width: 100%; border-top: 1px solid #e5e7eb; padding-top: 16px; }
+    .instruction-title { font-size: 14px; color: #6b7280; margin-bottom: 8px; font-weight: 500; }
+    .instruction-text { font-size: 15px; color: #374151; line-height: 1.5; white-space: pre-wrap; }
+
+    /* Return to Previous Page */
+    .code-footer { width: 100%; max-width: 400px; margin-top: 20px; margin-bottom: 20px; }
+    .back-btn-large { 
+        display: block; 
+        width: 100%; 
+        padding: 14px; 
+        background: #f3f4f6; 
+        color: #374151; 
+        text-align: center; 
+        border-radius: 12px; 
+        text-decoration: none; 
+        font-size: 16px; 
+        font-weight: 500; 
+        transition: background 0.2s; 
+        border: 1px solid #e5e7eb;
+    }
+    .back-btn-large:active { background: #e5e7eb; }
+
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="tickets.html?tab=electronic" aria-label="返回" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">票券核銷</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="code-page">
+      <div class="code-main">
+        <div class="code-card">
+          <!-- 2. Product Name -->
+          <div id="ticketName" class="ticket-name"></div>
+          
+          <!-- 3. Serial Number Style -->
+          <div id="codeContainer"></div>
+          
+          <!-- 4. Usage Instructions -->
+          <div class="instruction-section">
+              <div class="instruction-title">使用說明</div>
+              <div id="instructionText" class="instruction-text"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Return to Previous Page -->
+      <div class="code-footer">
+        <a href="tickets.html?tab=electronic" class="back-btn-large">返回列表</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+        <i class="fas fa-home"></i>
+        <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+        <i class="fas fa-concierge-bell"></i>
+        <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+        <i class="fas fa-wallet"></i>
+        <span>錢包</span>
+    </div>
+    <a class="nav-item" href="personal.html">
+        <i class="fas fa-user"></i>
+        <span>個人</span>
+    </a>
+  </nav>
+
+  <script>
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code') || 'TKT-DEMO-0001';
+      const name = params.get('name') || '票券示意';
+      const type = params.get('type') || 'qr'; // qr, barcode, text
+      const instruction = params.get('instruction') || '請出示此券供店員核銷';
+
+      document.getElementById('ticketName').textContent = name;
+      document.getElementById('instructionText').textContent = instruction;
+      
+      const container = document.getElementById('codeContainer');
+      container.innerHTML = '';
+
+      if (type === 'barcode') {
+        // Barcode
+        const canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+        try {
+            JsBarcode(canvas, code, {
+                format: "CODE128",
+                lineColor: "#000",
+                background: "#fff",
+                width: 2,
+                height: 80,
+                displayValue: true,
+                fontSize: 16,
+                margin: 10
+            });
+        } catch(e) {
+            container.textContent = code;
+        }
+      } else if (type === 'text') {
+        // Text Code
+        const div = document.createElement('div');
+        div.className = 'text-code-box';
+        div.textContent = code;
+        container.appendChild(div);
+      } else {
+        // QR Code (Default)
+        const div = document.createElement('div');
+        div.className = 'qrcode-box';
+        div.id = 'qrcode';
+        container.appendChild(div);
+        if (window.QRCode) {
+            new QRCode(div, { 
+                text: code, 
+                width: 200, 
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        } else {
+            div.textContent = code;
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

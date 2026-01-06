@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>電子發票紀錄查詢 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* 表格樣式 */
+    .detail-table { background:#fff; border:1px solid #e5e7eb; border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .table-header { background:#f8fafc; padding:12px 16px; border-bottom:1px solid #e5e7eb; font-weight:700; color:#374151; font-size:14px; }
+    .table-row { padding:12px 16px; border-bottom:1px solid #f1f5f9; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .table-row:last-child { border-bottom:none; }
+    .row-label { color:#6b7280; font-size:13px; font-weight:600; }
+    .row-value { color:#111827; font-weight:600; font-size:15px; }
+    
+    /* 發票狀態標示 */
+    .status-issued { color:#059669; background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .status-void { color:#dc2626; background:#fee2e2; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .status-pending { color:#d97706; background:#fef3c7; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    
+    /* 發票類型標示 */
+    .type-electronic { background:#dbeafe; color:#1d4ed8; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    .type-paper { background:#f3e8ff; color:#7c3aed; padding:4px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+    
+    /* 提醒訊息 */
+    .notice { background:#fef3c7; border:1px solid #fbbf24; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .notice-text { color:#92400e; font-size:13px; font-weight:600; }
+    
+    /* 日期篩選 */
+    .date-filter { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .date-input { border:1px solid #d1d5db; border-radius:8px; padding:8px 10px; font-size:14px; }
+    .filter-btn { background:#111827; color:#fff; border:none; border-radius:8px; padding:8px 12px; font-size:13px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="expenses.html" aria-label="返回帳款" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">電子發票紀錄查詢</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 功能說明 -->
+    <div class="notice">
+      <i class="fas fa-info-circle" style="color:#d97706;"></i>
+      <span class="notice-text">僅供確認發票是否開立，無提供品項與金額明細</span>
+    </div>
+
+    <!-- 日期篩選 -->
+    <div class="date-filter">
+      <i class="fas fa-calendar-alt" style="color:#6b7280;"></i>
+      <input type="date" class="date-input" value="2024-01-01">
+      <span style="color:#6b7280;">至</span>
+      <input type="date" class="date-input" value="2024-12-31">
+      <button class="filter-btn">查詢</button>
+    </div>
+
+    <!-- 發票記錄 1 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-receipt"></i> 會員費發票
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票號碼</div>
+        <div class="row-value">AA12345678</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">開立日期</div>
+        <div class="row-value">2024年02月01日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票狀態</div>
+        <div class="row-value"><span class="status-issued">已開立</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票類型</div>
+        <div class="row-value"><span class="type-electronic">電子發票</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">載具類型</div>
+        <div class="row-value">手機條碼</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">僅供確認開立狀態，無詳細品項明細</div>
+      </div>
+    </div>
+
+    <!-- 發票記錄 2 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-file-invoice"></i> 服務費發票
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票號碼</div>
+        <div class="row-value">BB87654321</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">開立日期</div>
+        <div class="row-value">2024年01月25日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票狀態</div>
+        <div class="row-value"><span class="status-issued">已開立</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票類型</div>
+        <div class="row-value"><span class="type-paper">紙本發票</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">載具類型</div>
+        <div class="row-value">紙本列印</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">已提供紙本發票正本</div>
+      </div>
+    </div>
+
+    <!-- 發票記錄 3 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-exclamation-triangle"></i> 作廢發票
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票號碼</div>
+        <div class="row-value">CC11223344</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">開立日期</div>
+        <div class="row-value">2024年01月20日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票狀態</div>
+        <div class="row-value"><span class="status-void">已作廢</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票類型</div>
+        <div class="row-value"><span class="type-electronic">電子發票</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">作廢原因</div>
+        <div class="row-value">金額錯誤，已重新開立</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">此發票無效，請以重開發票為準</div>
+      </div>
+    </div>
+
+    <!-- 發票記錄 4 -->
+    <div class="detail-table">
+      <div class="table-header">
+        <i class="fas fa-clock"></i> 開立中發票
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票號碼</div>
+        <div class="row-value">處理中</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">預計開立日</div>
+        <div class="row-value">2024年03月05日</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票狀態</div>
+        <div class="row-value"><span class="status-pending">處理中</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">發票類型</div>
+        <div class="row-value"><span class="type-electronic">電子發票</span></div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">處理進度</div>
+        <div class="row-value">會計處理中，預計3個工作天完成</div>
+      </div>
+      <div class="table-row">
+        <div class="row-label">備註</div>
+        <div class="row-value">發票開立完成後將自動寄送至載具</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+</body>
+</html>

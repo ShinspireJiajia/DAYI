@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健康量測 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .filters-wrap { background:#f6f7fb; border:1px solid #eef2ff; border-radius:16px; padding:12px; margin: 4px 0 14px; box-shadow: inset 0 -1px 0 rgba(17,24,39,0.03); }
+    .hr-tabs { display:flex; overflow-x:auto; gap:8px; background:transparent; margin-bottom:8px; padding-bottom:4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .hr-tabs::-webkit-scrollbar { display: none; }
+    .hr-tabs .tab { flex: 0 0 auto; appearance:none; border:1px solid transparent; background:transparent; padding:8px 14px; border-radius:999px; font-size:14px; color:#475569; transition: all .18s ease; white-space: nowrap; }
+    .hr-tabs .tab:hover { background:#ffffff; border-color:#e5e7eb; color:#111827; }
+    .hr-tabs .tab.active { background:#fff; color:#111827; border-color:#e5e7eb; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+    .device-group-label { font-size: 13px; color: #6b7280; margin: 12px 4px 6px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .device-group-label i { font-size: 14px; color: #3b82f6; }
+    .device-group-label.secondary i { color: #f59e0b; }
+    .range-tabs { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; background:transparent; margin-top: 12px; border-top: 1px solid #e5e7eb; padding-top: 12px; }
+    .range-tabs .r-tab { appearance:none; border:1px solid transparent; background:transparent; padding:9px 8px; border-radius:999px; font-size:13px; color:#6b7280; transition: all .18s ease; }
+    .range-tabs .r-tab:hover { background:#ffffff; border-color:#e5e7eb; color:#111827; }
+    .range-tabs .r-tab.active { background:#fff; color:#111827; border-color:#e5e7eb; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+    .hr-tabs .tab:focus-visible, .range-tabs .r-tab:focus-visible { outline:2px solid #c7d2fe; outline-offset:2px; }
+    .chart-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; margin-bottom:12px; box-shadow:0 6px 20px rgba(17,24,39,0.05); }
+    .chart-wrap { position:relative; height:240px; }
+    .hr-list { display:grid; gap:10px; }
+    .hr-card { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; }
+    .hr-left { display: flex; flex-direction: column; }
+    .hr-item-label { font-size: 12px; color: #6b7280; font-weight: 400; margin-bottom: 2px; }
+    .hr-item-value { font-size: 15px; font-weight: 700; color: #111827; }
+    .hr-right { color:#6b7280; font-size:12px; text-align:right; }
+    .group-divider { height: 1px; background-color: #e5e7eb; margin: 16px 4px 12px; }
+
+    /* Modal Styles */
+    .modal { position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+    .modal-content { background-color: #fff; margin: auto; padding: 24px; border: 1px solid #888; width: 85%; max-width: 360px; border-radius: 20px; text-align: center; position: relative; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    .close-modal { color: #9ca3af; position: absolute; right: 20px; top: 16px; font-size: 24px; cursor: pointer; transition: color 0.2s; }
+    .close-modal:hover { color: #4b5563; }
+    .measure-step { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 10px 0; }
+    .measure-step h3 { font-size: 18px; font-weight: 700; color: #111827; margin: 0; }
+    .measure-step p { color: #6b7280; font-size: 14px; margin: 0; }
+    .qr-code { width: 160px; height: 160px; margin: 8px 0; border-radius: 8px; }
+    .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 48px; height: 48px; animation: spin 1s linear infinite; margin: 20px 0; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .action-buttons { display: flex; gap: 12px; width: 100%; justify-content: center; margin-top: 8px; }
+    .action-btn { flex: 1; padding: 12px; border-radius: 12px; border: none; background-color: #3b82f6; color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+    .action-btn:hover { background-color: #2563eb; }
+    .action-btn.secondary { background-color: #f3f4f6; color: #4b5563; }
+    .action-btn.secondary:hover { background-color: #e5e7eb; }
+    .start-measure-btn { width: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 14px; border-radius: 16px; border: none; font-size: 16px; font-weight: 600; margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); transition: transform 0.1s; }
+    .start-measure-btn:active { transform: scale(0.98); }
+    .start-measure-btn i { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="index.html" aria-label="返回首頁" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">健康量測</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <a href="notifications.html" aria-label="通知"><i class="fas fa-bell"></i></a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <button id="start-measure-btn" class="start-measure-btn">
+      <i class="fas fa-heartbeat"></i> 我要量測
+    </button>
+    <div class="filters-wrap">
+      <div class="device-group-label"><i class="fas fa-heartbeat"></i> 血壓計數據</div>
+      <div class="hr-tabs" role="tablist">
+        <button class="tab active" data-target="bp">血壓</button>
+        <button class="tab" data-target="hr">心率</button>
+      </div>
+
+      <div class="group-divider"></div>
+
+      <div class="device-group-label secondary" style="justify-content: space-between;">
+        <span><i class="fas fa-weight"></i> 體脂計數據</span>
+        <button id="btn-download-reports" style="border:none; background:transparent; color:#3b82f6; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:4px;">
+          <i class="fas fa-file-download"></i> 下載報告
+        </button>
+      </div>
+      <div class="hr-tabs" id="bc-tabs" role="tablist"></div>
+
+      <div class="range-tabs" role="tablist" aria-label="時間區間">
+        <button class="r-tab active" data-range="week">週</button>
+        <button class="r-tab" data-range="month">月</button>
+        <button class="r-tab" data-range="year">半年</button>
+      </div>
+    </div>
+
+    <section id="bp" class="hr-section" style="display:block;">
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-bp"></canvas></div>
+      </div>
+  <div class="hr-list" data-metric="bp"></div>
+    </section>
+
+    <section id="hr" class="hr-section" style="display:none;">
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-hr"></canvas></div>
+      </div>
+  <div class="hr-list" data-metric="hr"></div>
+    </section>
+
+    <div id="bc-sections-container"></div>
+  </main>
+
+  <!-- Measurement Modal -->
+  <div id="measure-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      
+      <!-- Step 0: Select Device -->
+      <div id="measure-step-0" class="measure-step">
+        <h3>請選擇量測設備</h3>
+        <div class="device-selection" style="display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 10px;">
+          <button class="action-btn device-btn" data-device="bp" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <i class="fas fa-heartbeat" style="font-size: 20px;"></i> 血壓計
+          </button>
+          <button class="action-btn device-btn" data-device="wt" style="display: flex; align-items: center; justify-content: center; gap: 10px; background-color: #f59e0b;">
+            <i class="fas fa-weight" style="font-size: 20px;"></i> 體脂計
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 1: Barcode -->
+      <div id="measure-step-1" class="measure-step" style="display:none;">
+        <h3>請掃描會員條碼</h3>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MEMBER123456" alt="Member QR Code" class="qr-code" />
+        <p>請將條碼對準掃描器</p>
+        <button id="sim-scan-btn" style="margin-top:10px; padding: 6px 12px; background:#f3f4f6; border:none; border-radius:6px; font-size:13px; color:#6b7280; cursor:pointer;">(模擬) 掃描完成</button>
+      </div>
+
+      <!-- Step 2: Waiting / Measuring -->
+      <div id="measure-step-2" class="measure-step" style="display:none;">
+        <h3>等待量測中...</h3>
+        <div class="spinner"></div>
+        <p>請開始進行量測</p>
+        <button id="measure-finish-btn" class="action-btn" style="background-color: #ef4444; margin-top: 10px; width: 100%;">量測結束</button>
+      </div>
+
+      <!-- Step 3: Options -->
+      <div id="measure-step-3" class="measure-step" style="display:none;">
+        <h3>量測完成</h3>
+        <div class="check-icon" style="font-size: 56px; color: #10b981; margin: 10px 0;"><i class="fas fa-check-circle"></i></div>
+        <p style="margin-bottom: 10px;">您的數據已記錄</p>
+        <div class="action-buttons">
+          <button id="view-data-btn" class="action-btn">我要看數據</button>
+          <button id="continue-measure-btn" class="action-btn secondary">繼續量測</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Download Modal -->
+  <div id="report-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 320px; padding: 20px; text-align: left;">
+      <span class="close-report-modal" style="position:absolute; right:16px; top:16px; font-size:20px; color:#9ca3af; cursor:pointer;">&times;</span>
+      <h3 style="margin:0 0 16px; font-size:18px; color:#111827; text-align: center;">健康報告下載</h3>
+      <div id="report-list" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto;">
+        <!-- Report items will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item active" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+  <script>
+    // Full list of items (must match backend)
+    const bodyCompositionItems = [
+        { id: 'gender', name: '性別' },
+        { id: 'age', name: '年齡' },
+        { id: 'height', name: '身高' },
+        { id: 'wt', name: '體重', default: true },
+        { id: 'bf', name: '體脂肪率', default: true },
+        { id: 'bf_mass', name: '體脂肪量' },
+        { id: 'ffm', name: '除脂肪量' },
+        { id: 'mm', name: '肌肉質量', default: true },
+        { id: 'mm_score', name: '肌肉量(分數)' },
+        { id: 'bone', name: '推定骨量' },
+        { id: 'tbw_mass', name: '體水份量' },
+        { id: 'bw', name: '體水份率', default: true },
+        { id: 'icw', name: '細胞內液' },
+        { id: 'ecw', name: '細胞外液' },
+        { id: 'ecw_ratio', name: '細胞外液比' },
+        { id: 'bmi', name: '身體質量指數' },
+        { id: 'ibw', name: '理想體重' },
+        { id: 'obesity', name: '肥胖(指數)' },
+        { id: 'ideal_bf', name: '理想脂肪量' },
+        { id: 'ideal_mm', name: '理想肌肉量' },
+        { id: 'vf', name: '內臟脂肪(指數)', default: true },
+        { id: 'leg_score', name: '腿部肌肉(分數)' },
+        { id: 'bmr_kcal', name: '基礎代謝率(卡路里)' },
+        { id: 'bmr_kj', name: '基礎代謝率(焦耳)' },
+        { id: 'bmr_score', name: '基礎代謝率(分數)' },
+        { id: 'ma', name: '體內年齡', default: true },
+        { id: 'arm_balance', name: '手臂平衡(分數)' },
+        { id: 'leg_balance', name: '腿部平衡(分數)' }
+    ];
+
+    // 資料源（6 筆）
+    const dataStore = {
+      bp: {
+        week: {
+          labels: ['08/05 07:55','08/06 07:50','08/07 07:55','08/08 07:52','08/09 07:51','08/10 08:12'],
+          sys:    [126, 127, 130, 128, 125, 124],
+          dia:    [ 80,  81,  82,  81,  79,  78],
+        },
+        month: {
+          labels: ['07/10','07/17','07/24','07/31','08/07','08/14'],
+          sys:    [129, 128, 130, 127, 126, 125],
+          dia:    [ 83,  82,  84,  81,  80,  79],
+        },
+        year: {
+          labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'],
+          sys:    [129, 127, 126, 125, 124, 123],
+          dia:    [ 82,  81,  80,  79,  78,  78],
+        }
+      },
+      hr: {
+        week:  { labels: ['08/05 20:10','08/06 20:05','08/07 07:56','08/08 21:04','08/09 07:36','08/10 08:13'], data: [71,72,73,75,71,72] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [72,71,74,73,72,71] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [72,71,71,72,70,72] }
+      },
+      wt: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [62.6,62.6,62.5,62.5,62.4,62.4] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [62.9,62.8,62.7,62.6,62.5,62.4] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [62.7,62.5,62.4,62.3,62.2,62.0] }
+      },
+      bf: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [22.1,22.0,22.1,21.9,21.8,21.8] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [22.5,22.4,22.3,22.2,22.0,21.8] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [22.4,22.2,21.8,21.6,21.5,21.3] }
+      },
+      mm: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [46.2,46.3,46.2,46.4,46.5,46.5] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [46.0,46.1,46.2,46.3,46.4,46.5] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [46.2,46.4,46.5,46.6,46.7,46.8] }
+      },
+      vf: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [5,5,5,5,4,4] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [6,6,5,5,5,4] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [6,5,4,4,4,4] }
+      },
+      bw: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [55.2,55.3,55.2,55.4,55.5,55.6] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [54.8,55.0,55.1,55.3,55.4,55.6] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [55.0,55.3,55.6,55.8,56.0,56.2] }
+      },
+      ma: {
+        week:  { labels: ['08/04 07:32','08/05 07:33','08/06 07:33','08/07 07:34','08/08 07:35','08/09 07:35'], data: [28,28,28,27,27,27] },
+        month: { labels: ['07/10','07/17','07/24','07/31','08/07','08/14'], data: [29,29,28,28,27,27] },
+        year:  { labels: ['06/2025','07/2025','08/2025','09/2025','10/2025','11/2025'], data: [28,28,27,27,26,26] }
+      }
+    };
+
+    // 建立圖表實例（保持樣式不變）
+    const charts = {};
+    function createCharts(){
+      const bpCtx = document.getElementById('chart-bp');
+      if (bpCtx) {
+        charts.bp = new Chart(bpCtx, {
+          type: 'line',
+          data: { labels: [], datasets: [
+            { label: '收縮壓', data: [], tension: 0.35, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.15)', fill: true, pointRadius: 3 },
+            { label: '舒張壓', data: [], tension: 0.35, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.15)', fill: true, pointRadius: 3 }
+          ] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true }, tooltip: { enabled: true } }, scales: { y: { beginAtZero: false, grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { display: false } } } }
+        });
+      }
+
+      const hrCtx = document.getElementById('chart-hr');
+      if (hrCtx) {
+        charts.hr = new Chart(hrCtx, {
+          type: 'line',
+          data: { labels: [], datasets: [ { label: '心率', data: [], tension: 0.35, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.18)', fill: true, pointRadius: 3 } ] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: false, grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { display: false } } } }
+        });
+      }
+
+      // Dynamic charts for body composition
+      const activeIds = getActiveBodyCompositionIds();
+      activeIds.forEach(id => {
+        const ctx = document.getElementById(`chart-${id}`);
+        if (ctx && dataStore[id]) {
+            // Determine color based on ID or random
+            let color = '#3b82f6';
+            if (id === 'wt') color = '#f59e0b';
+            else if (id === 'bf') color = '#8b5cf6';
+            else if (id === 'vf') color = '#ef4444';
+            else if (id === 'bw') color = '#06b6d4';
+            else if (id === 'ma') color = '#10b981';
+            
+            const item = bodyCompositionItems.find(i => i.id === id);
+            const label = item ? item.name : id;
+
+            charts[id] = new Chart(ctx, {
+                type: 'line',
+                data: { labels: [], datasets: [ { label: label, data: [], tension: 0.35, borderColor: color, backgroundColor: color + '30', fill: true, pointRadius: 3 } ] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: id === 'vf', grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { display: false } } } }
+            });
+        }
+      });
+    }
+
+    function getActiveBodyCompositionIds() {
+        const savedConfig = localStorage.getItem('bodyCompositionConfig');
+        if (savedConfig) {
+            try {
+                const parsed = JSON.parse(savedConfig);
+                // Check if it's the old format (array of strings)
+                if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'string') {
+                    return parsed;
+                }
+                // New format: array of {id, active}
+                if (Array.isArray(parsed)) {
+                    return parsed.filter(item => item.active).map(item => item.id);
+                }
+            } catch (e) {
+                console.error('Error parsing config', e);
+            }
+        }
+        return bodyCompositionItems.filter(i => i.default).map(i => i.id);
+    }
+
+    function initDynamicContent() {
+        const tabsContainer = document.getElementById('bc-tabs');
+        const sectionsContainer = document.getElementById('bc-sections-container');
+        const activeIds = getActiveBodyCompositionIds();
+
+        // Clear containers
+        tabsContainer.innerHTML = '';
+        sectionsContainer.innerHTML = '';
+
+        activeIds.forEach((id, index) => {
+            const item = bodyCompositionItems.find(i => i.id === id);
+            if (!item) return;
+
+            // Create Tab
+            const tab = document.createElement('button');
+            tab.className = 'tab';
+            tab.dataset.target = id;
+            tab.textContent = item.name;
+            tabsContainer.appendChild(tab);
+
+            // Create Section
+            const section = document.createElement('section');
+            section.id = id;
+            section.className = 'hr-section';
+            section.style.display = 'none';
+
+            // Only create chart if we have data or want to show empty chart
+            // For now, only create if we have dataStore entry to avoid errors
+            // Or create empty structure if missing
+            
+            let content = '';
+            if (dataStore[id]) {
+                content = `
+                  <div class="chart-card">
+                    <div class="chart-wrap"><canvas id="chart-${id}"></canvas></div>
+                  </div>
+                  <div class="hr-list" data-metric="${id}"></div>
+                `;
+            } else {
+                content = `
+                  <div class="chart-card" style="height: 200px; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+                    <p>暫無數據圖表</p>
+                  </div>
+                  <div class="hr-list" data-metric="${id}">
+                    <div style="text-align: center; padding: 20px; color: #9ca3af;">暫無歷史數據</div>
+                  </div>
+                `;
+            }
+            section.innerHTML = content;
+            sectionsContainer.appendChild(section);
+        });
+    }
+
+    function renderList(metric, range){
+      const listEl = document.querySelector(`.hr-section#${metric} .hr-list`);
+      if (!listEl) return;
+      
+      // Handle missing data
+      if (!dataStore[metric]) {
+          return; // Already handled in initDynamicContent
+      }
+
+      listEl.innerHTML = '';
+      const ds = dataStore[metric][range];
+      if (!ds) return;
+
+      // 以最新在上排序（labels 最後一筆視為最新）
+      const indices = Array.from({ length: ds.labels.length }, (_, i) => i).reverse();
+      
+      const itemDef = bodyCompositionItems.find(i => i.id === metric);
+      const metricName = itemDef ? itemDef.name : metric;
+
+      indices.forEach(i => {
+        const item = document.createElement('div');
+        item.className = 'hr-card';
+        const left = document.createElement('div');
+        left.className = 'hr-left';
+        
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'hr-item-label';
+        labelDiv.textContent = metricName;
+        
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'hr-item-value';
+
+        const right = document.createElement('div');
+        right.className = 'hr-right';
+        // Use flex column to stack date and button
+        right.style.display = 'flex';
+        right.style.flexDirection = 'column';
+        right.style.alignItems = 'flex-end';
+        right.style.gap = '2px';
+
+        const dateText = ds.labels[i].startsWith('20') ? ds.labels[i] : (range === 'year' ? ds.labels[i] : `2025/${ds.labels[i]}`);
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = dateText;
+        right.appendChild(dateSpan);
+
+        // Format value based on metric type
+        let val = ds.data ? ds.data[i] : 0;
+        let unit = '';
+        
+        if (metric === 'bp') {
+           valueDiv.textContent = `${ds.sys[i]} / ${ds.dia[i]} mmHg`;
+        } else {
+            if (metric === 'wt' || metric === 'mm' || metric === 'ibw' || metric === 'bf_mass' || metric === 'ffm' || metric === 'bone' || metric === 'tbw_mass' || metric === 'ideal_bf' || metric === 'ideal_mm') unit = ' kg';
+            else if (metric === 'bf' || metric === 'bw' || metric === 'ecw_ratio') unit = ' %';
+            else if (metric === 'hr') unit = ' bpm';
+            else if (metric === 'ma') unit = ' 歲';
+            else if (metric === 'bmr_kcal') unit = ' kcal';
+            else if (metric === 'bmr_kj') unit = ' kJ';
+            
+            if (typeof val === 'number' && !Number.isInteger(val)) {
+                val = val.toFixed(1);
+            }
+            valueDiv.textContent = `${val}${unit}`;
+        }
+        
+        left.appendChild(labelDiv);
+        left.appendChild(valueDiv);
+        item.appendChild(left);
+        item.appendChild(right);
+        listEl.appendChild(item);
+      });
+    }
+
+    function render(metric, range){
+      // 更新圖表資料
+      const chart = charts[metric];
+      const ds = dataStore[metric] ? dataStore[metric][range] : null;
+      
+      if (chart && ds) {
+        chart.data.labels = ds.labels;
+        if (metric === 'bp') {
+          chart.data.datasets[0].data = ds.sys;
+          chart.data.datasets[1].data = ds.dia;
+        } else {
+          chart.data.datasets[0].data = ds.data;
+        }
+        chart.update();
+      }
+      // 更新列表
+      renderList(metric, range);
+    }
+
+    let activeMetric = 'bp';
+    let activeRange = 'week';
+
+    (function init(){
+      if (!window.Chart) return;
+      
+      initDynamicContent(); // Initialize dynamic tabs and sections
+      createCharts();
+      
+      // Re-attach event listeners for new tabs
+      document.querySelectorAll('.hr-tabs .tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.hr-tabs .tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const target = btn.dataset.target;
+            document.querySelectorAll('.hr-section').forEach(sec => {
+            sec.style.display = (sec.id === target) ? 'block' : 'none';
+            });
+            activeMetric = target;
+            render(activeMetric, activeRange);
+        });
+      });
+
+      // tab 切換（週/月/年）
+      document.querySelectorAll('.range-tabs .r-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.range-tabs .r-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeRange = btn.dataset.range;
+            render(activeMetric, activeRange);
+        });
+      });
+
+      // 初始渲染所有 section 的列表與圖表（預設週）
+      // Render BP/HR
+      ['bp','hr'].forEach(m => render(m, activeRange));
+      
+      // Render dynamic items
+      const activeIds = getActiveBodyCompositionIds();
+      activeIds.forEach(m => render(m, activeRange));
+    })();
+
+    // Measurement Flow Logic
+    const modal = document.getElementById('measure-modal');
+    const startBtn = document.getElementById('start-measure-btn');
+    const closeBtn = document.querySelector('.close-modal');
+    const step0 = document.getElementById('measure-step-0');
+    const step1 = document.getElementById('measure-step-1');
+    const step2 = document.getElementById('measure-step-2');
+    const step3 = document.getElementById('measure-step-3');
+    const simScanBtn = document.getElementById('sim-scan-btn');
+    const measureFinishBtn = document.getElementById('measure-finish-btn');
+    const viewDataBtn = document.getElementById('view-data-btn');
+    const continueMeasureBtn = document.getElementById('continue-measure-btn');
+    const deviceBtns = document.querySelectorAll('.device-btn');
+
+    function showStep(stepId) {
+      [step0, step1, step2, step3].forEach(el => el.style.display = 'none');
+      document.getElementById(stepId).style.display = 'flex';
+    }
+
+    if(startBtn){
+      startBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        showStep('measure-step-0');
+      });
+    }
+
+    deviceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Here you could store the selected device if needed
+        // const device = btn.dataset.device;
+        showStep('measure-step-1');
+      });
+    });
+
+    if(closeBtn){
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    if(simScanBtn){
+      simScanBtn.addEventListener('click', () => {
+        showStep('measure-step-2');
+      });
+    }
+
+    if(measureFinishBtn){
+      measureFinishBtn.addEventListener('click', () => {
+        showStep('measure-step-3');
+      });
+    }
+
+    if(viewDataBtn){
+      viewDataBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    }
+
+    if(continueMeasureBtn){
+      continueMeasureBtn.addEventListener('click', () => {
+        showStep('measure-step-0');
+      });
+    }
+
+    // Report Download Logic
+    const reportModal = document.getElementById('report-modal');
+    const btnDownloadReports = document.getElementById('btn-download-reports');
+    const closeReportModal = document.querySelector('.close-report-modal');
+    const reportList = document.getElementById('report-list');
+
+    if (btnDownloadReports) {
+      btnDownloadReports.addEventListener('click', () => {
+        reportModal.style.display = 'flex';
+        renderReportList();
+      });
+    }
+
+    if (closeReportModal) {
+      closeReportModal.addEventListener('click', () => {
+        reportModal.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target == reportModal) {
+        reportModal.style.display = 'none';
+      }
+    });
+
+    function renderReportList() {
+      reportList.innerHTML = '';
+      // Use weight data from 'week' range as a source of recent measurement dates
+      // In a real app, this would fetch a list of available reports
+      const sourceData = dataStore.wt.week;
+      const dates = sourceData.labels.slice().reverse(); // Newest first
+
+      if (dates.length === 0) {
+        reportList.innerHTML = '<div style="text-align:center; color:#6b7280; padding:20px;">暫無可下載的報告</div>';
+        return;
+      }
+
+      dates.forEach(date => {
+        const item = document.createElement('div');
+        item.style.display = 'flex';
+        item.style.alignItems = 'center';
+        item.style.justifyContent = 'space-between';
+        item.style.padding = '12px';
+        item.style.border = '1px solid #e5e7eb';
+        item.style.borderRadius = '12px';
+        item.style.backgroundColor = '#fff';
+
+        const dateDiv = document.createElement('div');
+        dateDiv.style.display = 'flex';
+        dateDiv.style.flexDirection = 'column';
+        
+        const dateLabel = document.createElement('span');
+        dateLabel.textContent = date.startsWith('20') ? date : `2025/${date}`;
+        dateLabel.style.fontSize = '15px';
+        dateLabel.style.fontWeight = '600';
+        dateLabel.style.color = '#111827';
+
+        const typeLabel = document.createElement('span');
+        typeLabel.textContent = '體組成分析報告';
+        typeLabel.style.fontSize = '12px';
+        typeLabel.style.color = '#6b7280';
+
+        dateDiv.appendChild(dateLabel);
+        dateDiv.appendChild(typeLabel);
+
+        const downloadBtn = document.createElement('button');
+        downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
+        downloadBtn.style.width = '36px';
+        downloadBtn.style.height = '36px';
+        downloadBtn.style.borderRadius = '50%';
+        downloadBtn.style.border = 'none';
+        downloadBtn.style.backgroundColor = '#eff6ff';
+        downloadBtn.style.color = '#3b82f6';
+        downloadBtn.style.cursor = 'pointer';
+        downloadBtn.style.display = 'flex';
+        downloadBtn.style.alignItems = 'center';
+        downloadBtn.style.justifyContent = 'center';
+        downloadBtn.style.transition = 'background-color 0.2s';
+        
+        downloadBtn.onmouseover = () => downloadBtn.style.backgroundColor = '#dbeafe';
+        downloadBtn.onmouseout = () => downloadBtn.style.backgroundColor = '#eff6ff';
+
+        downloadBtn.onclick = () => {
+          alert(`正在下載 ${dateLabel.textContent} 的報告...`);
+        };
+
+        item.appendChild(dateDiv);
+        item.appendChild(downloadBtn);
+        reportList.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>

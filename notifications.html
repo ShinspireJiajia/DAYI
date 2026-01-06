@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>通知 - 智生活</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .notification-list { display: grid; gap: 10px; padding-bottom: 80px; }
+    .notification-item { 
+      background: #fff; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 14px; 
+      padding: 14px 16px; 
+      display: grid; 
+      grid-template-columns: auto 1fr auto; 
+      gap: 12px; 
+      align-items: start;
+      transition: all 0.2s ease;
+    }
+    .notification-item:hover { background: #f9fafb; }
+    .notification-item.unread { background: #eff6ff; border-color: #bfdbfe; }
+    
+    .notif-icon { 
+      width: 40px; 
+      height: 40px; 
+      border-radius: 10px; 
+      display: grid; 
+      place-items: center; 
+      color: #fff; 
+      font-size: 18px;
+    }
+    .notif-icon.course { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+    .notif-icon.system { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+    .notif-icon.payment { background: linear-gradient(135deg, #34d399, #10b981); }
+    .notif-icon.event { background: linear-gradient(135deg, #fb923c, #f97316); }
+    .notif-icon.reminder { background: linear-gradient(135deg, #f87171, #ef4444); }
+    
+    .notif-body { flex: 1; }
+    .notif-title { font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .notif-message { font-size: 14px; color: #6b7280; line-height: 1.5; margin-bottom: 6px; }
+    .notif-time { font-size: 12px; color: #9ca3af; }
+    
+    .notif-badge { 
+      width: 8px; 
+      height: 8px; 
+      background: #3b82f6; 
+      border-radius: 50%; 
+      margin-top: 6px;
+    }
+    
+    .empty-state { 
+      text-align: center; 
+      padding: 60px 20px; 
+      color: #9ca3af; 
+    }
+    .empty-state i { 
+      font-size: 48px; 
+      color: #d1d5db; 
+      margin-bottom: 12px; 
+    }
+    .empty-state p { 
+      font-size: 16px; 
+      color: #6b7280; 
+    }
+  </style>
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">15:10</span>
+    <div class="signal-battery">
+      <span class="signal">
+        <i class="fas fa-signal"></i>
+        <span class="network">5G</span>
+      </span>
+      <i class="fas fa-battery-three-quarters"></i>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-logo">
+        <a href="index.html" aria-label="返回首頁" class="back-link"><i class="fas fa-chevron-left"></i></a>
+        <span class="app-name">通知</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="notification-list" id="notificationList">
+      <!-- 通知項目將由 JavaScript 動態生成 -->
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fas fa-home"></i>
+      <span>首頁</span>
+    </a>
+    <a class="nav-item" href="space-booking.html">
+      <i class="fas fa-concierge-bell"></i>
+      <span>我要預約</span>
+    </a>
+    <div class="nav-item">
+      <i class="fas fa-wallet"></i>
+      <span>錢包</span>
+    </div>
+    <a class="nav-item" href="personal.html">
+      <i class="fas fa-user"></i>
+      <span>個人</span>
+    </a>
+  </nav>
+  <div class="home-indicator"></div>
+
+  <script>
+    const notifications = [
+      {
+        id: 1,
+        type: 'course',
+        icon: 'fa-graduation-cap',
+        title: '課程提醒',
+        message: '您報名的「樂齡肌力訓練」課程將於明天上午10:00開始，請準時參加！',
+        time: '2小時前',
+        unread: true
+      },
+      {
+        id: 2,
+        type: 'event',
+        icon: 'fa-calendar-check',
+        title: '活動通知',
+        message: '本月健康講座「銀髮族營養攝取」將於11/15舉行，歡迎報名參加。',
+        time: '5小時前',
+        unread: true
+      },
+      {
+        id: 3,
+        type: 'reminder',
+        icon: 'fa-bell',
+        title: '預約提醒',
+        message: '您預約的羽球場將於今天下午3:00開始，場地位於A棟1F體育館。',
+        time: '1天前',
+        unread: false
+      },
+      {
+        id: 4,
+        type: 'payment',
+        icon: 'fa-credit-card',
+        title: '扣款通知',
+        message: '您的會員費已成功扣款，金額NT$1,200，感謝您的支持！',
+        time: '2天前',
+        unread: false
+      },
+      {
+        id: 5,
+        type: 'course',
+        icon: 'fa-graduation-cap',
+        title: '候補通知',
+        message: '好消息！您候補的「銀髮瑜珈」課程已有空位，請盡快確認報名。',
+        time: '3天前',
+        unread: false
+      },
+      {
+        id: 6,
+        type: 'system',
+        icon: 'fa-info-circle',
+        title: '系統公告',
+        message: '11/26系統維護通知：當天凌晨2:00-6:00將暫停所有服務，請提前安排。',
+        time: '5天前',
+        unread: false
+      },
+      {
+        id: 7,
+        type: 'event',
+        icon: 'fa-calendar-check',
+        title: '活動取消通知',
+        message: '原定11/10的「書法臨摹初級班」因故取消，已退回您的點數400點。',
+        time: '1週前',
+        unread: false
+      },
+      {
+        id: 8,
+        type: 'payment',
+        icon: 'fa-coins',
+        title: '點數到期提醒',
+        message: '您有2,000點數將於本月底到期，請盡快使用以免浪費。',
+        time: '1週前',
+        unread: false
+      }
+    ];
+
+    function renderNotifications() {
+      const container = document.getElementById('notificationList');
+      
+      if (notifications.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <p>目前沒有通知</p>
+          </div>
+        `;
+        return;
+      }
+
+      notifications.forEach(notif => {
+        const item = document.createElement('div');
+        item.className = `notification-item ${notif.unread ? 'unread' : ''}`;
+        item.innerHTML = `
+          <div class="notif-icon ${notif.type}">
+            <i class="fas ${notif.icon}"></i>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">${notif.title}</div>
+            <div class="notif-message">${notif.message}</div>
+            <div class="notif-time">${notif.time}</div>
+          </div>
+          ${notif.unread ? '<div class="notif-badge"></div>' : '<div style="width:8px;"></div>'}
+        `;
+        
+        item.addEventListener('click', () => {
+          item.classList.remove('unread');
+          const badge = item.querySelector('.notif-badge');
+          if (badge) {
+            badge.remove();
+          }
+        });
+        
+        container.appendChild(item);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderNotifications);
+  </script>
+</body>
+</html>
