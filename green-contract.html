@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合約管理系統 - 陸府建設 CRM</title>
+    
+    <!-- Font Awesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS 樣式 -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/breadcrumb.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/case-list.css">
+    <link rel="stylesheet" href="css/green-contract.css">
+</head>
+<body>
+    <!-- ============================================ -->
+    <!-- 主容器 -->
+    <!-- ============================================ -->
+    <div class="app-container">
+        
+        <!-- ============================================ -->
+        <!-- 頂部導覽列 (動態渲染) -->
+        <!-- ============================================ -->
+        <div id="header-container"></div>
+
+        <!-- ============================================ -->
+        <!-- 側邊欄選單 (動態渲染) -->
+        <!-- ============================================ -->
+        <div id="sidebar-container"></div>
+
+        <!-- ============================================ -->
+        <!-- 主內容區域 -->
+        <main class="main-content">
+            <!-- 麵包屑導覽 -->
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">綠海養護</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item active">養護合約</span>
+            </div>
+
+            <div class="content-wrapper">
+                <!-- 查詢條件區 -->
+                <div class="search-panel">
+                    <form class="search-form case-search-form" id="searchForm">
+                        <div class="search-grid">
+                            <!-- 合約編號 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">合約編號</label>
+                                <div class="col-input">
+                                    <input type="text" id="contract-id" class="form-input" placeholder="請輸入合約編號">
+                                </div>
+                            </div>
+                            <!-- 摘要 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">摘要</label>
+                                <div class="col-input">
+                                    <input type="text" id="summary" class="form-input" placeholder="請輸入關鍵字">
+                                </div>
+                            </div>
+                            <!-- 合約類型 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">合約類型</label>
+                                <div class="col-input">
+                                    <select id="contract-type" class="form-select">
+                                        <option value="">請選擇</option>
+                                        <option value="專戶">專戶</option>
+                                        <option value="公設">公設</option>
+                                        <option value="專戶與公設">專戶與公設</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 合約戶別 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">合約戶別</label>
+                                <div class="col-input">
+                                    <input type="text" id="household" class="form-input" placeholder="請輸入戶別">
+                                </div>
+                            </div>
+                            <!-- 合約月份 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">合約月份</label>
+                                <div class="col-input">
+                                    <input type="text" id="contract-month" class="form-input" placeholder="請輸入月份">
+                                </div>
+                            </div>
+                            <!-- 合約狀態 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">合約狀態</label>
+                                <div class="col-input">
+                                    <select id="contract-status" class="form-select">
+                                        <option value="">請選擇</option>
+                                        <option value="草稿">草稿</option>
+                                        <option value="待簽署">待簽署</option>
+                                        <option value="已生效">已生效</option>
+                                        <option value="已失效">已失效</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 維護人員 -->
+                            <div class="form-group row">
+                                <label class="form-label col-label">維護人員</label>
+                                <div class="col-input">
+                                    <select id="maintenance-staff" class="form-select">
+                                        <option value="">請選擇</option>
+                                        <option value="王小明">王小明</option>
+                                        <option value="陳大華">陳大華</option>
+                                        <option value="林志強">林志強</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 操作按鈕 -->
+                        <div class="form-actions-right">
+                            <button type="reset" class="btn btn-info">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                重置
+                            </button>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                查詢
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="window.location.href='green-contract-add.html'">
+                                新增合約
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 資料表格 -->
+                <div class="table-responsive">
+                    <table class="data-table case-table" id="contractTable">
+                        <thead>
+                            <tr>
+                                <th class="col-1">合約編號</th>
+                                <th class="col-1">合約類型</th>
+                                <th class="col-1">合約金額</th>
+                                <th class="col-1">摘要</th>
+                                <th class="col-1">合約戶別</th>
+                                <th class="col-1">合約狀態</th>
+                                <th class="col-1">維護人員</th>
+                                <th class="col-1">最近推播時間</th>
+                                <th class="col-1">功能</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-1">C-10001</td>
+                                <td class="col-1">公設</td>
+                                <td class="col-1">NT$ 120,000</td>
+                                <td class="col-1">年度綠化養護方案</td>
+                                <td class="col-1">A3-3</td>
+                                <td class="col-1"><span class="status-badge status-pending">待簽署</span></td>
+                                <td class="col-1">王小明</td>
+                                <td class="col-1">2025-05-21 10:00</td>
+                                <td class="col-1">
+                                    <div class="table-actions">
+                                        <button class="btn-table-edit action-link">查看</button>
+                                        <button class="btn-table-edit action-link">編輯</button>
+                                        <button class="btn-table-edit">下載</button>
+                                        <button class="btn-table-edit" onclick="location.href='green-contract-payment.html?id=C-10001'">款項維護</button>
+                                        <button class="btn-table-edit btn-push">推播</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-1">C-10002</td>
+                                <td class="col-1">專戶</td>
+                                <td class="col-1">NT$ 45,000</td>
+                                <td class="col-1">季度樹木修剪計畫</td>
+                                <td class="col-1">B2-5</td>
+                                <td class="col-1"><span class="status-badge status-active">已生效</span></td>
+                                <td class="col-1">陳大華</td>
+                                <td class="col-1">-</td>
+                                <td class="col-1">
+                                    <div class="table-actions">
+                                        <button class="btn-table-edit action-link">查看</button>
+                                        <button class="btn-table-edit action-link">編輯</button>
+                                        <button class="btn-table-edit">下載</button>
+                                        <button class="btn-table-edit" onclick="location.href='green-contract-payment.html?id=C-10002'">款項維護</button>
+                                        <button class="btn-table-edit btn-push">推播</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-1">C-10003</td>
+                                <td class="col-1">專戶與公設</td>
+                                <td class="col-1">NT$ 78,500</td>
+                                <td class="col-1">水景設施維護合約</td>
+                                <td class="col-1">C1-1</td>
+                                <td class="col-1"><span class="status-badge status-draft">草稿</span></td>
+                                <td class="col-1">林志強</td>
+                                <td class="col-1">-</td>
+                                <td class="col-1">
+                                    <div class="table-actions">
+                                        <button class="btn-table-edit action-link">查看</button>
+                                        <button class="btn-table-edit action-link">編輯</button>
+                                        <button class="btn-table-edit">下載</button>
+                                        <button class="btn-table-edit" onclick="location.href='green-contract-payment.html?id=C-10003'">款項維護</button>
+                                        <button class="btn-table-edit btn-push">推播</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-1">C-10004</td>
+                                <td class="col-1">公設</td>
+                                <td class="col-1">NT$ 110,000</td>
+                                <td class="col-1">2024年度綠化養護</td>
+                                <td class="col-1">D4-9</td>
+                                <td class="col-1"><span class="status-badge status-expired">已失效</span></td>
+                                <td class="col-1">王小明</td>
+                                <td class="col-1">2025-05-25 14:30</td>
+                                <td class="col-1">
+                                    <div class="table-actions">
+                                        <button class="btn-table-edit action-link">查看</button>
+                                        <button class="btn-table-edit action-link">編輯</button>
+                                        <button class="btn-table-edit">下載</button>
+                                        <button class="btn-table-edit" onclick="location.href='green-contract-payment.html?id=C-10004'">款項維護</button>
+                                        <button class="btn-table-edit btn-push">推播</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-1">C-10005</td>
+                                <td class="col-1">專戶</td>
+                                <td class="col-1">NT$ 35,000</td>
+                                <td class="col-1">臨時樹木移植工程</td>
+                                <td class="col-1">E5-2</td>
+                                <td class="col-1"><span class="status-badge status-void">作廢</span></td>
+                                <td class="col-1">陳大華</td>
+                                <td class="col-1">-</td>
+                                <td class="col-1">
+                                    <div class="table-actions">
+                                        <button class="btn-table-edit action-link">查看</button>
+                                        <button class="btn-table-edit action-link">編輯</button>
+                                        <button class="btn-table-edit">下載</button>
+                                        <button class="btn-table-edit" onclick="location.href='green-contract-payment.html?id=C-10005'">款項維護</button>
+                                        <button class="btn-table-edit btn-push status-disabled" disabled>推播</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分頁元件 -->
+                <div class="pagination-wrapper" id="paginationWrapper">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="pushModal" class="modal">
+        <div class="modal-content" style="width: 500px;">
+            <div class="modal-header">
+                <h3>發送合約推播</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="pushForm">
+                    <div class="form-group">
+                        <label class="form-label">合約編號</label>
+                        <input type="text" id="pushContractId" class="form-input" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">推播內容</label>
+                        <textarea id="pushMessage" class="form-input" rows="5" placeholder="請輸入推播內容..."></textarea>
+                        <p class="form-hint" style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                            系統將自動在內容後方附上合約確認連結。
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-modal-btn">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmPushBtn">確認發送</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/menu-component.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/pagination.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/green-contract.js"></script>
+</body>
+</html>
+
