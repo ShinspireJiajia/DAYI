@@ -15,14 +15,16 @@
     .filter-field select, .filter-field input[type=date], .filter-field input[type=time] { border:1px solid #e5e7eb; border-radius:10px; padding:10px; font-size:14px; background:#fff; color:#111827; }
     .filter-actions { display:flex; gap:10px; margin-top:8px; }
     .btn { border:none; border-radius:10px; padding:10px 12px; font-size:14px; cursor:pointer; }
-    .btn-primary { background:#111827; color:#fff;font-size:16px;}
-    .btn-ghost {font-size:16px; padding:8px 16px; display:flex; align-items:center; gap:8px;background:#fff !important;border:1px solid #00b4b4 !important;color:#00b4b4 !important;border-radius:20px !important;display: block;text-align: center;}
-    .btn-ghost-2 {font-size:16px; padding:8px 16px; display:flex; align-items:center; gap:8px;background:#fff !important;border:1px solid #ccc !important;color:#666 !important;border-radius:8px !important;display: block;text-align: center;}
+    .btn-primary { background:#111827; color:#fff; }
+    .btn-ghost { background:#f3f4f6; color:#374151; }
+
     .course-list { display:grid; gap:0; } /* Remove gap for zebra striping to look connected or keep gap? User said zebra striping for cards. Usually cards have gaps. Let's keep gap but change background. */
     .course-card { 
-      border-radius:12px; 
-      padding:16px; /* Increased padding */
-      display:flex; box-shadow: 0 1px 4px rgba(0, 180, 180, 0.08);
+      border:1px solid #e5e7eb; 
+      border-radius:16px; 
+      padding:20px; /* Increased padding */
+      box-shadow:0 2px 8px rgba(0,0,0,0.06); 
+      display:flex; 
       flex-direction: column;
       gap:12px; 
       min-height:120px; 
@@ -30,9 +32,9 @@
     }
     /* Zebra Striping */
     .course-card:nth-child(odd) { background-color: #FFFFFF; }
-    .course-card:nth-child(even) { background-color: #ffffff; }
+    .course-card:nth-child(even) { background-color: #fcfffc; }
 
-
+    .course-icon { width:52px; height:52px; border-radius:12px; background:linear-gradient(135deg,#6aa5ff,#63d1ff); color:#fff; display:grid; place-items:center; font-size:22px; flex-shrink: 0; }
     
     .course-header {
       display: flex;
@@ -44,37 +46,57 @@
 
     .course-title-group {
       display: flex;
-      align-items: center;align-items: center;
+      align-items: center;
       gap: 12px;
       flex: 1;
     }
 
     /* Course Name: Bold and Largest */
     .course-title { 
-      font-weight:600; 
-      color:#000; 
-      font-size:18px; /* Increased size */
+      font-weight:800; 
+      color:#111827; 
+      font-size:24px; /* Increased size */
       letter-spacing:0.5px; 
       line-height: 1.2;
     }
-    .course-name { cursor:pointer; text-decoration:none; color:#000; }
-    .course-name:hover { color:#194f5b; text-decoration:none; }
+    .course-name { cursor:pointer; text-decoration:none; color:#111827; }
+    .course-name:hover { color:#0d47a1; text-decoration:underline; }
     
+    /* Date/Time: Primary Color or Bold */
+    .course-time {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2563eb; /* Primary Blue */
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
 
-
+    /* Location: Clear but not over-emphasized */
+    .course-location {
+      font-size: 15px;
+      color: #4b5563;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     /* Points: Smaller or right corner */
     .course-points {
-      font-size: 18px;
-      color: #194f5b;
+      font-size: 14px;
+      color: #FF8C00;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding:4px 12px 4px 0;
-      border-radius:8px;
+      gap: 4px;
+      background: #f9fafb;
+      padding: 2px 8px;
+      border-radius: 4px;
       font-weight: 600;
     }
-    .course-points img{width:20px;}
+
     .view-details-link {
         display: inline-flex;
         align-items: center;
@@ -100,7 +122,7 @@
     .btn-book, .btn-waitlist, .btn-disabled { 
       border:none; 
       padding:8px 16px; /* Adjusted padding */
-      border-radius:8px; 
+      border-radius:12px; 
       font-size:16px; /* Adjusted font size */
       cursor:pointer; 
       font-weight: 600;
@@ -109,10 +131,10 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .btn-book { background:#00b4b4; color:#fff; }
-    .btn-book:hover { background:#00b4b4; transform: scale(1.02); }
+    .btn-book { background:#000000; color:#fff; }
+    .btn-book:hover { background:#1877F2; transform: scale(1.02); }
     
-    .btn-waitlist { background:#194f5b; color:#fff; }
+    .btn-waitlist { background:#FFF3E0; color:#666666; }
     
     /* Disabled Button */
     .btn-disabled { 
@@ -122,8 +144,295 @@
       pointer-events: none;
     }
 
+    /* Filter Chips */
+    .filter-container {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 4px 12px 4px;
+      margin-bottom: 12px;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      scrollbar-width: none; /* Firefox */
+    }
+    .filter-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
     
-    
+    .filter-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      color: #4b5563;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .filter-chip.active {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Modal / Bottom Sheet Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: flex-end; /* Mobile bottom sheet style */
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+
+    @media (min-width: 768px) {
+        .modal-overlay {
+            align-items: center;
+        }
+    }
+
+    .modal-container {
+        background: white;
+        width: 100%;
+        max-width: 480px;
+        border-radius: 24px 24px 0 0;
+        padding: 24px;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease-out;
+        position: relative;
+    }
+
+    @media (min-width: 768px) {
+        .modal-container {
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #999;
+        cursor: pointer;
+        padding: 0 8px;
+    }
+
+    .course-summary {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .course-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    .course-info {
+        flex: 1;
+    }
+
+    .course-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+
+    .course-meta {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .course-points {
+        color: #00b0ff;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+
+    .option-card {
+        border: 2px solid #eee;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .option-card.selected {
+        border-color: #00b0ff;
+        background-color: #f0f9ff;
+    }
+
+    .option-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .option-icon {
+        width: 24px;
+        height: 24px;
+        color: #666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .option-card.selected .option-icon {
+        color: #00b0ff;
+    }
+
+    .option-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .option-label {
+        font-weight: 600;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .option-sub {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .radio-circle {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .option-card.selected .radio-circle {
+        border-color: #00b0ff;
+    }
+
+    .option-card.selected .radio-circle::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background: #00b0ff;
+        border-radius: 50%;
+    }
+
+    .agreement-box {
+        margin: 24px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .checkbox-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: transparent;
+    }
+
+    .checkbox-custom.checked {
+        background: #00b0ff;
+        border-color: #00b0ff;
+        color: white;
+    }
+
+    .agreement-text {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .agreement-link {
+        color: #00b0ff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .confirm-btn {
+        width: 100%;
+        padding: 16px;
+        background: #00b0ff;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 176, 255, 0.3);
+    }
+
+    .confirm-btn:active {
+        transform: scale(0.98);
+    }
+
     /* Custom Popup Styles */
     .popup-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -140,7 +449,7 @@
     @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .popup-icon { font-size: 48px; margin-bottom: 16px; color: #00b0ff; }
     .popup-title { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 8px; }
-    .popup-message { font-size: 14px; color: #47727c; margin-bottom: 24px; line-height: 1.5; white-space: pre-line; }
+    .popup-message { font-size: 14px; color: #666; margin-bottom: 24px; line-height: 1.5; white-space: pre-line; }
     .popup-actions { display: flex; gap: 12px; justify-content: center; }
     .popup-actions button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; }
     .btn-confirm { background: #00b0ff; color: white; }
@@ -295,7 +604,7 @@
         name:'冬季養生藥膳', 
         category: '生活應用',
         tags: ['烹飪', '養生'], 
-        day:'2025/12/10', 
+        day:'2026/02/10', 
         time:'10:00-12:00', 
         site:'B棧1F 廚藝教室', 
         maxSeats: 20,
@@ -308,7 +617,7 @@
         instructor: '張國榮老師',
         materials: '食材費另計 300 元',
         materialItems: [{name: '藥膳食材包', price: 300}],
-        registrationDeadline: '2025/12/05',
+        registrationDeadline: '2026/02/05',
         image: 'https://placehold.co/600x400?text=Winter+Diet'
       },
       { 
@@ -638,7 +947,7 @@
         
         categories.forEach(cat => {
             html += `
-                <label class="filter-chip-option category-option" data-value="${cat}" style="padding:8px 16px; border:1px solid #00b4b4; border-radius:20px; cursor:pointer; font-size:14px;">
+                <label class="filter-chip-option category-option" data-value="${cat}" style="padding:8px 16px; border:1px solid #eee; border-radius:20px; cursor:pointer; font-size:14px;">
                     ${cat}
                     <input type="checkbox" name="filterCategory" value="${cat}" style="display:none;">
                 </label>
@@ -663,13 +972,13 @@
         document.querySelectorAll('.category-option').forEach(label => {
             const cb = label.querySelector('input');
             if(cb.checked) {
-                label.style.backgroundColor = '#00b4b4';
+                label.style.backgroundColor = '#00b0ff';
                 label.style.color = '#fff';
-                label.style.borderColor = '#00b4b4';
+                label.style.borderColor = '#00b0ff';
             } else {
                 label.style.backgroundColor = '#fff';
                 label.style.color = '#374151';
-                label.style.borderColor = '#99e1e1';
+                label.style.borderColor = '#eee';
             }
         });
     }
@@ -743,10 +1052,10 @@
         let tagsHtml = '';
 
         if (c.category) {
-            tagsHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8); margin-right:4px;">${c.category}</span>`;
+            tagsHtml += `<span class="badge" style="background:#e3f2fd; color:#1565c0; margin-right:4px;">${c.category}</span>`;
         }
         if (c.tags && Array.isArray(c.tags)) {
-          tagsHtml += c.tags.map(tag => `<span class="badge badge-type" style="margin-right:4px;background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">#${tag}</span>`).join('');
+          tagsHtml += c.tags.map(tag => `<span class="badge badge-type" style="margin-right:4px; background:#f5f5f5; color:#616161;">#${tag}</span>`).join('');
         } else if (c.type) {
            tagsHtml += `<span class="badge badge-type">${c.type}</span>`;
         }
@@ -757,29 +1066,28 @@
         card.innerHTML = `
           <div class="course-header">
             <div class="course-title-group">
-              
+              <div class="course-icon"><i class="fas fa-calendar-check"></i></div>
               <div class="course-title">
                 <span class="course-name" data-detail="${c.id}">${c.name}</span>
-                <div style="font-size: 16px; color: #666; font-weight: normal; margin-top: 4px;">課程代碼：${c.id}</div>
+                <div style="font-size: 14px; color: #666; font-weight: normal; margin-top: 4px;">課程代碼：${c.id}</div>
               </div>
             </div>
           </div>
           
           <div>
             <div class="course-time">
-                <img src="./images/fa-calendar-day.svg"> ${displayTime}
+                <i class="fas fa-calendar-day"></i> ${displayTime}
             </div>
-            <div style="display: flex; gap:8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
                 <div class="course-location" style="margin-bottom: 0;">
-                     ${c.site}
+                    <i class="fas fa-location-dot"></i> ${c.site}
                 </div>
-                <div style="color: #999;">|</div>
-                <div class="course-instructor" style="font-size: 16px; color: #666; display: flex; align-items: center; gap: 8px;">
-                     ${c.instructor}
+                <div class="course-instructor" style="font-size: 15px; color: #4b5563; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-chalkboard-teacher"></i> ${c.instructor}
                 </div>
             </div>
              <div class="course-points">
-                <img src="./images/money-icon.png"> ${c.points} 點
+                <i class="fas fa-coins"></i> ${c.points} 點
             </div>
           </div>
           
@@ -788,7 +1096,7 @@
           </div>
 
           <div class="course-actions" style="display: flex; gap: 10px; margin-top: 12px;">
-            <button class="btn-ghost-2" onclick="window.location.href='course-detail.html?id=${c.id}'" style="flex: 1;">課程活動資訊</button>
+            <button class="btn-info" onclick="window.location.href='course-detail.html?id=${c.id}'" style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; color: #374151; font-weight: 600; cursor: pointer;">課程活動資訊</button>
             <button class="${btnClass}" ${isBooked ? '' : `data-book="${c.id}"`} ${btnAttr} style="flex: 1;">${btnText}</button>
           </div>
         `;
@@ -953,9 +1261,9 @@
       pointsSub.textContent = `現有點數: ${userPoints.toLocaleString()}點`;
       
       if (userPoints >= c.points) {
-          pointsSub.innerHTML += ' <span style="color:#b3a68b; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-check-circle"></i> 點數足夠</span>';
+          pointsSub.innerHTML += ' <span style="color:#2e7d32; font-weight:bold; font-size:12px; margin-left:4px;"><i class="fas fa-check-circle"></i> 點數足夠</span>';
       } else {
-          pointsSub.innerHTML += ' <span style="color:#d32f2f; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-times-circle"></i> 點數不足</span>';
+          pointsSub.innerHTML += ' <span style="color:#d32f2f; font-weight:bold; font-size:12px; margin-left:4px;"><i class="fas fa-times-circle"></i> 點數不足</span>';
       }
       
       const chargeAmount = c.points * 10;
@@ -1035,24 +1343,22 @@
       const isFull = c.availableSeats === 0;
       const paymentSection = document.getElementById('payment-section');
       
-      if (isFull) {
-          paymentSection.style.display = 'none';
-          selectedPayment = null;
-          document.querySelector('.modal-header h2').textContent = '課程預約確認'; // Match image title
-      } else {
-          paymentSection.style.display = 'block';
+      // Always show payment section even for waitlist
+      paymentSection.style.display = 'block';
+      if (!selectedPayment) {
           selectedPayment = 'points';
           const paymentOptions = paymentSection.querySelectorAll('.option-card');
           paymentOptions.forEach(el => el.classList.remove('selected'));
           paymentSection.querySelector('[data-value="points"]').classList.add('selected');
-          document.querySelector('.modal-header h2').textContent = '課程活動預約確認';
       }
 
       const btn = document.getElementById('confirmBooking');
       
       if (isFull) {
+        document.querySelector('.modal-header h2').textContent = '課程候補確認';
         btn.textContent = '確認候補';
       } else {
+        document.querySelector('.modal-header h2').textContent = '課程活動預約確認';
         btn.textContent = '確認預約';
       }
       
@@ -1255,8 +1561,8 @@
               datetime: start.toISOString(),
               bookingDate: new Date().toISOString(),
               isWaitlist: isWaitlist,
-              paymentMethod: isWaitlist ? null : finalPaymentMethod,
-              chargeAmount: isWaitlist ? 0 : finalChargeAmount,
+              paymentMethod: finalPaymentMethod,
+              chargeAmount: finalChargeAmount,
               selectedMaterials: selectedMaterials // Save selected materials
             });
             
@@ -1264,9 +1570,13 @@
 
             if (isWaitlist) {
               console.log('Showing waitlist popup');
+              let waitlistMsg = '已成功加入候補名單，如有名額釋出將依據候補順序遞補。';
+              if (finalPaymentMethod === 'charge' || finalPaymentMethod === 'mixed') {
+                   // waitlistMsg += `\n(已記錄掛帳 NT$${finalChargeAmount})`;
+              }
               showPopup(
                 '已加入候補',
-                '已成功加入候補名單，如有名額釋出將依據候補順序遞補。',
+                waitlistMsg,
                 () => { 
                     closeSheet();
                     window.location.href = 'courses.html'; 
@@ -1293,56 +1603,37 @@
             }
         };
 
-        if (!isWaitlist) {
-            if (paymentMethod === 'points') {
-                 const userPoints = getUserPoints();
-                 if (userPoints < pointsNeeded) {
-                     const fullChargeAmount = (pointsNeeded * 10) + totalMaterialFee;
-                     const msg = `點數不足！需要 ${pointsNeeded} 點，您目前有 ${userPoints} 點。\n依規定無法使用部分點數折抵，需全額以掛帳方式支付。${totalMaterialFee > 0 ? '\n(含課程材料費 NT$' + totalMaterialFee + ')' : ''}\n\n總掛帳金額：NT$${fullChargeAmount} 元\n是否確認預約？`;
+        if (paymentMethod === 'points') {
+             const userPoints = getUserPoints();
+             if (userPoints < pointsNeeded) {
+                 const fullChargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+                 const msg = `點數不足！需要 ${pointsNeeded} 點，您目前有 ${userPoints} 點。\n依規定無法使用部分點數折抵，需全額以掛帳方式支付。${totalMaterialFee > 0 ? '\n(含課程材料費 NT$' + totalMaterialFee + ')' : ''}\n\n總掛帳金額：NT$${fullChargeAmount} 元\n是否確認預約？`;
 
-                     showPopup(
-                        '點數不足', 
-                        msg, 
-                        () => { 
-                             // 不扣除點數，全額掛帳
-                             addChargeAmount(fullChargeAmount);
-                             executeBooking('charge', fullChargeAmount);
-                        }, 
-                        () => { /* Cancel */ }, 
-                        true // showCancel
-                     );
-                     return;
-                 }
-                 deductPoints(pointsNeeded);
-                 
-                 if (totalMaterialFee > 0) {
-                     addChargeAmount(totalMaterialFee);
-                     executeBooking('mixed', totalMaterialFee);
-                 } else {
-                     executeBooking('points', 0);
-                 }
-            } else if (paymentMethod === 'bill') {
-                 chargeAmount = (pointsNeeded * 10) + totalMaterialFee;
-                 addChargeAmount(chargeAmount);
-                 executeBooking('charge', chargeAmount);
-            }
-        } else {
-            console.log('Processing waitlist...');
-            // 候補也要檢查點數
-            const userPoints = getUserPoints();
-            console.log('User points:', userPoints, 'Needed:', pointsNeeded);
-            
-            if (userPoints < pointsNeeded) {
                  showPopup(
                     '點數不足', 
-                    `您的點數 (${userPoints} 點) 不足支付此課程 (${pointsNeeded} 點)，無法加入候補。`, 
+                    msg, 
                     () => { 
-                         // Do nothing
-                    }
+                         // 不扣除點數，全額掛帳
+                         addChargeAmount(fullChargeAmount);
+                         executeBooking('charge', fullChargeAmount);
+                    }, 
+                    () => { /* Cancel */ }, 
+                    true // showCancel
                  );
                  return;
-            }
-            executeBooking(null, 0);
+             }
+             deductPoints(pointsNeeded);
+             
+             if (totalMaterialFee > 0) {
+                 addChargeAmount(totalMaterialFee);
+                 executeBooking('mixed', totalMaterialFee);
+             } else {
+                 executeBooking('points', 0);
+             }
+        } else if (paymentMethod === 'bill') {
+             chargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+             addChargeAmount(chargeAmount);
+             executeBooking('charge', chargeAmount);
         }
       });
 
@@ -1372,17 +1663,18 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="close-btn">×</button>
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
+      <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-bell"></i>
     </div>
   </header>
 
-  <main class="pages-content">
+  <main class="main-content">
     <!-- Filter Toolbar -->
-    <div style="display:flex; justify-content:space-between; align-items:center; padding: 0 4px; margin-bottom:16px;">
-        <div style="font-size: 18px; font-weight: 600; color: #000;">課程與活動日期</div>
-        <button id="openFilterBtn" class="btn-ghost">
-           <img src="./images/fa-filter.svg"> 
-           類型篩選 <span id="filterCount" style="display:none; background:#ef4444; color:white; border-radius:99px; padding:3px 6px; font-size:12px; min-width: 18px; text-align: center;position: relative;top:-2px;">0</span>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding: 0 4px; margin-bottom: 8px;">
+        <div style="font-size: 14px; font-weight: 600; color: #374151;">課程與活動日期</div>
+        <button id="openFilterBtn" class="btn-ghost" style="font-size:14px; padding: 6px 12px; display:flex; align-items:center; gap:6px; border: 1px solid #e5e7eb; background: white;">
+            <i class="fas fa-filter"></i> 類型篩選 <span id="filterCount" style="display:none; background:#ef4444; color:white; border-radius:99px; padding:0 6px; font-size:12px; min-width: 18px; text-align: center;">0</span>
         </button>
     </div>
 
@@ -1393,7 +1685,7 @@
 
     <div id="courseList" class="course-list"></div>
   </main>
-<!--隱藏導航
+
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html">
       <i class="fas fa-home"></i>
@@ -1411,7 +1703,7 @@
       <i class="fas fa-user"></i>
       <span>個人</span>
     </a>
-  </nav>-->
+  </nav>
   <div class="home-indicator"></div>
 
   <!-- Booking Modal Sheet -->
@@ -1432,7 +1724,7 @@
                 <div class="course-meta"><i class="far fa-user"></i> <span id="s-instructor"></span></div>
                 <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
                     <div class="course-points" id="s-points" style="margin-top: 0; font-size: 16px;"></div>
-                    <a href="course-detail.html" class="view-details-link" style="margin-top: 0; color: #b3a68b;">查看完整活動詳情 <i class="fas fa-chevron-right"></i></a>
+                    <a href="course-detail.html" class="view-details-link" style="margin-top: 0; color: #eb2571;">查看完整活動詳情 <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
         </div>
@@ -1441,7 +1733,7 @@
             <div class="section-title">選擇付費方式</div>
             <div class="option-card selected" onclick="selectOption(this, 'payment')" data-value="points">
                 <div class="option-content">
-                    <div class="option-icon"><img src="./images/money-icon.png"></div>
+                    <div class="option-icon"><i class="fas fa-coins"></i></div>
                     <div class="option-text">
                         <span class="option-label">使用點數</span>
                         <span class="option-sub" id="points-sub"></span>
@@ -1464,18 +1756,18 @@
 
         <div id="material-fee-section" style="display:none; margin-bottom: 24px;">
             <div class="section-title">課程材料費 (可選)</div>
-            <div id="material-description" style="margin-bottom: 12px; font-size: 16px; color: #4b5563; line-height: 1.5;"></div>
+            <div id="material-description" style="margin-bottom: 12px; font-size: 14px; color: #4b5563; line-height: 1.5;"></div>
             <div id="material-items-container">
                 <!-- Dynamic items will be injected here -->
             </div>
-            <div style="font-size: 16px; color: #47727c; margin-top: 4px; padding-left: 4px;">
+            <div style="font-size: 12px; color: #666; margin-top: 4px; padding-left: 4px;">
                 <i class="fas fa-info-circle"></i> 此費用將列入客房帳單收取，無法使用點數折抵。
             </div>
         </div>
 
         <div class="agreement-box" style="justify-content: center; text-align: center;">
-            <div class="agreement-text" style="color: #47727c; font-size: 16px;">
-                為了讓您有更好的體驗，如果您點選確認預約，表示您已同意 <a href="course-notice.html" class="agreement-link" style="color: #00b4b4; text-decoration: underline;">課程活動須知說明</a>
+            <div class="agreement-text" style="color: #666; font-size: 14px;">
+                為了讓您有更好的體驗，如果您點選確認預約，表示您已同意 <a href="course-notice.html" class="agreement-link" style="color: #00b0ff; text-decoration: underline;">課程活動須知說明</a>
             </div>
         </div>
 
@@ -1499,8 +1791,8 @@
         </div>
 
         <div style="display:flex; gap:12px;">
-            <button class="btn-ghost-2" id="resetFilter" style="flex:1; padding: 12px;">重置</button>
-            <button class="btn-primary" id="applyFilter" style="flex:1; background:#00b4b4; color:white; border:none; border-radius:8px; padding:12px; font-weight:600;">確認篩選</button>
+            <button class="btn-ghost" id="resetFilter" style="flex:1; padding: 12px; border-radius: 12px;">重置</button>
+            <button class="btn-primary" id="applyFilter" style="flex:1; background:#00b0ff; color:white; border:none; border-radius:12px; padding:12px; font-weight:600;">確認篩選</button>
         </div>
     </div>
   </div>

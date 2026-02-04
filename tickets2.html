@@ -37,7 +37,7 @@
     </div>
   </header>
 
-  <main class="pages-content">
+  <main class="main-content">
     <!-- Main Category Tabs -->
     <div class="main-category-tabs">
       <button class="category-btn active" data-view="view-vip">
@@ -614,7 +614,6 @@
       <div class="vip-card">
         <div class="vip-header">
           <h3>貴賓饗宴</h3>
-          <span class="vip-badge">尊榮服務</span>
         </div>
         
         <!-- Meal Selection -->
@@ -651,9 +650,8 @@
         <!-- Info Section -->
         <div class="vip-info">
           <h4>使用須知</h4>
-          <p>本券適用於頂級貴賓廳，提供專屬主廚料理。</p>
-          <p>用餐位置：A棟 3F 貴賓廳</p>
-          <p>請著正式服裝入場。</p>
+       
+          <p>為了讓您入席更加舒心順暢，抵達 2F 聚味廳 時，請先將您的專屬入席碼（QR Code）交由服務同仁確認。這能協助我們快速為您安排妥適席位，讓這份現做的美味與心意，能即時呈獻給您。</p>
         </div>
 
         <!-- Usage History -->
@@ -806,24 +804,24 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(25, 79, 91, 0.04);
-        padding: 12px;
-        border-radius:8px;
+        background: rgb(82 175 229 / 5%);
+        padding: 16px;
+        border-radius: 12px;
         margin-bottom: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .vip-item-info h4 {
         margin: 0 0 4px 0;
         font-size: 16px;
-        color: #194f5b;
+        color: #3b6bcc;
     }
     .vip-item-info p {
         margin: 0;
-        font-size: 14px;
-        color: #666;
+        font-size: 13px;
+        color: #9ca3af;
     }
     .vip-action-btn {
-        background: #00b4b4;
+        background: #3b82f6;
         color: white;
         border: none;
         padding: 8px 16px;
@@ -901,21 +899,18 @@
             } catch(e) {
                 modalContainer.textContent = code;
             }
-            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
             startModalTimer();
         } else if (type === 'text') {
             const div = document.createElement('div');
             div.className = 'text-code-display';
             div.textContent = code;
             modalContainer.appendChild(div);
-            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
             if (modalTimerDisplay) modalTimerDisplay.style.display = 'none';
         } else {
             // QR Code
             const div = document.createElement('div');
             modalContainer.appendChild(div);
             new QRCode(div, { text: code, width: 180, height: 180 });
-            modalHint.textContent = '本條碼僅限本人使用，請勿截圖。出示時請保持網路連線。';
             startModalTimer();
         }
         
@@ -1057,7 +1052,7 @@
         const updateButton = (id, count) => {
             const btn = document.getElementById(id);
             if (btn) {
-                btn.innerHTML = `<i class="fas fa-qrcode"></i> 使用 (${count})`;
+                btn.innerHTML = `<i class="fas fa-qrcode"></i> 入席 (${count})`;
             }
         };
 

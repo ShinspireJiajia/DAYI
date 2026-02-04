@@ -8,53 +8,286 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <style>
     .course-image { width:100%; height:200px; object-fit:cover; border-radius:16px; margin-bottom:16px; }
-    .course-header { padding:0 0px 16px 0px; }
-    .course-title { font-size:18px; font-weight:600; color:#000; margin-bottom:8px; line-height: 1.3; }
+    .course-header { padding:0 16px 16px; }
+    .course-title { font-size:24px; font-weight:800; color:#111827; margin-bottom:8px; line-height: 1.3; }
     .course-badges { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-    .badge { font-size:14px; padding:6px 10px; border-radius:999px; font-weight:700; }
+    .badge { font-size:12px; padding:4px 8px; border-radius:999px; font-weight:700; }
     .badge-type { background:#e8f5e8; color:#2e7d32; }
-    .status-available {background: rgb(25, 79, 91, 0.08);color: rgb(25, 79, 91, 0.8);}
+    .status-available { background:#e0f2fe; color:#0369a1; }
     .status-waitlist { background:#fff7ed; color:#c2410c; }
     .status-full { background:#f3f4f6; color:#9ca3af; }
     
-    .info-section { background:#fff; border-radius:12px; padding:12px; margin:8px 0px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-    .section-title-s { font-size:16px; font-weight:600; color:#000; margin:8px 0 12px 0; display:flex; align-items:center; gap:8px; }
+    .info-section { background:#fff; border-radius:16px; padding:16px; margin:8px 16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .section-title { font-size:16px; font-weight:700; color:#111827; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
     .info-row { display:grid; grid-template-columns:80px 1fr; gap:12px; padding:8px 0; border-bottom:1px solid #f3f4f6; align-items: flex-start; }
     .info-row:last-child { border-bottom:none; }
-    .info-label { font-size:16px; color:#666; font-weight:400; line-height: 1.5; }
-    .info-value { font-size:16px; color:#000; font-weight:600; line-height: 1.5; }
-    .info-value.highlight { color: #194f5b; font-weight: 800; font-size: 16px; }
+    .info-label { font-size:13px; color:#6b7280; font-weight:600; line-height: 1.5; }
+    .info-value { font-size:14px; color:#111827; font-weight:600; line-height: 1.5; }
+    .info-value.highlight { color: #2563eb; font-weight: 800; font-size: 15px; }
     
-    .description { color:#000; line-height:1.8; font-size: 16px; }
+    .description { color:#374151; line-height:1.8; font-size: 15px; }
     .description li { margin-left: 15px; }
     .materials-checkbox { margin:8px 0; }
     .materials-checkbox input { margin-right:8px; }
     .materials-checkbox label { font-size:14px; color:#374151; }
-    .course-detail-list{margin-left:8px;}
-    .course-detail-list li::marker {
-    color: #00b4b4; /* 這裡換成你想要的主色 */
-    font-size: 1.2em; /* 也可以調整大小 */
-}
-    .booking-section { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:414px; background:#fff; padding:16px; border-radius:24px 24px 0 0;box-shadow:0 -4px 12px rgba(0,0,0,0.1); z-index:100; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
+    
+    .booking-section { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:414px; background:#fff; padding:16px; box-shadow:0 -4px 12px rgba(0,0,0,0.1); z-index:100; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box; }
     .booking-info { display:flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; }
-    .price-info { font-size:20px; font-weight:800; color:#194f5b; }
-    .points-info { font-size:16px; color:#6b7280; word-wrap: break-word; }
-    .btn-book-detail {width: 100%;
-    padding: 16px;
-    background: #00b4b4;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 180, 180, 0.3);}
+    .price-info { font-size:20px; font-weight:800; color:#111827; }
+    .points-info { font-size:14px; color:#6b7280; word-wrap: break-word; }
+    .btn-book-detail { width:100%; background:#111827; color:#fff; border:none; padding:14px; border-radius:12px; font-size:18px; font-weight:700; cursor:pointer; }
     .btn-waitlist-detail { width:100%; background:#ff9800; color:#fff; border:none; padding:14px; border-radius:12px; font-size:18px; font-weight:700; cursor:pointer; }
     
     .main-content { padding-bottom:200px; }
 
-   
+    /* Modal / Bottom Sheet Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: flex-end; /* Mobile bottom sheet style */
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+
+    @media (min-width: 768px) {
+        .modal-overlay {
+            align-items: center;
+        }
+    }
+
+    .modal-container {
+        background: white;
+        width: 100%;
+        max-width: 480px;
+        border-radius: 24px 24px 0 0;
+        padding: 24px;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease-out;
+        position: relative;
+    }
+
+    @media (min-width: 768px) {
+        .modal-container {
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #999;
+        cursor: pointer;
+        padding: 0 8px;
+    }
+
+    .course-summary {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .course-info {
+        flex: 1;
+    }
+
+    .course-title-modal {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+
+    .course-meta {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .course-points-modal {
+        color: #00b0ff;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .section-title-modal {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+
+    .option-card {
+        border: 2px solid #eee;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .option-card.selected {
+        border-color: #00b0ff;
+        background-color: #f0f9ff;
+    }
+
+    .option-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .option-icon {
+        width: 24px;
+        height: 24px;
+        color: #666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .option-card.selected .option-icon {
+        color: #00b0ff;
+    }
+
+    .option-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .option-label {
+        font-weight: 600;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .option-sub {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .radio-circle {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .option-card.selected .radio-circle {
+        border-color: #00b0ff;
+    }
+
+    .option-card.selected .radio-circle::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background: #00b0ff;
+        border-radius: 50%;
+    }
+
+    .agreement-box {
+        margin: 24px 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .checkbox-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: transparent;
+    }
+
+    .checkbox-custom.checked {
+        background: #00b0ff;
+        border-color: #00b0ff;
+        color: white;
+    }
+
+    .agreement-text {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .agreement-link {
+        color: #00b0ff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .confirm-btn {
+        width: 100%;
+        padding: 16px;
+        background: #00b0ff;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 176, 255, 0.3);
+    }
+
+    .confirm-btn:active {
+        transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
@@ -85,8 +318,8 @@
     </div>
   </header>
 
-  <main class="pages-content">
-    <img id="courseImage" class="course-image" src="./images/course-detail-img.png" alt="課程圖片" />
+  <main class="main-content">
+    <img id="courseImage" class="course-image" src="https://placehold.co/600x400?text=Course+Image" alt="課程圖片" />
     
     <div class="course-header">
       <h1 id="courseTitle" class="course-title">課程名稱</h1>
@@ -95,7 +328,7 @@
     </div>
 
     <div class="info-section">
-      <div class="section-title-s">
+      <div class="section-title">
         課程資訊
       </div>
       <div class="info-row">
@@ -130,7 +363,7 @@
     </div>
 
     <div class="info-section" id="materialsSection">
-      <div class="section-title-s">
+      <div class="section-title">
         <i class="fas fa-shopping-cart"></i>
         材料購買需求
       </div>
@@ -144,12 +377,12 @@
     </div>
 
     <div class="info-section">
-      <div class="section-title-s">
-        <i class="fas fa-info-circle"></i>
+      <div class="section-title">
+        <i class="fas fa-exclamation-triangle"></i>
         注意事項
       </div>
       <div id="courseNotes" class="description">
-        <ul class="course-detail-list">
+        <ul>
           <li>請穿著舒適運動服裝</li>
           <li>請自備毛巾與水瓶</li>
           <li>課程期間請將手機調為靜音</li>
@@ -215,25 +448,21 @@
         </div>
         
         <div class="course-summary">
-            <!-- <img src="" alt="Course Image" class="course-img" id="s-img"> -->
             <div class="course-info">
-                <div class="course-title" id="s-name"></div>
+                <div class="course-title-modal" id="s-name"></div>
                 <div class="course-meta"><i class="fas fa-barcode"></i> <span id="s-code"></span></div>
                 <div class="course-meta"><i class="far fa-clock"></i> <span id="s-time"></span></div>
                 <div class="course-meta"><i class="fas fa-map-marker-alt"></i> <span id="s-site"></span></div>
                 <div class="course-meta"><i class="far fa-user"></i> <span id="s-instructor"></span></div>
-                <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
-                    <div class="course-points" id="s-points" style="margin-top: 0; font-size: 16px;"></div>
-                    <a href="course-detail.html" class="view-details-link" style="margin-top: 0; color: #b3a68b;">查看完整活動詳情 <i class="fas fa-chevron-right"></i></a>
-                </div>
+                <div class="course-points-modal" id="s-points"></div>
             </div>
         </div>
 
         <div id="payment-section">
-            <div class="section-title-s">選擇付費方式</div>
+            <div class="section-title-modal">選擇付費方式</div>
             <div class="option-card selected" onclick="selectOption(this, 'payment')" data-value="points">
                 <div class="option-content">
-                    <div class="option-icon"><img src="./images/money-icon.png"></div>
+                    <div class="option-icon"><i class="fas fa-coins"></i></div>
                     <div class="option-text">
                         <span class="option-label">使用點數</span>
                         <span class="option-sub" id="points-sub"></span>
@@ -255,19 +484,18 @@
         </div>
 
         <div id="material-fee-section" style="display:none; margin-bottom: 24px;">
-            <div class="section-title-s">課程材料費 (可選)</div>
-            <div id="material-description" style="margin-bottom: 12px; font-size: 16px; color: #4b5563; line-height: 1.5;"></div>
+            <div class="section-title-modal">課程材料費 (可選)</div>
             <div id="material-items-container">
                 <!-- Dynamic items will be injected here -->
             </div>
-            <div style="font-size: 16px; color: #47727c; margin-top: 4px; padding-left: 4px;">
+            <div style="font-size: 12px; color: #666; margin-top: 4px; padding-left: 4px;">
                 <i class="fas fa-info-circle"></i> 此費用將列入客房帳單收取，無法使用點數折抵。
             </div>
         </div>
 
         <div class="agreement-box" style="justify-content: center; text-align: center;">
-            <div class="agreement-text" style="color: #47727c; font-size: 16px;">
-                為了讓您有更好的體驗，如果您點選確認預約，表示您已同意 <a href="course-notice.html" class="agreement-link" style="color: #00b4b4; text-decoration: underline;">課程活動須知說明</a>
+            <div class="agreement-text" style="color: #666; font-size: 14px;">
+                如果您點選確認預約，表示您已同意 <a href="course-notice.html" class="agreement-link" style="color: #00b0ff; text-decoration: underline;">課程活動預約須知說明</a>
             </div>
         </div>
 
@@ -415,7 +643,7 @@
         sessions: 1,
         fee: '扣點',
         note:'製作專屬皮件，體驗工匠精神',
-        description: '<strong>👜 手工皮件製作：質感生活，親手打造</strong><br><br><strong>課程簡介：</strong> 體驗皮革工藝的魅力，從選皮、裁切、打孔到縫製，親手製作一個獨一無二的真皮零錢包或證件套。課程由專業皮件設計師指導，即使是初學者也能輕鬆上手。<br><br><strong>課程特色：</strong><ul class="course-detail-list"><li>使用高品質義大利植鞣革。</li><li>學習基礎皮革工具使用與手縫技巧。</li><li>可客製化刻字，打造專屬紀念。</li></ul>',
+        description: '<strong>👜 手工皮件製作：質感生活，親手打造</strong><br><br><strong>課程簡介：</strong> 體驗皮革工藝的魅力，從選皮、裁切、打孔到縫製，親手製作一個獨一無二的真皮零錢包或證件套。課程由專業皮件設計師指導，即使是初學者也能輕鬆上手。<br><br><strong>課程特色：</strong><ul><li>使用高品質義大利植鞣革。</li><li>學習基礎皮革工具使用與手縫技巧。</li><li>可客製化刻字，打造專屬紀念。</li></ul>',
         instructor: '陳浩然老師',
         materials: '材料費另計 NT$800 (含皮革、五金、工具租借)',
         materialItems: [{name: '義大利植鞣革', price: 500}, {name: '五金配件組', price: 300}],
@@ -509,9 +737,9 @@
       pointsSub.textContent = `現有點數: ${userPoints.toLocaleString()}點`;
       
       if (userPoints >= course.points) {
-          pointsSub.innerHTML += ' <span style="color:#b3a68b; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-check-circle"></i> 點數足夠</span>';
+          pointsSub.innerHTML += ' <span style="color:#2e7d32; font-weight:bold; font-size:12px; margin-left:4px;"><i class="fas fa-check-circle"></i> 點數足夠</span>';
       } else {
-          pointsSub.innerHTML += ' <span style="color:#d32f2f; font-weight:bold; font-size:14px; margin-left:4px;"><i class="fas fa-times-circle"></i> 點數不足</span>';
+          pointsSub.innerHTML += ' <span style="color:#d32f2f; font-weight:bold; font-size:12px; margin-left:4px;"><i class="fas fa-times-circle"></i> 點數不足</span>';
       }
       
       const chargeAmount = course.points * 10;
@@ -584,11 +812,9 @@
       const isFull = course.availableSeats === 0;
       const paymentSection = document.getElementById('payment-section');
       
-      if (isFull) {
-          paymentSection.style.display = 'none';
-          selectedPayment = null;
-      } else {
-          paymentSection.style.display = 'block';
+      // Always show payment section
+      paymentSection.style.display = 'block';
+      if (!selectedPayment) {
           selectedPayment = 'points';
           const paymentOptions = paymentSection.querySelectorAll('.option-card');
           paymentOptions.forEach(el => el.classList.remove('selected'));
@@ -664,17 +890,17 @@
       
       // 1. 類別 (藍色)
       if (course.category) {
-        badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">${course.category}</span>`;
+        badgesHtml += `<span class="badge" style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb;">${course.category}</span>`;
       }
 
       // 2. 標籤 (灰色)
       if (course.tags && Array.isArray(course.tags)) {
         course.tags.forEach(tag => {
-          badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">#${tag}</span>`;
+          badgesHtml += `<span class="badge" style="background-color: #f5f5f5; color: #616161; border: 1px solid #e0e0e0;">#${tag}</span>`;
         });
       } else if (course.type) {
          // Fallback
-         badgesHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8);">${course.type}</span>`;
+         badgesHtml += `<span class="badge" style="background-color: #f5f5f5; color: #616161; border: 1px solid #e0e0e0;">${course.type}</span>`;
       }
 
       // 3. 狀態
@@ -825,7 +1051,11 @@
             saveCourseBooking(course, isWaitlist, finalPaymentMethod, finalChargeAmount, selectedMaterials);
 
             if (isWaitlist) {
-              await showPopup({ title: '已加入候補', message: '已成功加入候補名單，如有名額釋出將依據候補順序遞補。', icon: 'success' });
+              let waitlistMsg = '已成功加入候補名單，如有名額釋出將依據候補順序遞補。';
+              // if (finalPaymentMethod === 'charge' || finalPaymentMethod === 'mixed') {
+              //     waitlistMsg += `\n(已記錄掛帳 NT$${finalChargeAmount})`;
+              // }
+              await showPopup({ title: '已加入候補', message: waitlistMsg, icon: 'success' });
               closeSheet();
               window.location.href = 'courses.html'; 
             } else {
@@ -844,54 +1074,40 @@
             }
         };
 
-        if (!isWaitlist) {
-            if (paymentMethod === 'points') {
-                 const userPoints = getUserPoints();
-                 if (userPoints < pointsNeeded) {
-                     const fullChargeAmount = (pointsNeeded * 10) + totalMaterialFee;
-                     const msg = `點數不足！需要 ${pointsNeeded} 點，您目前有 ${userPoints} 點。\n依規定無法使用部分點數折抵，需全額以掛帳方式支付。${totalMaterialFee > 0 ? '\n(含課程材料費 NT$' + totalMaterialFee + ')' : ''}\n\n總掛帳金額：NT$${fullChargeAmount} 元\n是否確認預約？`;
+        if (paymentMethod === 'points') {
+             const userPoints = getUserPoints();
+             if (userPoints < pointsNeeded) {
+                 const fullChargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+                 const msg = `點數不足！需要 ${pointsNeeded} 點，您目前有 ${userPoints} 點。\n依規定無法使用部分點數折抵，需全額以掛帳方式支付。${totalMaterialFee > 0 ? '\n(含課程材料費 NT$' + totalMaterialFee + ')' : ''}\n\n總掛帳金額：NT$${fullChargeAmount} 元\n是否確認預約？`;
 
-                     const confirmed = await showPopup({
-                        title: '點數不足', 
-                        message: msg, 
-                        icon: 'warning',
-                        showCancel: true,
-                        confirmText: '確認掛帳',
-                        confirmClass: 'danger'
-                     });
-                     
-                     if (confirmed) {
-                         // 不扣除點數，全額掛帳
-                         addChargeAmount(fullChargeAmount);
-                         executeBooking('charge', fullChargeAmount);
-                     }
-                     return;
-                 }
-                 deductPoints(pointsNeeded);
-                 
-                 if (totalMaterialFee > 0) {
-                     addChargeAmount(totalMaterialFee);
-                     executeBooking('mixed', totalMaterialFee);
-                 } else {
-                     executeBooking('points', 0);
-                 }
-            } else if (paymentMethod === 'bill') {
-                 chargeAmount = (pointsNeeded * 10) + totalMaterialFee;
-                 addChargeAmount(chargeAmount);
-                 executeBooking('charge', chargeAmount);
-            }
-        } else {
-            // 候補也要檢查點數
-            const userPoints = getUserPoints();
-            if (userPoints < pointsNeeded) {
-                 await showPopup({
+                 const confirmed = await showPopup({
                     title: '點數不足', 
-                    message: `您的點數 (${userPoints} 點) 不足支付此課程 (${pointsNeeded} 點)，無法加入候補。`, 
-                    icon: 'error'
+                    message: msg, 
+                    icon: 'warning',
+                    showCancel: true,
+                    confirmText: '確認掛帳',
+                    confirmClass: 'danger'
                  });
+                 
+                 if (confirmed) {
+                     // 不扣除點數，全額掛帳
+                     addChargeAmount(fullChargeAmount);
+                     executeBooking('charge', fullChargeAmount);
+                 }
                  return;
-            }
-            executeBooking(null, 0);
+             }
+             deductPoints(pointsNeeded);
+             
+             if (totalMaterialFee > 0) {
+                 addChargeAmount(totalMaterialFee);
+                 executeBooking('mixed', totalMaterialFee);
+             } else {
+                 executeBooking('points', 0);
+             }
+        } else if (paymentMethod === 'bill') {
+             chargeAmount = (pointsNeeded * 10) + totalMaterialFee;
+             addChargeAmount(chargeAmount);
+             executeBooking('charge', chargeAmount);
         }
     });
 

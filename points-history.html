@@ -68,6 +68,20 @@
             .modal-close { background: none; border: none; font-size: 20px; color: #6b7280; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
             .modal-close:hover { background: #e5e7eb; }
             .modal-body p { color: #374151; font-size: 15px; line-height: 1.6; margin: 0; }
+
+            /* 當月到期點數提醒樣式 - 毛玻璃效果 */
+            .expiring-points-alert { display: flex; align-items: center; gap: 10px; background: rgba(251, 191, 36, 0.12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 10px; padding: 10px 12px; margin-top: 12px; }
+            .expiring-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; color: #d97706; font-size: 14px; }
+            .expiring-info { flex: 1; display: flex; align-items: center; justify-content: space-between; }
+            .expiring-label { font-size: 12px; color: #92400e; font-weight: 500; }
+            .expiring-value { font-size: 16px; font-weight: 700; color: #b45309; }
+            .expiring-date { font-size: 11px; color: #92400e; opacity: 0.8; }
+
+            /* 點數歷程到期日樣式 */
+            .h-expiry { font-size: 11px; color: #f59e0b; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+            .h-expiry i { font-size: 10px; }
+            .h-expiry.expired { color: #dc2626; }
+            .h-expiry.expiring-soon { color: #f59e0b; }
         </style>
 </head>
 <body>
@@ -120,6 +134,17 @@
                 <div class="points-stat">
                     <span class="label">本月使用</span>
                     <span class="val used">-1,300 點</span>
+                </div>
+            </div>
+            <!-- 當月到期點數提醒 -->
+            <div class="expiring-points-alert">
+                <div class="expiring-icon"><i class="fas fa-clock"></i></div>
+                <div class="expiring-info">
+                    <div class="expiring-left">
+                        <div class="expiring-label">本月即將到期</div>
+                        <div class="expiring-date">2026/02/28 止</div>
+                    </div>
+                    <div class="expiring-value">2,500 點</div>
                 </div>
             </div>
         </div>
@@ -192,6 +217,7 @@
                             <div class="h-right">
                                 <div class="h-points earned">+1,000</div>
                                 <div class="h-date">2024/01/15 14:30</div>
+                                <div class="h-expiry expired"><i class="fas fa-clock"></i> 到期日 2024/01/31</div>
                             </div>
                         </div>
 
@@ -234,6 +260,7 @@
                             <div class="h-right">
                                 <div class="h-points earned">+50</div>
                                 <div class="h-date">2024/01/25 09:00</div>
+                                <div class="h-expiry expired"><i class="fas fa-clock"></i> 到期日 2024/01/31</div>
                             </div>
                         </div>
 
@@ -262,6 +289,7 @@
                             <div class="h-right">
                                 <div class="h-points earned">+200</div>
                                 <div class="h-date">2024/02/05 13:20</div>
+                                <div class="h-expiry expiring-soon"><i class="fas fa-clock"></i> 到期日 2026/02/28</div>
                             </div>
                         </div>
 
@@ -304,6 +332,7 @@
                             <div class="h-right">
                                 <div class="h-points earned">+100</div>
                                 <div class="h-date">2024/02/14 16:30</div>
+                                <div class="h-expiry expiring-soon"><i class="fas fa-clock"></i> 到期日 2026/02/28</div>
                             </div>
                         </div>
 
@@ -332,6 +361,7 @@
                             <div class="h-right">
                                 <div class="h-points earned">+500</div>
                                 <div class="h-date">2024/02/22 10:15</div>
+                                <div class="h-expiry"><i class="fas fa-clock"></i> 到期日 2026/03/31</div>
                             </div>
                         </div>
 

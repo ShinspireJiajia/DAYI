@@ -33,6 +33,88 @@
     .period-selector { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
     .period-btn { background:#f3f4f6; border:1px solid #d1d5db; border-radius:8px; padding:6px 12px; font-size:13px; font-weight:600; cursor:pointer; }
     .period-btn.active { background:#111827; color:#fff; border-color:#111827; }
+    
+    /* 會員卡別資訊 */
+    .member-info-card {
+      background: linear-gradient(135deg, #13baba 0%, #1ad4d4 100%);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .member-info-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .member-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+    .member-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .member-name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .member-id {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    .card-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .card-type-badge.primary-card {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #78350f;
+    }
+    .card-type-badge.secondary-card {
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+    
+    /* 統計卡片 */
+    .stats-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #111827;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 600;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -64,6 +146,21 @@
   </header>
 
   <main class="main-content">
+    <!-- 會員卡別資訊 -->
+    <div class="member-info-card">
+      <div class="member-info-left">
+        <div class="member-avatar"><i class="fas fa-user"></i></div>
+        <div class="member-details">
+          <span class="member-name">陳家霖</span>
+          <span class="member-id">SL-2024-001234</span>
+        </div>
+      </div>
+      <span class="card-type-badge primary-card">
+        <i class="fas fa-crown"></i>
+        正卡
+      </span>
+    </div>
+
     <!-- 功能說明 -->
     <div class="notice">
       <i class="fas fa-info-circle" style="color:#d97706;"></i>
@@ -74,18 +171,62 @@
     <div class="period-selector">
       <i class="fas fa-calendar-alt" style="color:#6b7280;"></i>
       <span style="color:#6b7280; font-weight:600;">選擇期間：</span>
-      <button class="period-btn">2023年</button>
-      <button class="period-btn active">2024年</button>
-      <button class="period-btn">2025年</button>
+      <button class="period-btn" onclick="selectYear(this, 2024)">2024年</button>
+      <button class="period-btn active" onclick="selectYear(this, 2025)">2025年</button>
+      <button class="period-btn" onclick="selectYear(this, 2026)">2026年</button>
     </div>
 
     <!-- 對帳單清單 -->
-    <div class="statement-list">
-      <!-- 2024年01月對帳單 -->
-      <div class="statement-item" onclick="viewStatement('2024-01')">
+    <div class="statement-list" id="statementList">
+      <!-- 2025年12月對帳單 -->
+      <div class="statement-item" onclick="viewStatement('2025-12', 21680)">
         <div class="statement-header">
-          <div class="statement-period">2024年01月對帳單</div>
-          <span class="statement-status status-available">可檢視</span>
+          <div class="statement-period">2025年12月對帳單</div>
+          <span class="statement-status status-available">已繳清</span>
+        </div>
+        <div class="statement-summary">
+          <div class="summary-item">
+            <div class="summary-label">應繳金額</div>
+            <div class="summary-value total-amount">NT$ 21,680</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">繳款日期</div>
+            <div class="summary-value">2025/12/15</div>
+          </div>
+        </div>
+        <div class="view-statement">
+          <i class="fas fa-eye"></i>
+          <span>點擊檢視詳細對帳單</span>
+        </div>
+      </div>
+
+      <!-- 2025年11月對帳單 -->
+      <div class="statement-item" onclick="viewStatement('2025-11', 19,450)">
+        <div class="statement-header">
+          <div class="statement-period">2025年11月對帳單</div>
+          <span class="statement-status status-available">已繳清</span>
+        </div>
+        <div class="statement-summary">
+          <div class="summary-item">
+            <div class="summary-label">應繳金額</div>
+            <div class="summary-value total-amount">NT$ 19,450</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">繳款日期</div>
+            <div class="summary-value">2025/11/14</div>
+          </div>
+        </div>
+        <div class="view-statement">
+          <i class="fas fa-eye"></i>
+          <span>點擊檢視詳細對帳單</span>
+        </div>
+      </div>
+
+      <!-- 2025年10月對帳單 -->
+      <div class="statement-item" onclick="viewStatement('2025-10', 18320)">
+        <div class="statement-header">
+          <div class="statement-period">2025年10月對帳單</div>
+          <span class="statement-status status-available">已繳清</span>
         </div>
         <div class="statement-summary">
           <div class="summary-item">
@@ -93,8 +234,8 @@
             <div class="summary-value total-amount">NT$ 18,320</div>
           </div>
           <div class="summary-item">
-            <div class="summary-label">繳款狀態</div>
-            <div class="summary-value" style="color:#059669;">已繳清</div>
+            <div class="summary-label">繳款日期</div>
+            <div class="summary-value">2025/10/15</div>
           </div>
         </div>
         <div class="view-statement">
@@ -103,47 +244,25 @@
         </div>
       </div>
 
-      <!-- 2024年02月對帳單 -->
-      <div class="statement-item" onclick="viewStatement('2024-02')">
+      <!-- 2025年9月對帳單 -->
+      <div class="statement-item" onclick="viewStatement('2025-09', 22150)">
         <div class="statement-header">
-          <div class="statement-period">2024年02月對帳單</div>
-          <span class="statement-status status-available">可檢視</span>
+          <div class="statement-period">2025年09月對帳單</div>
+          <span class="statement-status status-available">已繳清</span>
         </div>
         <div class="statement-summary">
           <div class="summary-item">
             <div class="summary-label">應繳金額</div>
-            <div class="summary-value total-amount">NT$ 38,800</div>
+            <div class="summary-value total-amount">NT$ 22,150</div>
           </div>
           <div class="summary-item">
-            <div class="summary-label">繳款狀態</div>
-            <div class="summary-value" style="color:#059669;">已繳清</div>
+            <div class="summary-label">繳款日期</div>
+            <div class="summary-value">2025/09/15</div>
           </div>
         </div>
         <div class="view-statement">
           <i class="fas fa-eye"></i>
           <span>點擊檢視詳細對帳單</span>
-        </div>
-      </div>
-
-      <!-- 2024年03月對帳單 -->
-      <div class="statement-item" onclick="viewStatement('2024-03')">
-        <div class="statement-header">
-          <div class="statement-period">2024年03月對帳單</div>
-          <span class="statement-status status-pending">製作中</span>
-        </div>
-        <div class="statement-summary">
-          <div class="summary-item">
-            <div class="summary-label">應繳金額</div>
-            <div class="summary-value">計算中</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-label">預計完成</div>
-            <div class="summary-value">3月10日</div>
-          </div>
-        </div>
-        <div class="view-statement" style="background:#f1f5f9; color:#9ca3af;">
-          <i class="fas fa-clock"></i>
-          <span>對帳單製作中，請稍候</span>
         </div>
       </div>
     </div>
@@ -155,47 +274,36 @@
           <h3 style="color:#111827; font-size:18px; font-weight:800; margin:0;">智生活會員對帳單</h3>
           <p style="color:#6b7280; font-size:14px; margin:8px 0 0;">Statement Period: <span id="detailPeriod"></span></p>
         </div>
-        
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
-          <div>
-            <div style="color:#6b7280; font-size:12px; font-weight:600;">會員姓名</div>
-            <div style="color:#111827; font-weight:700;">陳家霖</div>
-          </div>
-          <div>
-            <div style="color:#6b7280; font-size:12px; font-weight:600;">會員編號</div>
-            <div style="color:#111827; font-weight:700;">SL-2024-001234</div>
-          </div>
-        </div>
 
         <div style="background:#f8fafc; border-radius:8px; padding:12px; margin-bottom:16px;">
           <div style="font-weight:700; color:#374151; margin-bottom:8px;">費用明細</div>
           <div style="display:grid; gap:4px;">
             <div style="display:flex; justify-content:space-between;">
-              <span style="color:#6b7280;">會員費</span>
-              <span style="color:#111827; font-weight:600;">NT$ 3,000</span>
+              <span style="color:#6b7280;">房租費用</span>
+              <span style="color:#111827; font-weight:600;">NT$ 8,500</span>
             </div>
             <div style="display:flex; justify-content:space-between;">
-              <span style="color:#6b7280;">服務費</span>
-              <span style="color:#111827; font-weight:600;">NT$ 2,800</span>
+              <span style="color:#6b7280;">管理服務費</span>
+              <span style="color:#111827; font-weight:600;">NT$ 2,000</span>
             </div>
             <div style="display:flex; justify-content:space-between;">
-              <span style="color:#6b7280;">水電費</span>
-              <span style="color:#111827; font-weight:600;">NT$ 1,520</span>
+              <span style="color:#6b7280;">定額餐費</span>
+              <span style="color:#111827; font-weight:600;">NT$ 4,250</span>
             </div>
             <div style="display:flex; justify-content:space-between;">
-              <span style="color:#6b7280;">租金</span>
-              <span style="color:#111827; font-weight:600;">NT$ 15,000</span>
+              <span style="color:#6b7280;">臨時服務費</span>
+              <span style="color:#111827; font-weight:600;" id="detailServiceFee">NT$ 2,930</span>
             </div>
           </div>
         </div>
 
         <div style="border-top:2px solid #e5e7eb; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
           <span style="font-weight:700; color:#111827; font-size:16px;">應繳總額</span>
-          <span style="font-weight:800; color:#059669; font-size:18px;" id="detailTotal">NT$ 22,320</span>
+          <span style="font-weight:800; color:#059669; font-size:18px;" id="detailTotal">NT$ 17,680</span>
         </div>
 
         <div style="margin-top:16px; text-align:center;">
-          <button onclick="closeStatement()" style="background:#6b7280; color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:600;">關閉檢視</button>
+          <button onclick="closeStatement()" style="background:#6b7280; color:#fff; border:none; border-radius:8px; padding:10px 20px; font-size:14px; font-weight:600; cursor:pointer;">關閉檢視</button>
         </div>
       </div>
     </div>
@@ -223,8 +331,19 @@
   <div class="home-indicator"></div>
 
   <script>
-    function viewStatement(period) {
+    // 年份選擇功能
+    function selectYear(btn, year) {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // 可以在此處加入 AJAX 請求獲取該年度的對帳單清單
+      console.log('選擇年度:', year);
+    }
+
+    // 檢視對帳單詳細
+    function viewStatement(period, amount) {
       document.getElementById('detailPeriod').textContent = period;
+      document.getElementById('detailTotal').textContent = 'NT$ ' + amount.toLocaleString();
+      
       document.getElementById('statementDetail').style.display = 'block';
       document.getElementById('statementDetail').scrollIntoView({ behavior: 'smooth' });
     }

@@ -8,20 +8,20 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <style>
     .action-button { 
-      background: linear-gradient(135deg, #00b4b4, #00b4b4);
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
       border: none;
-      border-radius:8px; 
-      padding:12px 28px; /* Increased padding */
+      border-radius: 16px; 
+      padding: 20px 28px; /* Increased padding */
       display: flex; 
       align-items: center; 
       justify-content: center;
       gap: 12px;
       color: #fff;
-      font-size: 16px; /* Increased font size */
-      font-weight:600;
-      box-shadow: 0 6px 20px rgba(0, 180, 180, 0.24);
+      font-size: 18px; /* Increased font size */
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
       transition: all 0.2s ease;
-      margin-bottom:0px;
+      margin-bottom: 20px;
       text-decoration: none;
     }
     .action-button:hover { 
@@ -30,8 +30,8 @@
     }
     .action-button.secondary {
       background: #fff;
-      color: #666;
-      border:1px solid #ccc;
+      color: #3b82f6;
+      border: 2px solid #3b82f6;
       box-shadow: none;
     }
     .action-button.secondary:hover {
@@ -45,7 +45,7 @@
       font-size: 18px;
       font-weight: 700;
       color: #111827;
-      margin-bottom:0px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -53,37 +53,57 @@
     .section-title i { color: #6b7280; font-size: 16px; }
     
     .tabs { 
-      display: flex; background-color:#fff;padding-top:20px;
-      gap:0px; border-bottom:1px solid #f1f1f1;      
+      display: flex; 
+      gap: 10px; 
+      padding: 0 0 12px;
+      margin-bottom: 12px;
     }
     .tab { 
       flex: 1; 
       text-align: center; 
-      padding:12px 16px; 
-      color: #999;background-color:#fff;
-      border-bottom:4px solid #fff;font-size:16px;
-      transition: all 0.18s ease;border:none;
+      padding: 10px 14px; 
+      border-radius: 12px; 
+      background: #f7fafc; 
+      color: #4b5563; 
+      font-weight: 700; 
+      border: 1.5px solid #e5e7eb; 
+      transition: all 0.18s ease;
       cursor: pointer;
     }
     .tab.active { 
-      color: #00b4b4; font-weight:600; 
-      border-bottom:4px solid #00b4b4;
+      background: linear-gradient(135deg, #6aa5ff, #63d1ff); 
+      color: #fff; 
+      border-color: #4f8ef7; 
+      box-shadow: 0 4px 12px rgba(79, 142, 247, 0.28);
     }
     
     .course-list { display: grid; gap: 0; padding-bottom: 80px; } /* Gap 0 for zebra striping */
     .course-card { 
       background: #fff; 
-      border-radius: 12px; 
-      padding:16px; /* Increased padding */
+      border-radius: 16px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+      padding: 20px; /* Increased padding */
       display: flex; 
-      flex-direction: column;box-shadow: 0 1px 4px rgba(0, 180, 180, 0.08);
+      flex-direction: column;
       gap: 12px; 
+      border: 1px solid #e5e7eb;
       margin-bottom: 12px; /* Add margin for gap */
     }
     /* Zebra Striping */
     .course-card:nth-child(odd) { background-color: #FFFFFF; }
-    .course-card:nth-child(even) { background-color: #fff; }
+    .course-card:nth-child(even) { background-color: #fcfffc; }
 
+    .course-icon { 
+      width: 52px; 
+      height: 52px; 
+      border-radius: 12px; 
+      display: grid; 
+      place-items: center; 
+      color: #fff; 
+      background: linear-gradient(135deg, #6aa5ff, #63d1ff);
+      font-size: 22px;
+      flex-shrink: 0;
+    }
     
     .course-header {
       display: flex;
@@ -101,9 +121,9 @@
     }
 
     .course-title { 
-        font-weight:600; 
-        color: #000; 
-        font-size:18px; 
+        font-weight: 800; 
+        color: #111827; 
+        font-size: 24px; 
         line-height: 1.2; 
         letter-spacing: 0.5px;
     }
@@ -120,6 +140,25 @@
       border-radius: 6px;
       align-self: flex-start;
       font-weight: 500;
+    }
+
+    .course-time {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2563eb; /* Primary Blue */
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+    .course-location {
+      font-size: 15px;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
     }
 
     .course-points {
@@ -148,7 +187,7 @@
         text-decoration: underline;
     }
 
-    .course-sub { font-size: 16px; color: #6b7280; margin: 4px 0; letter-spacing: 0.3px; }
+    .course-sub { font-size: 15px; color: #6b7280; margin: 4px 0; letter-spacing: 0.3px; }
 
     .course-action {
       align-self: center;
@@ -157,8 +196,9 @@
     
     .card-btn {
       padding: 8px 16px;
-      border-radius:8px;
+      border-radius: 12px;
       font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
       border: none;
       transition: all 0.2s;
@@ -170,8 +210,9 @@
     }
     
     .btn-checkin {
-      background: #00b4b4;font-weight: 600;
-    color: #fff;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
     }
     .btn-checkin:hover {
       transform: translateY(-1px);
@@ -188,11 +229,14 @@
     }
     .course-actions { display: flex; gap: 10px; margin-top: 12px; }
     .badge { 
-      font-size: 14px;
-    padding: 6px 10px;font-weight:500;
-    border-radius:99px;background:rgb(0,180,180,0.08); color:rgb(25,79,91,0.8);
+      font-size: 14px; 
+      padding: 6px 10px; 
+      border-radius: 999px; 
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .badge.booked {background:rgb(0,180,180,0.08); color:rgb(25,79,91,0.8);}
+    .badge.booked { background: #e8f5e8; color: #2e7d32; }
     .badge.waitlist { background: #fff3e0; color: #f57c00; }
     .badge.checked-in { background: #e0f2fe; color: #0369a1; }
     .badge.cancelled { background: #f3f4f6; color: #6b7280; }
@@ -227,7 +271,7 @@
       width: calc(100% - 32px);
       max-width: 382px;
       border-radius: 20px; 
-      padding:0 20px 20px 20px; 
+      padding: 24px; 
       max-height: 100%; 
       overflow-y: auto;
       animation: slideUp 0.3s ease;
@@ -235,6 +279,14 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     
+    .modal-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
     .modal-title { font-size: 20px; font-weight: 700; color: #111827; }
     .modal-close { 
       background: #f3f4f6; 
@@ -254,21 +306,22 @@
     .detail-row { 
       display: grid; 
       grid-template-columns: 100px 1fr; 
+      gap: 12px; 
       padding: 12px 0;
       border-bottom: 1px solid #f3f4f6;
     }
     .detail-row:last-child { border-bottom: none; }
     .detail-label { 
-      font-weight:400; 
-      color: #666; 
-      font-size: 16px;
+      font-weight: 700; 
+      color: #6b7280; 
+      font-size: 14px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .detail-value { 
-      color: #000; font-weight:500; 
-      font-size: 16px;
+      color: #111827; 
+      font-size: 15px;
       display: flex;
       align-items: center;
     }
@@ -276,11 +329,10 @@
       display: inline-block;
       padding: 4px 12px;
       border-radius: 999px;
-      font-size: 16px;
-      font-weight:500;
+      font-size: 13px;
+      font-weight: 700;
     }
-    .status-badge.booked {background: rgb(0, 180, 180, 0.08);
-    color: rgb(25, 79, 91, 0.8);}
+    .status-badge.booked { background: #e8f5e8; color: #2e7d32; }
     .status-badge.waitlist { background: #fff3e0; color: #f57c00; }
     .status-badge.checked-in { background: #e0f2fe; color: #0369a1; }
     .status-badge.cancelled { background: #f3f4f6; color: #6b7280; }
@@ -298,6 +350,105 @@
     }
     .filter-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
     
+    .filter-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      color: #4b5563;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .filter-chip.active {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Survey Styles */
+    .survey-container { padding: 4px 0; }
+    .survey-description {
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        font-size: 15px;
+        color: #4b5563;
+        line-height: 1.6;
+        text-align: left;
+        border: 1px solid #f3f4f6;
+    }
+    .survey-question {
+        margin-bottom: 28px;
+        text-align: left;
+    }
+    .survey-question-title {
+        font-weight: 700;
+        margin-bottom: 12px;
+        font-size: 16px;
+        color: #111827;
+        line-height: 1.4;
+    }
+    .survey-required {
+        color: #ef4444;
+        margin-left: 4px;
+        font-size: 14px;
+    }
+    .survey-input-text, .survey-textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        font-size: 16px;
+        box-sizing: border-box;
+        background: #f9fafb;
+        transition: border-color 0.2s;
+    }
+    .survey-input-text:focus, .survey-textarea:focus {
+        background: #fff;
+        border-color: #3b82f6;
+        outline: none;
+    }
+    .survey-textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    .survey-option {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+    }
+    .survey-option input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        accent-color: #3b82f6;
+    }
+    .survey-option label {
+        font-size: 16px;
+        color: #374151;
+        cursor: pointer;
+    }
+    .star-rating {
+        display: flex;
+        gap: 12px;
+    }
+    .star-rating i {
+        font-size: 32px;
+        color: #e5e7eb; /* Inactive color */
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .star-rating i.active {
+        color: #fbbf24;
+    }
   </style>
 </head>
 <body>
@@ -322,30 +473,33 @@
       </div>
     </div>
     <div class="header-right">
-      <a href="member-code.html" aria-label="會員條碼" class="header-action"></a>
+      <a href="member-code.html" aria-label="會員條碼" class="header-action"><i class="fas fa-qrcode"></i></a>
       <i class="fas fa-comment-dots"></i>
       <a href="notifications.html" aria-label="通知"><i class="fas fa-bell"></i></a>
     </div>
   </header>
 
-  <div class="white-pages-content">
+  <main class="main-content">
     <!-- 課程預約按鈕 -->
     <a href="course-booking.html" class="action-button">
       <i class="fas fa-calendar-plus"></i>
       <span>課程活動預約</span>
     </a>
 
-    <!-- 我的課程區塊 
-    <div class="section-title">
-      我的課程與活動
-    </div>-->
+    <!-- 我的課程區塊 -->
+    <div class="section-title" style="justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <i class="fas fa-list-check"></i>
+        我的課程與活動
+      </div>
+      <i class="fas fa-circle-info" style="color: #9ca3af; cursor: pointer;" onclick="showRequirements()"></i>
     </div>
+
     <div class="tabs">
       <button class="tab active" data-tab="upcoming">即將到來</button>
       <button class="tab" data-tab="history">歷史紀錄</button>
     </div>
-   
-   <div class="pages-content">
+
     <!-- Date Filter -->
     <div class="filter-container">
       <button class="filter-chip active" data-day="all">全部</button>
@@ -360,7 +514,7 @@
 
     <div id="list-upcoming" class="course-list"></div>
     <div id="list-history" class="course-list" style="display:none;"></div>
-  </div>
+  </main>
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
@@ -424,21 +578,67 @@
   </div>
 
   <!-- Survey Modal -->
-  <div id="surveyModal" class="modal" style="z-index: 10001; align-items: center; padding: 0;">
-    <div class="modal-content" style="max-width: 320px; text-align: center; width: 85%; border-radius: 16px;">
-      <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 10px;">
-        <div class="modal-title">課程評分</div>
+  <div id="surveyModal" class="modal">
+    <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <div class="modal-title">課程問卷</div>
+        <button class="modal-close" onclick="closeSurveyModal()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div style="margin-bottom: 24px; display: flex; justify-content: center; gap: 8px;" id="starContainer">
-         <i class="far fa-star" data-value="1" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
-         <i class="far fa-star" data-value="2" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
-         <i class="far fa-star" data-value="3" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
-         <i class="far fa-star" data-value="4" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
-         <i class="far fa-star" data-value="5" style="font-size: 32px; color: #fbbf24; cursor: pointer;"></i>
+      <div style="flex: 1; overflow-y: auto; padding-right: 4px;">
+         <h2 id="surveyTitle" style="text-align: center; margin-bottom: 16px; color: #111827; font-size: 20px; font-weight: 700;">問卷標題</h2>
+         <div id="surveyDescription" class="survey-description"></div>
+         <div id="surveyContent" class="survey-container">
+            <!-- Dynamic Content -->
+         </div>
       </div>
-      <div style="display: flex; gap: 12px;">
-        <button onclick="closeSurveyModal()" class="action-button" style="flex: 1; background: #f3f4f6; color: #4b5563; box-shadow: none; padding: 12px; margin-bottom: 0; font-size: 16px;">取消</button>
-        <button onclick="submitSurvey()" class="action-button" style="flex: 1; padding: 12px; margin-bottom: 0; font-size: 16px;">確定</button>
+      <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb; background: #fff;">
+        <button onclick="submitSurvey()" class="action-button" style="width: 100%; padding: 14px; margin-bottom: 0; font-size: 16px;">送出問卷</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Requirements Modal -->
+  <div id="requirementsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">清單說明</div>
+        <button class="modal-close" onclick="closeRequirements()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div style="color: #4b5563; font-size: 15px; line-height: 1.6;">
+        <h3 style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px;">即將到來</h3>
+        <ul style="margin-bottom: 20px; padding-left: 20px;">
+          <li>顯示開始時間在目前時間之後的課程與活動。</li>
+          <li>不包含「已取消」或「取消候補」的項目。</li>
+          <li>排序：依照時間由近到遠排列。</li>
+        </ul>
+        
+        <h3 style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px;">歷史紀錄</h3>
+        <ul style="padding-left: 20px; margin-bottom: 12px;">
+          <li>顯示開始時間在目前時間之前的課程與活動。</li>
+          <li>包含所有「已取消」或「取消候補」的項目（無論時間）。</li>
+          <li>過期未報到的課程會自動歸類於此（顯示為未報到）。</li>
+          <li>排序：依照時間由新到舊排列。</li>
+        </ul>
+        <div style="background: #f9fafb; padding: 12px; border-radius: 8px; font-size: 14px;">
+          <div style="font-weight: 700; margin-bottom: 4px;">狀態說明：</div>
+          <ul style="padding-left: 20px; margin: 0;">
+            <li style="margin-bottom: 4px;"><span style="color: #0369a1; font-weight: 600;">已報到</span>：您已完成活動報到。</li>
+            <li style="margin-bottom: 4px;"><span style="color: #6b7280; font-weight: 600;">已取消</span>：您已取消報名，或活動被取消。</li>
+            <li style="margin-bottom: 4px;"><span style="color: #6b7280; font-weight: 600;">取消候補</span>：您取消了候補申請。</li>
+            <li><span style="color: #991b1b; font-weight: 600;">未報到</span>：活動已結束，但您未出席。</li>
+          </ul>
+        </div>
+        
+        <h3 style="font-size: 16px; font-weight: 700; color: #111827; margin-top: 16px; margin-bottom: 8px;">課程滿意度問卷</h3>
+        <ul style="padding-left: 20px;">
+          <li><b>出現時機</b>：活動狀態為「已報到」且尚未填寫問卷。</li>
+          <li><b>顯示位置</b>：僅顯示於「歷史紀錄」列表中的該課程卡片下方。</li>
+          <li><b>填寫後狀態</b>：按鈕變更為「已填問卷」（無法再次填寫）。</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -914,6 +1114,8 @@
           bookingDate: new Date('2025-11-20T10:00:00+08:00').toISOString(),
           isWaitlist: false
         },
+        // Removed "冬季養生藥膳" to allow simulated booking
+        /*
         { 
           id:'CB-20251210-1000', 
           courseId: 'C109',
@@ -931,6 +1133,7 @@
           bookingDate: new Date('2025-11-25T09:00:00+08:00').toISOString(),
           isWaitlist: false
         },
+        */
         { 
           id:'CB-20251215-1500', 
           courseId: 'C110',
@@ -1320,10 +1523,10 @@
         
         let tagsHtml = '';
         if (item.category) {
-            tagsHtml += `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8); margin-right:4px;">${item.category}</span>`;
+            tagsHtml += `<span class="badge" style="background:#e3f2fd; color:#1565c0; margin-right:4px;">${item.category}</span>`;
         }
         if (item.tags && Array.isArray(item.tags)) {
-          tagsHtml += item.tags.map(tag => `<span class="badge" style="background:rgb(25,79,91,0.08); color:rgb(25,79,91,0.8); margin-right:4px;">#${tag}</span>`).join('');
+          tagsHtml += item.tags.map(tag => `<span class="badge" style="margin-right:4px; background:#f5f5f5; color:#616161;">#${tag}</span>`).join('');
         } else if (item.type) {
            tagsHtml += `<span class="badge">${item.type}</span>`;
         }
@@ -1365,7 +1568,7 @@
         let buttonsHtml = '';
         if (actionBtnHtml) {
             buttonsHtml = `
-                <button class="card-btn" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')" style="flex: 1; border: 1px solid #ccc; background: #fff; color: #666;">課程活動資訊</button>
+                <button class="card-btn" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')" style="flex: 1; border: 1px solid #e5e7eb; background: #fff; color: #374151;">課程活動資訊</button>
                 ${actionBtnHtml}
             `;
         } else {
@@ -1379,14 +1582,12 @@
         // I'll add a helper function showCourseDetailById.
 
         card.innerHTML = `
-        
           <div class="course-header">
-            
             <div class="course-title-group">
-              
+              <div class="course-icon"><i class="fas fa-graduation-cap"></i></div>
               <div class="course-title">
                 <span class="course-name" onclick="event.stopPropagation(); showCourseDetailById('${item.id}')">${item.name}</span>
-                <div style="font-size: 16px; color: #666; font-weight: normal; margin-top: 4px;">課程代碼：${item.courseId || item.id}</div>
+                <div style="font-size: 14px; color: #666; font-weight: normal; margin-top: 4px;">課程代碼：${item.courseId || item.id}</div>
               </div>
             </div>
             <div class="badge ${badgeClass}">${badgeText}</div>
@@ -1394,20 +1595,19 @@
           
           <div>
             <div class="course-time">
-                <img src="./images/fa-calendar-day.svg">${timeDisplay}
+                <i class="fas fa-calendar-day"></i> ${timeDisplay}
             </div>
-            <div style="display: flex; gap:8px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
                 <div class="course-location" style="margin-bottom: 0;">
-                     ${item.site}
+                    <i class="fas fa-location-dot"></i> ${item.site}
                 </div>
-                <div style="color: #999;">|</div>
-                <div class="course-instructor" style="font-size: 16px; color: #666; display: flex; align-items: center; gap: 8px;">
-                     ${item.instructor}
+                <div class="course-instructor" style="font-size: 15px; color: #4b5563; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-chalkboard-teacher"></i> ${item.instructor}
                 </div>
             </div>
             ${item.purchasedMaterials && item.purchasedMaterials.length > 0 ? `
-            <div class="course-materials" style="font-size: 16px; color:#666; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                 已購材料: ${item.purchasedMaterials.join(', ')}
+            <div class="course-materials" style="font-size: 14px; color: #666; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-shopping-bag" style="color: #FF8C00;"></i> 已購材料: ${item.purchasedMaterials.join(', ')}
             </div>` : ''}
           </div>
           
@@ -1439,7 +1639,15 @@
 
     let onConfirmAction = null;
     let currentSurveyId = null;
-    let currentRating = 5;
+
+    // Survey Data Definition
+    const surveyTemplates = {
+        'default': [
+            { id: 1, title: '您對本次課程的滿意度如何？', type: 'star', required: true },
+            { id: 2, title: '您覺得課程難度如何？', type: 'radio', required: true, options: ['太簡單', '適中', '太難'] },
+            { id: 3, title: '其他建議', type: 'textarea', required: false }
+        ]
+    };
 
     function showMessage(msg) {
       document.getElementById('messageContent').innerHTML = msg;
@@ -1450,30 +1658,83 @@
       document.getElementById('messageModal').classList.remove('show');
     }
 
-    function showSurveyModal(id) {
-      currentSurveyId = id;
-      currentRating = 5;
-      updateStars();
-      document.getElementById('surveyModal').classList.add('show');
-    }
-
     function closeSurveyModal() {
-      document.getElementById('surveyModal').classList.remove('show');
-      currentSurveyId = null;
+        document.getElementById('surveyModal').classList.remove('show');
+        currentSurveyId = null;
     }
 
-    function updateStars() {
-      const stars = document.querySelectorAll('#starContainer i');
-      stars.forEach(star => {
-        const val = parseInt(star.dataset.value);
-        if (val <= currentRating) {
-          star.classList.remove('far');
-          star.classList.add('fas');
-        } else {
-          star.classList.remove('fas');
-          star.classList.add('far');
-        }
-      });
+    function openSurvey(id) {
+        currentSurveyId = id;
+        
+        // Find course name for title or use default
+        const list = load();
+        const item = list.find(i => i.id === id);
+        const title = item ? `${item.name} 滿意度調查` : '課程滿意度調查';
+        document.getElementById('surveyTitle').textContent = title;
+        
+        document.getElementById('surveyDescription').textContent = '感謝您參與本次課程，請花幾分鐘時間填寫此問卷，您的回饋將幫助我們提供更好的服務。';
+        
+        const container = document.getElementById('surveyContent');
+        container.innerHTML = '';
+        
+        const questions = surveyTemplates['default']; 
+        
+        questions.forEach((q, index) => {
+            const div = document.createElement('div');
+            div.className = 'survey-question';
+            
+            let inputHtml = '';
+            if (q.type === 'star') {
+                inputHtml = `
+                    <div class="star-rating" data-qid="${q.id}">
+                        <i class="fas fa-star" data-val="1" onclick="rateStar(${q.id}, 1)"></i>
+                        <i class="fas fa-star" data-val="2" onclick="rateStar(${q.id}, 2)"></i>
+                        <i class="fas fa-star" data-val="3" onclick="rateStar(${q.id}, 3)"></i>
+                        <i class="fas fa-star" data-val="4" onclick="rateStar(${q.id}, 4)"></i>
+                        <i class="fas fa-star active" data-val="5" onclick="rateStar(${q.id}, 5)"></i>
+                    </div>
+                `;
+            } else if (q.type === 'radio') {
+                inputHtml = q.options.map((opt, i) => `
+                    <div class="survey-option">
+                        <input type="radio" name="q${q.id}" id="q${q.id}_${i}" value="${opt}" ${i===1?'checked':''}>
+                        <label for="q${q.id}_${i}">${opt}</label>
+                    </div>
+                `).join('');
+            } else if (q.type === 'textarea') {
+                inputHtml = `<textarea class="survey-textarea" placeholder="您的寶貴意見..."></textarea>`;
+            } else if (q.type === 'text') {
+                inputHtml = `<input type="text" class="survey-input-text" placeholder="您的回答">`;
+            }
+            
+            div.innerHTML = `
+                <div class="survey-question-title">
+                    ${index + 1}. ${q.title}
+                    ${q.required ? '<span class="survey-required">*</span>' : ''}
+                </div>
+                <div>${inputHtml}</div>
+            `;
+            container.appendChild(div);
+        });
+
+         document.getElementById('surveyModal').classList.add('show');
+    }
+    
+    function rateStar(qid, val) {
+        const container = document.querySelector(`.star-rating[data-qid="${qid}"]`);
+        if(!container) return;
+        const stars = container.querySelectorAll('i');
+        stars.forEach(star => {
+            const v = parseInt(star.dataset.val);
+            if (v <= val) {
+                star.classList.add('active');
+                star.style.color = '#fbbf24';
+            } else {
+                star.classList.remove('active');
+                star.style.color = '#e5e7eb';
+            }
+        });
+        container.dataset.value = val;
     }
 
     function submitSurvey() {
@@ -1491,6 +1752,14 @@
       
       closeSurveyModal();
       closeModal(); // Close the detail modal too
+    }
+
+    function showRequirements() {
+      document.getElementById('requirementsModal').classList.add('show');
+    }
+
+    function closeRequirements() {
+      document.getElementById('requirementsModal').classList.remove('show');
     }
 
     function showConfirmModal(msg, action) {
@@ -1662,16 +1931,16 @@
           if (!item.isWaitlist) {
              checkInHtml = `
               <a href="scan-checkin.html?id=${item.id}" class="action-button" style="width: 100%; margin-bottom: 12px; text-decoration: none; box-sizing: border-box;">
-                 我要報到
+                <i class="fas fa-qrcode"></i> 我要報到
               </a>
              `;
           }
 
           cancelButtonHtml = `
-            <div style="margin-top:12px;">
+            <div style="margin-top: 24px;">
               ${checkInHtml}
               <button onclick="cancelBooking('${item.id}')" class="action-button" style="width: 100%; background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);">
-                 ${btnText}
+                <i class="fas fa-times-circle"></i> ${btnText}
               </button>
             </div>
           `;
@@ -1702,7 +1971,7 @@
       if (!isUpcoming || item.status === '已取消' || item.status === '取消候補') {
         paymentInfo = `
         <div class="detail-row">
-          <div class="detail-label"> 原支付方式</div>
+          <div class="detail-label"><i class="fas fa-receipt"></i> 原支付方式</div>
           <div class="detail-value">${item.paymentType || '點數折抵'}</div>
         </div>`;
       }
@@ -1770,75 +2039,69 @@
 
       modalBody.innerHTML = `
         <div class="detail-row">
-          <div class="detail-label"> 課程名稱</div>
+          <div class="detail-label"><i class="fas fa-graduation-cap"></i> 課程名稱</div>
           <div class="detail-value">${item.name}</div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 課程代碼</div>
+          <div class="detail-label"><i class="fas fa-barcode"></i> 課程代碼</div>
           <div class="detail-value">${item.courseId || ''}</div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 課程類型</div>
+          <div class="detail-label"><i class="fas fa-tag"></i> 課程類型</div>
           <div class="detail-value">
-            ${item.category ? `<span style="background: rgb(25, 79, 91, 0.08);
-    color: rgb(25, 79, 91, 0.8);padding:4px 6px; border-radius:99px; font-size:16px; margin-right:4px;">${item.category}</span>` : ''}
-            ${(item.tags || [item.type]).map(t => `<span style="background: rgb(25, 79, 91, 0.08);
-    color: rgb(25, 79, 91, 0.8);padding:4px 6px; border-radius:99px; font-size:16px; margin-right:4px;">#${t}</span>`).join('')}
+            ${item.category ? `<span style="background:#e3f2fd; color:#1565c0; padding:2px 6px; border-radius:4px; font-size:12px; margin-right:4px;">${item.category}</span>` : ''}
+            ${(item.tags || [item.type]).map(t => `<span style="background:#f5f5f5; color:#616161; padding:2px 6px; border-radius:4px; font-size:12px; margin-right:4px;">#${t}</span>`).join('')}
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 授課老師</div>
+          <div class="detail-label"><i class="fas fa-chalkboard-teacher"></i> 授課老師</div>
           <div class="detail-value">${item.instructor}</div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 上課日期</div>
+          <div class="detail-label"><i class="fas fa-calendar-day"></i> 上課日期</div>
           <div class="detail-value">${dateStr}</div>
         </div>
         <div class="detail-row">
-          <div class="detail-label">上課時間</div>
+          <div class="detail-label"><i class="fas fa-clock"></i> 上課時間</div>
           <div class="detail-value">${timeDisplay}</div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 上課地點</div>
+          <div class="detail-label"><i class="fas fa-map-marker-alt"></i> 上課地點</div>
           <div class="detail-value">${item.site}</div>
         </div>
 
         <div class="detail-row">
-          <div class="detail-label"> ${costLabel}</div>
+          <div class="detail-label"><i class="fas ${costIcon}"></i> ${costLabel}</div>
           <div class="detail-value">${item.points} ${costUnit}</div>
         </div>
         ${item.materialFee ? `
         <div class="detail-row">
-          <div class="detail-label"> 材料費</div>
+          <div class="detail-label"><i class="fas fa-tools"></i> 材料費</div>
           <div class="detail-value">${item.materialFee} 元</div>
         </div>` : ''}
         ${paymentInfo}
         ${refundHtml}
         <div class="detail-row">
-          <div class="detail-label"> 預約狀態</div>
+          <div class="detail-label"><i class="fas fa-info-circle"></i> 預約狀態</div>
           <div class="detail-value">
             <span class="status-badge ${statusClass}">${statusText}</span>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-label"> 預約時間</div>
+          <div class="detail-label"><i class="fas fa-calendar-check"></i> 預約時間</div>
           <div class="detail-value">${bookingDateStr}</div>
         </div>
 
         ${item.courseId ? `
         <div style="margin-top: 24px;">
           <a href="course-detail.html?id=${item.courseId}&from=my-courses" class="action-button secondary" style="width: 100%; box-sizing: border-box; text-decoration: none;">
-             查看完整活動詳情
+            <i class="fas fa-info-circle"></i> 查看完整活動詳情
           </a>
         </div>` : ''}
         ${cancelButtonHtml}
       `;
       
       modal.classList.add('show');
-    }
-
-    function openSurvey(id) {
-      showSurveyModal(id);
     }
 
     function closeModal() {
@@ -1917,14 +2180,6 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      // Star rating listeners
-      document.querySelectorAll('#starContainer i').forEach(star => {
-        star.addEventListener('click', () => {
-          currentRating = parseInt(star.dataset.value);
-          updateStars();
-        });
-      });
-
       // Initial filters
       updateFilters('upcoming');
 
