@@ -35,7 +35,8 @@ function loadHistoryData() {
             isCourse: true,
             courseDate: '2024/03/05',
             courseName: '有氧舞蹈',
-            courseCode: 'AERO-003'
+            courseCode: 'AERO-003',
+            expiryDate: null
         },
         {
             date: '2024/02/28 10:00',
@@ -48,7 +49,8 @@ function loadHistoryData() {
             isCourse: true,
             courseDate: '2024/02/28',
             courseName: '瑜珈課程',
-            courseCode: 'YOGA-001'
+            courseCode: 'YOGA-001',
+            expiryDate: '2026/03/31'
         },
         {
             date: '2024/02/28 09:00',
@@ -61,7 +63,8 @@ function loadHistoryData() {
             isCourse: true,
             courseDate: '2024/02/28',
             courseName: '有氧運動',
-            courseCode: 'AERO-002'
+            courseCode: 'AERO-002',
+            expiryDate: null
         },
         {
             date: '2024/02/25 12:30',
@@ -70,7 +73,8 @@ function loadHistoryData() {
             description: '芬蘭浴 - 45分鐘',
             points: -120,
             icon: 'fas fa-leaf',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: null
         },
         {
             date: '2024/02/22 10:15',
@@ -79,7 +83,8 @@ function loadHistoryData() {
             description: '推薦朋友入會',
             points: 500,
             icon: 'fas fa-star',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: '2026/03/31'
         },
         {
             date: '2024/02/18 14:00',
@@ -88,7 +93,8 @@ function loadHistoryData() {
             description: '臉部護理 - 60分鐘',
             points: -300,
             icon: 'fas fa-spa',
-            cardType: 'supplementary'
+            cardType: 'supplementary',
+            expiryDate: null
         },
         {
             date: '2024/02/14 16:30',
@@ -97,7 +103,8 @@ function loadHistoryData() {
             description: '情人節特別活動參與',
             points: 100,
             icon: 'fas fa-heart',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: '2026/02/28'
         },
         {
             date: '2024/02/12 08:45',
@@ -110,7 +117,8 @@ function loadHistoryData() {
             isCourse: true,
             courseDate: '2024/02/12',
             courseName: '有氧運動',
-            courseCode: 'AERO-002'
+            courseCode: 'AERO-002',
+            expiryDate: null
         },
         {
             date: '2024/02/08 15:10',
@@ -119,7 +127,8 @@ function loadHistoryData() {
             description: '健康輕食套餐',
             points: -150,
             icon: 'fas fa-utensils',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: null
         },
         {
             date: '2024/02/05 13:20',
@@ -128,7 +137,8 @@ function loadHistoryData() {
             description: '生日月份專屬贈點',
             points: 200,
             icon: 'fas fa-birthday-cake',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: '2026/02/28'
         },
         {
             date: '2024/02/02 11:30',
@@ -137,7 +147,8 @@ function loadHistoryData() {
             description: '標準池 - 1小時',
             points: -80,
             icon: 'fas fa-swimming-pool',
-            cardType: 'supplementary'
+            cardType: 'supplementary',
+            expiryDate: null
         },
         {
             date: '2024/01/25 09:00',
@@ -150,7 +161,8 @@ function loadHistoryData() {
             isCourse: true,
             courseDate: '2024/01/25',
             courseName: '瑜珈課程',
-            courseCode: 'YOGA-001'
+            courseCode: 'YOGA-001',
+            expiryDate: '2024/01/31'
         },
         {
             date: '2024/01/20 16:45',
@@ -159,7 +171,8 @@ function loadHistoryData() {
             description: '全身按摩 - 90分鐘',
             points: -500,
             icon: 'fas fa-spa',
-            cardType: 'supplementary'
+            cardType: 'supplementary',
+            expiryDate: null
         },
         {
             date: '2024/01/18 10:15',
@@ -168,7 +181,8 @@ function loadHistoryData() {
             description: '器械訓練區 - 2小時',
             points: -100,
             icon: 'fas fa-dumbbell',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: null
         },
         {
             date: '2024/01/15 14:30',
@@ -177,7 +191,8 @@ function loadHistoryData() {
             description: '新會員歡迎禮',
             points: 1000,
             icon: 'fas fa-gift',
-            cardType: 'primary'
+            cardType: 'primary',
+            expiryDate: '2024/01/31'
         }
     ];
 
@@ -242,6 +257,28 @@ function createHistoryItem(item) {
             `;
         }
 
+        // 到期日顯示邏輯（只有獲得點數才顯示）
+        let expiryHtml = '';
+        if (item.type === 'earned' && item.points > 0 && item.expiryDate) {
+            const today = new Date();
+            const expiryDateObj = new Date(item.expiryDate.replace(/\//g, '-'));
+            const isExpired = expiryDateObj < today;
+            const thisMonth = today.getMonth();
+            const thisYear = today.getFullYear();
+            const expiryMonth = expiryDateObj.getMonth();
+            const expiryYear = expiryDateObj.getFullYear();
+            const isExpiringSoon = !isExpired && (expiryYear === thisYear && expiryMonth === thisMonth);
+            
+            let expiryClass = '';
+            if (isExpired) {
+                expiryClass = 'expired';
+            } else if (isExpiringSoon) {
+                expiryClass = 'expiring-soon';
+            }
+            
+            expiryHtml = `<div class="h-expiry ${expiryClass}"><i class="fas fa-clock"></i> 到期日 ${item.expiryDate}</div>`;
+        }
+
         div.innerHTML = `
             <div class="h-left">
                 <div class="h-icon"><i class="${item.icon}"></i></div>
@@ -255,6 +292,7 @@ function createHistoryItem(item) {
             <div class="h-right">
                 <div class="h-points ${typeClass}">${pointsFormatted}</div>
                 <div class="h-date">${item.date}</div>
+                ${expiryHtml}
             </div>
         `;
         return div;
